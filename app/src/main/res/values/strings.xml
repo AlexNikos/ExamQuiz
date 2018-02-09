@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ExamQuiz</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="createAcc">Create Account</string>
+    <string name="anonymous">Anonymous Login</string>
+    <string name="title_activity_anonymous">anonymousActivity</string>
+    <string name="signout">Sign Out</string>
+    <string name="accountType">Account Type</string>
+    <string name="teacher">Teacher</string>
+    <string name="student">Student</string>
+    <string name="password1">Password:</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_teacher">TeacherActivity</string>
+</resources>
