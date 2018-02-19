@@ -45,12 +45,10 @@ public class AnonymousActivity extends AppCompatActivity {
                         .setTitle("Add New Room")
                         .setMessage("Enter Room name:")
                         .setView(txt)
-                        //.setView(txtUrl[0] = new EditText(AnonymousActivity.this))
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        //kodikas sto ti na kanei otan patiseis yes
-                                        // room = txtUrl[0].getText().toString();
+
                                         room = txt.getText().toString();
                                         txt.setText("");
                                         Log.d("test", room);
@@ -58,7 +56,13 @@ public class AnonymousActivity extends AppCompatActivity {
                                     }
                                 }
                         )
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ((ViewGroup) txt.getParent()).removeView(txt);
+
+                            }
+                        })
                         .show();
 
             }
@@ -73,7 +77,6 @@ public class AnonymousActivity extends AppCompatActivity {
 
 
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            FirebaseAuth.getInstance().signOut();
 
             user.delete()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -84,6 +87,9 @@ public class AnonymousActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+            FirebaseAuth.getInstance().signOut();
+
             startActivity(new Intent(AnonymousActivity.this, LoginActivity.class));
             finish();
 

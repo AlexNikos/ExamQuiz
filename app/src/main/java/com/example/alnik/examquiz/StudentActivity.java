@@ -1,8 +1,13 @@
 package com.example.alnik.examquiz;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +17,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class StudentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private FirebaseDatabase database;
+    private DatabaseReference myRefUser;
+
+    EditText lessonNameInput;
+    TextView nameView;
+    TextView emailView;
+
+    String lessonName;
+    String fullName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +52,41 @@ public class StudentActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addFab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        myRefUser = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+        Log.d("test", currentUser.getUid().toString());
+
+
+
+
+        FloatingActionButton addNewLesson = (FloatingActionButton) findViewById(R.id.add_new_lesson);
+
+        lessonNameInput = new EditText(StudentActivity.this);
+        lessonNameInput.setSingleLine(true);
+
+
+        addNewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                new AlertDialog.Builder(StudentActivity.this)
+                        .setIcon(android.R.drawable.ic_input_add)
+                        .setTitle("Add New Lesson")
+                        .setMessage("Enter Lesson name:")
+                        .setView(lessonNameInput)
+                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        lessonName = lessonNameInput.getText().toString();
+                                        lessonNameInput.setText("");
+                                        Log.d("test", lessonName);
+                                        ((ViewGroup) lessonNameInput.getParent()).removeView(lessonNameInput);
+                                    }
+                                }
+                        )
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
             }
         });
 
@@ -40,6 +98,43 @@ public class StudentActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        nameView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nameView);
+        emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.emailView);
+
+
+        myRefUser.child("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                fullName = dataSnapshot.getValue().toString();
+                Log.d("test", fullName);
+
+                myRefUser.child("surname").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        fullName = fullName +" " +dataSnapshot.getValue().toString();
+                        Log.d("test", fullName);
+                        nameView.setText(fullName);
+                        emailView.setText(currentUser.getEmail().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
     }
 
     @Override
@@ -55,7 +150,7 @@ public class StudentActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.signout, menu);
         return true;
     }
 
@@ -67,7 +162,12 @@ public class StudentActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.sign_out) {
+            FirebaseAuth.getInstance().signOut();
+            if (mAuth == null){
+                startActivity(new Intent(StudentActivity.this, LoginActivity.class));
+                finish();
+            }
             return true;
         }
 

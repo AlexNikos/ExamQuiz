@@ -211,16 +211,8 @@ public class LoginActivity extends AppCompatActivity {
                                  }
                              });
 
-
-
-
-                            //Toast.makeText(LoginActivity.this, "Signed in", Toast.LENGTH_LONG)
-                            //        .show();
-                           // mUser = mAuth.getCurrentUser();
-                           // myRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("type");
-
                             Log.d("test", myRef.toString());
-                            /* myRef*/typeRef.addValueEventListener(new ValueEventListener() {
+                            typeRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Log.d("test", dataSnapshot.toString());
@@ -250,27 +242,6 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
 
-//                            if(getType().equals("Student")){
-//                                Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
-//                                accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                startActivity(accountIntent);
-//                                finish();
-//
-//                            } else if(getType().equals("Teacher")){
-//                                Intent accountIntent = new Intent(LoginActivity.this, TeacherActivity.class );
-//                                accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                startActivity(accountIntent);
-//                                finish();
-//
-//                            }
-
-
-
-//                            Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
-//                            accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            startActivity(accountIntent);
-//                            finish();
-
                         }else {
                             mRegDialog.hide();
                             Toast.makeText(LoginActivity.this, "Wrong email or password!", Toast.LENGTH_LONG).show();
@@ -283,20 +254,67 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // mAuth.addAuthStateListener(mAuthStateListener);
+
+        mUser = mAuth.getCurrentUser();
+
         if(mUser!=null){
             FirebaseAuth.getInstance().signOut();
 
         }
+//        if(mUser != null){
+//            myRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
+//            nameRef = myRef.child("name");
+//            typeRef = myRef.child("type");
+//
+//            nameRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Toast.makeText(LoginActivity.this, "Hello " +dataSnapshot.getValue().toString(), Toast.LENGTH_LONG)
+//                            .show();
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+//
+//            Log.d("test", myRef.toString());
+//            typeRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Log.d("test", dataSnapshot.toString());
+//
+//                    String type = dataSnapshot.getValue().toString();
+//                    Log.d("test", "type on server is  " + type);
+//                    if(type.equals("Student")){
+//                        Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
+//                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        startActivity(accountIntent);
+//                        finish();
+//
+//                    } else if(type.equals("Teacher")){
+//                        Intent accountIntent = new Intent(LoginActivity.this, TeacherActivity.class );
+//                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        startActivity(accountIntent);
+//                        finish();
+//
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    Log.d("test","onCancelled");
+//
+//                }
+//            });
+//
+//
+//        }
+
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mAuthStateListener != null) {
-            mAuth.removeAuthStateListener(mAuthStateListener);
-        }
-    }
 
     private boolean inputFormat(String email, String password){
 
@@ -313,28 +331,5 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void getType(){
 
-        myRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("type");
-        // Log.d("test","uid is " + mUser.getUid());
-        Log.d("test", myRef.toString());
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("test", dataSnapshot.toString());
-
-                String type = dataSnapshot.getValue().toString();
-                Log.d("test", "type on server is  " + type);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("test","onCancelled");
-
-            }
-        });
-
-        //eturn type;
-    }
 }

@@ -12,6 +12,7 @@ public class user {
     private String surname;
     private String email;
     private String password;
+    private String fullname;
 
 
     public user(String id, String name, String surname, String email, String password, String type) {
@@ -21,6 +22,7 @@ public class user {
         this.email = email;
         this.type = type;
         this.password = password;
+        fullname = name +" " +surname;
     }
 
     public user() {
@@ -37,6 +39,7 @@ public class user {
 
     public void setName(String name) {
         this.name = name;
+        fullname = name +" " +surname;
     }
 
     public String getSurname() {
@@ -45,6 +48,8 @@ public class user {
 
     public void setSurname(String surname) {
         this.surname = surname;
+        fullname = name +" " +surname;
+
     }
 
     public String getEmail() {
@@ -57,5 +62,13 @@ public class user {
 
     public String getType() {
         return type;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getFullname() {
+        return fullname;
     }
 }
