@@ -19,7 +19,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alnik.examquiz.models.course;
+import com.example.alnik.examquiz.models.Course;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -83,7 +83,7 @@ public class TeacherCourseFragment extends Fragment {
         final EditText courseInfo = create.findViewById(R.id.courseInfo);
         final EditText courseSite = create.findViewById(R.id.courseSite);
 
-//------------------------ New course cretion fab on click----------------------------------------------------------------------------------
+//------------------------ New Course cretion fab on click----------------------------------------------------------------------------------
         CreateNewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,7 +119,7 @@ public class TeacherCourseFragment extends Fragment {
 
                                                                 String fullname = dataSnapshot.getValue().toString();
                                                                 String courseId = mCourses.push().getKey();
-                                                                course newCourse = new course(TeacherCourseFragment.this.courseName, currentUser.getUid().toString(), fullname, courseId, TeacherCourseFragment.this.courseInfo, TeacherCourseFragment.this.courseSite);
+                                                                Course newCourse = new Course(TeacherCourseFragment.this.courseName, currentUser.getUid().toString(), fullname, courseId, TeacherCourseFragment.this.courseInfo, TeacherCourseFragment.this.courseSite);
                                                                 mCourses.child(TeacherCourseFragment.this.courseName/*courseId*/).setValue(newCourse, new DatabaseReference.CompletionListener() {
                                                                     @Override
                                                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -175,21 +175,21 @@ public class TeacherCourseFragment extends Fragment {
         super.onStart();
 
 //-------------------------------Firebase Adapter-------------------------------------
-        FirebaseRecyclerAdapter<course, lessonViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<course, lessonViewHolder>(
-                course.class,
+        FirebaseRecyclerAdapter<Course, lessonViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Course, lessonViewHolder>(
+                Course.class,
                 R.layout.teacher_single_lesson,
                 lessonViewHolder.class,
                 mCourses
         ) {
 
             @Override
-            protected void populateViewHolder(final lessonViewHolder viewHolder, course model, int position) {
+            protected void populateViewHolder(final lessonViewHolder viewHolder, Course model, int position) {
                 viewHolder.setName(model.getName());
 
                 final DatabaseReference gameRef= getRef(position);
                 final String postKey = gameRef.getKey();
 
-//---------------------------------action on click a course----------------------------------------------------------
+//---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.teacherLessonButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -216,7 +216,7 @@ public class TeacherCourseFragment extends Fragment {
                                         new AlertDialog.Builder(getContext())
                                         .setIcon(android.R.drawable.ic_dialog_alert)
                                         .setTitle("Are you sure?")
-                                        .setMessage("Do you want to delete this course?")
+                                        .setMessage("Do you want to delete this Course?")
                                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialogInterface, int i) {

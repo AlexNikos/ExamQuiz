@@ -4,7 +4,7 @@ package com.example.alnik.examquiz.models;
  * Created by alnik on 13-Feb-18.
  */
 
-public class course {
+public class Course {
 
     private String name;
     private String ownersID;
@@ -13,10 +13,10 @@ public class course {
     private String info;
     private String site;
 
-    public course() {
+    public Course() {
     }
 
-    public course(String name, String ownersID, String ownersName, String id, String info, String site) {
+    public Course(String name, String ownersID, String ownersName, String id, String info, String site) {
         this.name = name;
         this.ownersID = ownersID;
         this.ownersName = ownersName;

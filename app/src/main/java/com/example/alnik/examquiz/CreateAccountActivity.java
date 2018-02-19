@@ -1,6 +1,5 @@
 package com.example.alnik.examquiz;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.alnik.examquiz.models.user;
+import com.example.alnik.examquiz.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -226,12 +225,12 @@ public class CreateAccountActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign in success, update UI with the signed-in User's information
                             mRegDialog.dismiss();
                             mUser = mAuth.getCurrentUser();
                             uid = mUser.getUid();
                             Log.d("test",uid +" " +name);
-                            user newUser = new user(uid, name, surname, email, password, type);
+                            User newUser = new User(uid, name, surname, email, password, type);
                             Log.d("test", newUser.getId() +" " +newUser.getName());
                             myRef = database.getReference();
                             myRef.child("Users").child(newUser.getId()).setValue(newUser);
@@ -239,7 +238,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                             Log.d("test", "createUserWithEmail:success");
 
                         } else {
-                            // If sign in fails, display a message to the user.
+                            // If sign in fails, display a message to the User.
                             mRegDialog.hide();
                             Log.w("test", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(CreateAccountActivity.this, "Registration failed.", Toast.LENGTH_SHORT).show();
