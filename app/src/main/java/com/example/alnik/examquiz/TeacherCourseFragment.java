@@ -2,6 +2,7 @@ package com.example.alnik.examquiz;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -64,7 +65,7 @@ public class TeacherCourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mMainView = inflater.inflate(R.layout.fragment_teacher_lessons, container, false);
+        mMainView = inflater.inflate(R.layout.fragment_teacher_courses, container, false);
 
         coursesList = mMainView.findViewById(R.id.teacher_lesson_recycleView);
         coursesList.setHasFixedSize(true);
@@ -83,7 +84,7 @@ public class TeacherCourseFragment extends Fragment {
         final EditText courseInfo = create.findViewById(R.id.courseInfo);
         final EditText courseSite = create.findViewById(R.id.courseSite);
 
-//------------------------ New Course cretion fab on click----------------------------------------------------------------------------------
+//------------------------ New Course creation fab on click----------------------------------------------------------------------------------
         CreateNewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,15 +186,20 @@ public class TeacherCourseFragment extends Fragment {
             @Override
             protected void populateViewHolder(final lessonViewHolder viewHolder, Course model, int position) {
                 viewHolder.setName(model.getName());
+                viewHolder.setSubs(model.getSubscribers());
 
-                final DatabaseReference gameRef= getRef(position);
-                final String postKey = gameRef.getKey();
+                final DatabaseReference courseRef= getRef(position);
+                final String postKey = courseRef.getKey();
 
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.teacherLessonButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
+                        Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
+                        startCourseActivity.putExtra("courseName", postKey);
+                        startActivity(startCourseActivity);
+
 
                     }
                 });
@@ -260,6 +266,7 @@ public class TeacherCourseFragment extends Fragment {
         View mView;
         TextView teacherLessonButton;
         ImageButton teacherlessonOptionsButton;
+        TextView subs;
 
         View view;
 
@@ -268,6 +275,7 @@ public class TeacherCourseFragment extends Fragment {
             mView = itemView;
             teacherlessonOptionsButton = itemView.findViewById(R.id.teacherLessonOptionsButton);
             teacherLessonButton = itemView.findViewById(R.id.teacherLessonView);
+            subs = itemView.findViewById(R.id.subs);
             view = itemView.findViewById(R.id.singleRowLesson);
 
         }
@@ -275,7 +283,11 @@ public class TeacherCourseFragment extends Fragment {
         public void setName(String name) {
 
             teacherLessonButton.setText(name);
+        }
 
+        public void setSubs(long subscribers){
+
+            subs.setText(String.valueOf(subscribers));
         }
 
 

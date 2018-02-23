@@ -12,28 +12,53 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/teacherLessonView"
             android:layout_width="344dp"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
             android:background="@color/cardview_light_background"
             android:gravity="center"
             android:singleLine="true"
             android:text="TextView"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="35sp" />
+            android:textSize="30sp" />
 
         <ImageButton
             android:id="@+id/teacherLessonOptionsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
             android:layout_toRightOf="@+id/teacherLessonView"
             android:background="@color/cardview_light_background"
-            android:scaleType="fitCenter"
-            android:src="@android:drawable/ic_lock_power_off"
+            android:paddingTop="25dp"
+            android:scaleType="matrix"
+            android:src="@drawable/dots32"
             android:textAppearance="?android:textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/subsText"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/teacherLessonView"
+            android:background="@color/cardview_light_background"
+            android:gravity="center"
+            android:text="Subscribers:  "
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/subs"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@+id/teacherLessonView"
+            android:layout_toEndOf="@+id/subsText"
+            android:layout_toStartOf="@+id/teacherLessonOptionsButton"
+            android:background="@color/cardview_light_background"
+            android:gravity="left|center"
+            android:text="TextView"
+            android:textSize="15sp" />
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

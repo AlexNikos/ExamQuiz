@@ -3,8 +3,8 @@ package com.example.alnik.examquiz;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,52 +24,42 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-
-public class TeacherActivity extends AppCompatActivity
+public class CourseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ViewPager mViewPager;
-    private TeacherPagerAdapter mTeacherPagerAdapter;
+    private CoursePagerAdapter mCoursePagerAdapter;
     private TabLayout mTabLayout;
 
-
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
-    private FirebaseDatabase database;
     private DatabaseReference myRefUser;
-    private DatabaseReference mCourses;
+    private FirebaseUser currentUser;
 
     private TextView nameView;
     private TextView emailView;
     private String fullName;
 
 
-    private EditText CourseNameInput;
-    private String CourseName;
-
-    private RecyclerView CoursesList;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_course);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.courseToolbar);
         setSupportActionBar(toolbar);
 
-        mViewPager = (ViewPager) findViewById(R.id.teacherViewPager);
-        mTeacherPagerAdapter = new TeacherPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mTeacherPagerAdapter);
+        Intent intent = getIntent();
+        String courseName = intent.getExtras().getString("courseName");
+        getSupportActionBar().setTitle(courseName);
 
-        mTabLayout = (TabLayout) findViewById(R.id.teacherTab);
+
+        mViewPager = (ViewPager) findViewById(R.id.CourseViewPager);
+        mCoursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mCoursePagerAdapter);
+
+        mTabLayout = (TabLayout) findViewById(R.id.courseTab);
         mTabLayout.setupWithViewPager(mViewPager);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         myRefUser = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-        mCourses = FirebaseDatabase.getInstance().getReference("Courses").child(currentUser.getUid());
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -78,11 +67,11 @@ public class TeacherActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_viewCourse);
         navigationView.setNavigationItemSelectedListener(this);
 
-        nameView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_fullname);
-        emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_email);
+        nameView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.course_nav_name);
+        emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.course_nav_email);
 
 
         myRefUser.child("fullname").addValueEventListener(new ValueEventListener() {
@@ -92,7 +81,6 @@ public class TeacherActivity extends AppCompatActivity
                 nameView.setText(fullName);
                 emailView.setText(currentUser.getEmail().toString());
                 Log.d("test", fullName);
-
             }
 
             @Override
@@ -116,7 +104,7 @@ public class TeacherActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.signout, menu);
+        getMenuInflater().inflate(R.menu.course, menu);
         return true;
     }
 
@@ -128,14 +116,7 @@ public class TeacherActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.sign_out) {
-
-            FirebaseAuth.getInstance().signOut();
-            if (mAuth == null){
-                startActivity(new Intent(TeacherActivity.this, LoginActivity.class));
-                finish();
-            }
-
+        if (id == R.id.action_settings) {
             return true;
         }
 
@@ -166,8 +147,4 @@ public class TeacherActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
 }
-

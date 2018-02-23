@@ -30,6 +30,10 @@
         <activity
             android:name=".TeacherActivity"
             android:label=""
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".CourseActivity"
+            android:label="@string/title_activity_course"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
     </application>
 

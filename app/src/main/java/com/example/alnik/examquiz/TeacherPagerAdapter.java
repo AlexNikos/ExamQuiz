@@ -8,9 +8,9 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by alnik on 14-Feb-18.
  */
 
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class TeacherPagerAdapter extends FragmentPagerAdapter {
 
-    public SectionsPagerAdapter(FragmentManager fm) {
+    public TeacherPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -18,12 +18,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch(position) {
             case 0:
-                TeacherCourseFragment requestsFragment = new TeacherCourseFragment();
-                return requestsFragment;
+                TeacherCourseFragment CourseFragment = new TeacherCourseFragment();
+                return CourseFragment;
 
             case 1:
-                TeacherRoomFragment chatsFragment = new TeacherRoomFragment();
-                return  chatsFragment;
+                TeacherRoomFragment RoomsFragment = new TeacherRoomFragment();
+                return  RoomsFragment;
 
             default:
                 return  null;
