@@ -26,7 +26,7 @@ public class MultipleChoice {
         this.optionD = optionD;
         this.answer = answer;
         this.id = id;
-        type = "Multiple";
+        type = "MultipleChoice";
     }
 
     public String getQuestion() {
@@ -80,7 +80,7 @@ public class MultipleChoice {
     public String getId() {
         return id;
     }
-    
+
     public String getType() {
         return type;
     }
