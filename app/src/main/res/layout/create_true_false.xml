@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/createTrueFalseQuestion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/questionTrueFalseEnter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Enter Question"
+        android:inputType="textMultiLine"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/questionTrueFalseEnter"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TRUE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="TRUE"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/FALSE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FALSE"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/linearLayout4"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/linearLayout4">
+
+        <RadioButton
+            android:id="@+id/radioOptionTrue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp" />
+
+        <RadioButton
+            android:id="@+id/radioOptionFalse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="20dp"
+            android:paddingTop="30dp" />
+
+    </RadioGroup>
+
+</RelativeLayout>

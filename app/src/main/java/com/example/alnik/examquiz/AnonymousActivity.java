@@ -75,7 +75,6 @@ public class AnonymousActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.sign_out) {
 
-
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             user.delete()
@@ -84,14 +83,11 @@ public class AnonymousActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d("test", "User account deleted.");
+                                startActivity(new Intent(AnonymousActivity.this, LoginActivity.class));
+                                finish();
                             }
                         }
                     });
-
-            FirebaseAuth.getInstance().signOut();
-
-            startActivity(new Intent(AnonymousActivity.this, LoginActivity.class));
-            finish();
 
             return true;
         }

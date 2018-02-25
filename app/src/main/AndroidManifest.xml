@@ -28,11 +28,11 @@
             android:label=""
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".TeacherActivity"
+            android:name=".Teacher.TeacherActivity"
             android:label=""
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".CourseActivity"
+            android:name=".Course.CourseActivity"
             android:label="@string/title_activity_course"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
     </application>

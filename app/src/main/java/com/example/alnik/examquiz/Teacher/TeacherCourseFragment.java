@@ -1,4 +1,4 @@
-package com.example.alnik.examquiz;
+package com.example.alnik.examquiz.Teacher;
 
 
 import android.content.DialogInterface;
@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.Course.CourseActivity;
+import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.models.Course;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;

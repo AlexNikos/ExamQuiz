@@ -1,4 +1,4 @@
-package com.example.alnik.examquiz;
+package com.example.alnik.examquiz.Course;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

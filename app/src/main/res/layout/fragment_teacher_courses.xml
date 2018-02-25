@@ -5,9 +5,9 @@
     android:id="@+id/lessonsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.alnik.examquiz.TeacherActivity">
+    tools:context="com.example.alnik.examquiz.Teacher.TeacherActivity">
 
-    <android.support.design.widget.FloatingActionButton
+    <com.github.clans.fab.FloatingActionButton
         android:id="@+id/create_new_lesson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
