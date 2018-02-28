@@ -13,8 +13,14 @@
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="CustomTabText" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Theme.SwitchDateTime.DateLabelYear">
+        <item name="android:textSize">58sp</item>
+        <item name="android:textColor">#933</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.example.alnik.examquiz;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alnik.examquiz.Teacher.TeacherActivity;
+import com.example.alnik.examquiz.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseUser mUser;
 
     private FirebaseDatabase database;
@@ -70,18 +71,18 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                mUser = firebaseAuth.getCurrentUser();
-
-                if(mUser != null){
-                    Toast.makeText(LoginActivity.this, "Signed in as: " + mUser.getEmail(), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        };
+//        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//
+//                mUser = firebaseAuth.getCurrentUser();
+//
+//                if(mUser != null){
+//                    Toast.makeText(LoginActivity.this, "Signed in as: " + mUser.getEmail(), Toast.LENGTH_LONG).show();
+//                }
+//
+//            }
+//        };
 
 
         emailField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -254,65 +255,41 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        mUser = mAuth.getCurrentUser();
-
-        if(mUser!=null){
-            FirebaseAuth.getInstance().signOut();
-
-        }
-//        if(mUser != null){
-//            myRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
-//            nameRef = myRef.child("name");
-//            typeRef = myRef.child("type");
+//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 //
-//            nameRef.addValueEventListener(new ValueEventListener() {
+//        if (currentUser != null){
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//            DatabaseReference userRef = database.getReference("Users").child(currentUser.getUid());
+//
+//            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Toast.makeText(LoginActivity.this, "Hello " +dataSnapshot.getValue().toString(), Toast.LENGTH_LONG)
-//                            .show();
-//                }
 //
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
+//                    User user = dataSnapshot.getValue(User.class);
+//                    Toast.makeText(LoginActivity.this, "Hello " +user.getName(), Toast.LENGTH_LONG).show();
 //
-//                }
-//            });
-//
-//            Log.d("test", myRef.toString());
-//            typeRef.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Log.d("test", dataSnapshot.toString());
-//
-//                    String type = dataSnapshot.getValue().toString();
-//                    Log.d("test", "type on server is  " + type);
-//                    if(type.equals("Student")){
+//                    if(user.getType().equals("Student")){
 //                        Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
 //                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                        startActivity(accountIntent);
 //                        finish();
 //
-//                    } else if(type.equals("Teacher")){
+//                    } else if(user.getType().equals("Teacher")){
 //                        Intent accountIntent = new Intent(LoginActivity.this, TeacherActivity.class );
 //                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                        startActivity(accountIntent);
 //                        finish();
 //
 //                    }
-//
 //                }
 //
 //                @Override
 //                public void onCancelled(DatabaseError databaseError) {
-//                    Log.d("test","onCancelled");
-//
+//                    FirebaseAuth.getInstance().signOut();
 //                }
 //            });
 //
-//
 //        }
-
     }
 
 

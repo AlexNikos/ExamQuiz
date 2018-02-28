@@ -14,9 +14,9 @@ public class ShortAnswer {
     public ShortAnswer() {
     }
 
-    public ShortAnswer(String question, String answer, String id) {
+    public ShortAnswer(String question, String id) {
         this.question = question;
-        this.answer = answer;
+        this.answer = "";
         this.id = id;
         type = "ShortAnswer";
     }

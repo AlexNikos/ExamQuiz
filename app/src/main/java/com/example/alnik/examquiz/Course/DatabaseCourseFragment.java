@@ -1,25 +1,44 @@
 package com.example.alnik.examquiz.Course;
 
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alnik.examquiz.R;
+import com.example.alnik.examquiz.Teacher.TeacherCourseFragment;
+import com.example.alnik.examquiz.models.Course;
+import com.example.alnik.examquiz.models.MultipleChoice;
+import com.example.alnik.examquiz.models.ShortAnswer;
+import com.example.alnik.examquiz.models.TrueFalse;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.List;
 
 
 /**
@@ -42,10 +61,6 @@ public class DatabaseCourseFragment extends Fragment {
     private FirebaseUser currentUser;
 
 
-
-
-
-
     private View mDatabaseView;
 
 
@@ -61,22 +76,44 @@ public class DatabaseCourseFragment extends Fragment {
         mDatabaseView = inflater.inflate(R.layout.fragment_database_course, container, false);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child("MultipleChoice");
-        trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child("TrueFalse");
-        shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child("ShortAnswer");
+        multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("MultipleChoice");
+        trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("TrueFalse");
+        shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("ShortAnswer");
 
 
-//        MultipleChoiceList = mDatabaseView.findViewById(R.id.teacher_lesson_recycleView);
-//        MultipleChoiceList.setHasFixedSize(true);
-//        MultipleChoiceList.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false));
-//
-//        TrueFalseList = mDatabaseView.findViewById(R.id.teacher_lesson_recycleView);
-//        TrueFalseList.setHasFixedSize(true);
-//        TrueFalseList.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false));
-//
-//        ShortAnswerList = mDatabaseView.findViewById(R.id.teacher_lesson_recycleView);
-//        ShortAnswerList.setHasFixedSize(true);
-//        ShortAnswerList.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false));
+        MultipleChoiceList = mDatabaseView.findViewById(R.id.multiple_recycleView);
+        MultipleChoiceList.setHasFixedSize(true);
+        MultipleChoiceList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        MultipleChoiceList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                fabMenu.close(true);
+            }
+        });
+
+
+        TrueFalseList = mDatabaseView.findViewById(R.id.trueFalse_recycleView);
+        TrueFalseList.setHasFixedSize(true);
+        TrueFalseList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        TrueFalseList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                fabMenu.close(true);
+            }
+        });
+
+        ShortAnswerList = mDatabaseView.findViewById(R.id.shortAnswer_recyclerView);
+        ShortAnswerList.setHasFixedSize(true);
+        ShortAnswerList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        ShortAnswerList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                fabMenu.close(true);
+            }
+        });
 
         //----------------------Floating Action Menu And Buttons------------------------------------
         fabMenu = mDatabaseView.findViewById(R.id.fabMenu);
@@ -103,7 +140,7 @@ public class DatabaseCourseFragment extends Fragment {
             public void onClick(View view) {
                 fabMenu.close(true);
 
-                new AlertDialog.Builder(getContext())
+                AlertDialog alert = new AlertDialog.Builder(getContext())
                         .setIcon(android.R.drawable.ic_input_add)
                         .setTitle("Create New Question")
                         .setView(createMultipleChoice)
@@ -111,7 +148,47 @@ public class DatabaseCourseFragment extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
 
+                                        String questionId = multipleRef.push().getKey().toString();
+                                        String questionInput = questionMultipleEnter.getText().toString();
+                                        String optionAinpute = optionA.getText().toString();
+                                        String optionBinpute = optionB.getText().toString();
+                                        String optionCinpute = optionC.getText().toString();
+                                        String optionDinpute = optionD.getText().toString();
+                                        String answer = "";
+                                        if(RadioOptionA.isChecked()){
+                                            answer = optionAinpute;
+                                        }else if(RadioOptionB.isChecked()){
+                                            answer = optionBinpute;
+                                        }else if(RadioOptionC.isChecked()){
+                                            answer = optionCinpute;
+                                        }else if(RadioOptionD.isChecked()){
+                                            answer = optionDinpute;
+                                        }
 
+                                        if(questionInput.isEmpty() || optionAinpute.isEmpty() || optionBinpute.isEmpty() || optionCinpute.isEmpty() || optionDinpute.isEmpty() || answer.isEmpty()
+                                                || (!RadioOptionA.isChecked() && !RadioOptionB.isChecked() && !RadioOptionC.isChecked() && !RadioOptionD.isChecked())){
+                                            Toast.makeText(getContext(), "No Empty Fields Allowed!", Toast.LENGTH_LONG).show();
+
+                                        } else{
+                                            MultipleChoice newQuestion = new MultipleChoice(questionInput, optionAinpute, optionBinpute, optionCinpute, optionDinpute, answer, questionId );
+
+                                            multipleRef.child(questionId).setValue(newQuestion, new DatabaseReference.CompletionListener() {
+                                                @Override
+                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                    Toast.makeText(getContext(), "Question Added to Your Database.", Toast.LENGTH_LONG).show();
+                                                    questionMultipleEnter.setText("");
+                                                    optionA.setText("");
+                                                    optionB.setText("");
+                                                    optionC.setText("");
+                                                    optionD.setText("");
+                                                    RadioOptionA.setChecked(false);
+                                                    RadioOptionB.setChecked(false);
+                                                    RadioOptionC.setChecked(false);
+                                                    RadioOptionD.setChecked(false);
+
+                                                }
+                                            });
+                                        }
 
                                         ((ViewGroup) createMultipleChoice.getParent()).removeView(createMultipleChoice);
                                     }
@@ -137,6 +214,7 @@ public class DatabaseCourseFragment extends Fragment {
                             }
                         })
                         .show();
+                alert.setCanceledOnTouchOutside(false);
 
             }
         });
@@ -153,13 +231,40 @@ public class DatabaseCourseFragment extends Fragment {
 
                 fabMenu.close(true);
 
-                new AlertDialog.Builder(getContext())
+                AlertDialog alert = new AlertDialog.Builder(getContext())
                         .setIcon(android.R.drawable.ic_input_add)
                         .setTitle("Create New Question")
                         .setView(createTrueFalseQuestion)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        String questionId = trueFalseRef.push().getKey().toString();
+                                        String questionInput = questionTrueFalseEnter.getText().toString();
+                                        boolean answer = false;
+                                        if(RadioOptionTrue.isChecked()){
+                                            answer = true;
+                                        }else if(RadioOptionFalse.isChecked()){
+                                            answer = false;
+                                        }
+
+                                        if(questionInput.isEmpty() || (!RadioOptionTrue.isChecked() && !RadioOptionFalse.isChecked())){
+                                            Toast.makeText(getContext(), "No Empty Fields Allowed!", Toast.LENGTH_LONG).show();
+
+                                        } else{
+                                            TrueFalse newQuestion = new TrueFalse(questionInput, answer, questionId);
+
+                                            trueFalseRef.child(questionId).setValue(newQuestion, new DatabaseReference.CompletionListener() {
+                                                @Override
+                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                    Toast.makeText(getContext(), "Question Added to Your Database.", Toast.LENGTH_LONG).show();
+                                                    questionTrueFalseEnter.setText("");
+                                                    RadioOptionTrue.setChecked(false);
+                                                    RadioOptionFalse.setChecked(false);
+
+                                                }
+                                            });
+                                        }
 
 
 
@@ -179,6 +284,7 @@ public class DatabaseCourseFragment extends Fragment {
                             }
                         })
                         .show();
+                alert.setCanceledOnTouchOutside(false);
 
             }
         });
@@ -193,7 +299,7 @@ public class DatabaseCourseFragment extends Fragment {
 
                 fabMenu.close(true);
 
-                new AlertDialog.Builder(getContext())
+               AlertDialog alert =  new AlertDialog.Builder(getContext())
                         .setIcon(android.R.drawable.ic_input_add)
                         .setTitle("Create New Question")
                         .setView(createShortAnswerQuestion)
@@ -201,7 +307,24 @@ public class DatabaseCourseFragment extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
 
+                                        String questionId = shortAnswerRef.push().getKey().toString();
+                                        String questionInput = questionShortAnswerEnter.getText().toString();
 
+                                        if(questionInput.isEmpty()){
+                                            Toast.makeText(getContext(), "No Empty Fields Allowed!", Toast.LENGTH_LONG).show();
+
+                                        } else{
+                                            ShortAnswer newQuestion = new ShortAnswer(questionInput, questionId);
+
+                                            shortAnswerRef.child(questionId).setValue(newQuestion, new DatabaseReference.CompletionListener() {
+                                                @Override
+                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                    Toast.makeText(getContext(), "Question Added to Your Database.", Toast.LENGTH_LONG).show();
+                                                    questionShortAnswerEnter.setText("");
+
+                                                }
+                                            });
+                                        }
 
                                         ((ViewGroup) createShortAnswerQuestion.getParent()).removeView(createShortAnswerQuestion);
                                     }
@@ -217,6 +340,7 @@ public class DatabaseCourseFragment extends Fragment {
                             }
                         })
                         .show();
+                alert.setCanceledOnTouchOutside(false);
 
             }
         });
@@ -224,5 +348,228 @@ public class DatabaseCourseFragment extends Fragment {
         return  mDatabaseView;
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //-------------------------------Multiple Choice Firebase Adapter-------------------------------------
+        FirebaseRecyclerAdapter<MultipleChoice, multipleChoiceViewHolder> multipleChoicefirebaseRecyclerAdapter = new FirebaseRecyclerAdapter<MultipleChoice, multipleChoiceViewHolder>(
+                MultipleChoice.class,
+                R.layout.course_single_multiple_choice,
+                multipleChoiceViewHolder.class,
+                multipleRef
+        ) {
+
+            @Override
+            protected void populateViewHolder(final multipleChoiceViewHolder viewHolder, MultipleChoice model, int position) {
+                viewHolder.setQuestion(model.getQuestion());
+                viewHolder.setOptionA(model.getOptionA());
+                viewHolder.setOptionB(model.getOptionB());
+                viewHolder.setOptionC(model.getOptionC());
+                viewHolder.setOptionD(model.getOptionD());
+
+
+                //final DatabaseReference courseRef= getRef(position);
+                //final String postKey = courseRef.getKey();
+
+//---------------------------------action on click a Course----------------------------------------------------------
+                viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fabMenu.close(true);
+
+                        Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
+//                        Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
+//                        startCourseActivity.putExtra("courseName", postKey);
+//                        startActivity(startCourseActivity);
+
+
+                    }
+                });
+
+            }
+
+        };
+
+        MultipleChoiceList.setAdapter(multipleChoicefirebaseRecyclerAdapter);
+
+        //-------------------------------True False Firebase Adapter-------------------------------------
+        FirebaseRecyclerAdapter<TrueFalse, trueFalseViewHolder> trueFalsefirebaseRecyclerAdapter = new FirebaseRecyclerAdapter<TrueFalse, trueFalseViewHolder>(
+                TrueFalse.class,
+                R.layout.course_single_truefalse,
+                trueFalseViewHolder.class,
+                trueFalseRef
+        ) {
+
+            @Override
+            protected void populateViewHolder(final trueFalseViewHolder viewHolder, TrueFalse model, int position) {
+                viewHolder.setQuestion(model.getQuestion());
+
+                //final DatabaseReference courseRef= getRef(position);
+                //final String postKey = courseRef.getKey();
+
+//---------------------------------action on click a Course----------------------------------------------------------
+                viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fabMenu.close(true);
+                        Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
+//                        Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
+//                        startCourseActivity.putExtra("courseName", postKey);
+//                        startActivity(startCourseActivity);
+
+
+                    }
+                });
+
+            }
+
+        };
+
+        TrueFalseList.setAdapter(trueFalsefirebaseRecyclerAdapter);
+
+        //-------------------------------Firebase Adapter-------------------------------------
+        FirebaseRecyclerAdapter<ShortAnswer, shortAnswerViewHolder> shortAnswerfirebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ShortAnswer, shortAnswerViewHolder>(
+                ShortAnswer.class,
+                R.layout.course_single_shortanswer,
+                shortAnswerViewHolder.class,
+                shortAnswerRef
+        ) {
+
+            @Override
+            protected void populateViewHolder(final shortAnswerViewHolder viewHolder, ShortAnswer model, int position) {
+                viewHolder.setQuestion(model.getQuestion());
+
+                //final DatabaseReference courseRef= getRef(position);
+                //final String postKey = courseRef.getKey();
+
+//---------------------------------action on click a Course----------------------------------------------------------
+                viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fabMenu.close(true);
+                        Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
+//                        Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
+//                        startCourseActivity.putExtra("courseName", postKey);
+//                        startActivity(startCourseActivity);
+
+                    }
+                });
+
+            }
+
+        };
+
+        ShortAnswerList.setAdapter(shortAnswerfirebaseRecyclerAdapter);
+
+    }
+
+    public static class multipleChoiceViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+        TextView question;
+        TextView optionA;
+        TextView optionB;
+        TextView optionC;
+        TextView optionD;
+
+        View view;
+
+        public multipleChoiceViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            question = itemView.findViewById(R.id.single_multiple_question);
+            optionA = itemView.findViewById(R.id.single_optionA);
+            optionB = itemView.findViewById(R.id.single_optionB);
+            optionC = itemView.findViewById(R.id.single_optionC);
+            optionD = itemView.findViewById(R.id.single_optionD);
+
+            view = itemView.findViewById(R.id.single_multiple);
+
+        }
+
+        public void setQuestion(String mQuestion) {
+
+            question.setText(mQuestion);
+        }
+
+        public void setOptionA(String option){
+
+            optionA.setText(option);
+        }
+
+        public void setOptionB(String option){
+
+            optionB.setText(option);
+        }
+
+        public void setOptionC(String option){
+
+            optionC.setText(option);
+        }
+
+        public void setOptionD(String option){
+
+            optionD.setText(option);
+        }
+
+
+    }
+
+    public static class trueFalseViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+        TextView question;
+        TextView optionTrue;
+        TextView optionFalse;
+
+
+        View view;
+
+        public trueFalseViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            question = itemView.findViewById(R.id.single_trueFalse_question);
+            optionTrue = itemView.findViewById(R.id.single_optionTrue);
+            optionFalse = itemView.findViewById(R.id.single_optionFalse);
+
+
+            view = itemView.findViewById(R.id.single_trueFalse);
+
+        }
+
+        public void setQuestion(String mQuestion) {
+
+            question.setText(mQuestion);
+        }
+
+    }
+
+    public static class shortAnswerViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+        TextView question;
+
+
+        View view;
+
+        public shortAnswerViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            question = itemView.findViewById(R.id.single_shortanswer_question);
+
+            view = itemView.findViewById(R.id.single_shortAnswer);
+
+        }
+
+        public void setQuestion(String mQuestion) {
+
+            question.setText(mQuestion);
+        }
+
+    }
+
+
 
 }

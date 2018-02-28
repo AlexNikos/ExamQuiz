@@ -38,11 +38,10 @@ import com.google.firebase.database.ValueEventListener;
 public class TeacherCourseFragment extends Fragment {
 
 
-    //private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    //private FirebaseDatabase database;
     private DatabaseReference myRefUser;
     private DatabaseReference mCourses;
+
 
     private TextView nameView;
     private TextView emailView;
@@ -51,6 +50,8 @@ public class TeacherCourseFragment extends Fragment {
     private String courseName;
     private String courseInfo;
     private String courseSite;
+
+    private FloatingActionButton CreateNewLesson;
 
 
     private RecyclerView coursesList;
@@ -77,24 +78,26 @@ public class TeacherCourseFragment extends Fragment {
         myRefUser = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
         mCourses = FirebaseDatabase.getInstance().getReference("Courses").child(currentUser.getUid());
 
-        FloatingActionButton CreateNewLesson = (FloatingActionButton) mMainView.findViewById(R.id.create_new_lesson);
+
+        CreateNewLesson = (FloatingActionButton) mMainView.findViewById(R.id.create_new_lesson);
 
 //-----------------------------This is for multiLine editText on AlertDialBox--------------------------------------------------
         LayoutInflater factory = LayoutInflater.from(getContext());
-        final View create = factory.inflate(R.layout.create_course, null);
-        final EditText courseName = create.findViewById(R.id.courseName);
-        final EditText courseInfo = create.findViewById(R.id.courseInfo);
-        final EditText courseSite = create.findViewById(R.id.courseSite);
+        final View courseAlertBox = factory.inflate(R.layout.create_course, null);
+        final EditText courseName = courseAlertBox.findViewById(R.id.courseName);
+        final EditText courseInfo = courseAlertBox.findViewById(R.id.courseInfo);
+        final EditText courseSite = courseAlertBox.findViewById(R.id.courseSite);
 
 //------------------------ New Course creation fab on click----------------------------------------------------------------------------------
         CreateNewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(getContext())
+
+               AlertDialog alert = new AlertDialog.Builder(getContext())
                         .setIcon(android.R.drawable.ic_input_add)
                         .setTitle("Create New Course")
                         .setMessage("Enter Course details:")
-                        .setView(create)
+                        .setView(courseAlertBox)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -123,7 +126,7 @@ public class TeacherCourseFragment extends Fragment {
                                                                 String fullname = dataSnapshot.getValue().toString();
                                                                 String courseId = mCourses.push().getKey();
                                                                 Course newCourse = new Course(TeacherCourseFragment.this.courseName, currentUser.getUid().toString(), fullname, courseId, TeacherCourseFragment.this.courseInfo, TeacherCourseFragment.this.courseSite);
-                                                                mCourses.child(TeacherCourseFragment.this.courseName/*courseId*/).setValue(newCourse, new DatabaseReference.CompletionListener() {
+                                                                mCourses.child(TeacherCourseFragment.this.courseName).setValue(newCourse, new DatabaseReference.CompletionListener() {
                                                                     @Override
                                                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                                                         Toast.makeText(getContext(), "Course Created", Toast.LENGTH_LONG).show();
@@ -151,7 +154,7 @@ public class TeacherCourseFragment extends Fragment {
                                         courseName.setText("");
                                         courseInfo.setText("");
                                         courseSite.setText("");
-                                        ((ViewGroup) create.getParent()).removeView(create);
+                                        ((ViewGroup) courseAlertBox.getParent()).removeView(courseAlertBox);
                                     }
                                 }
                         )
@@ -162,11 +165,13 @@ public class TeacherCourseFragment extends Fragment {
                                 courseName.setText("");
                                 courseInfo.setText("");
                                 courseSite.setText("");
-                                ((ViewGroup) create.getParent()).removeView(create);
+                                ((ViewGroup) courseAlertBox.getParent()).removeView(courseAlertBox);
+
 
                             }
                         })
                         .show();
+               alert.setCanceledOnTouchOutside(false);
             }
         });
 
@@ -197,7 +202,7 @@ public class TeacherCourseFragment extends Fragment {
                 viewHolder.teacherLessonButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
+                       //Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
                         Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
                         startCourseActivity.putExtra("courseName", postKey);
                         startActivity(startCourseActivity);
@@ -241,6 +246,76 @@ public class TeacherCourseFragment extends Fragment {
                                         break;
                                     case R.id.edit:
 
+                                        LayoutInflater factory = LayoutInflater.from(getContext());
+                                        final View courseAlertBox = factory.inflate(R.layout.create_course, null);
+                                        final EditText courseName = courseAlertBox.findViewById(R.id.courseName);
+                                        final EditText courseInfo = courseAlertBox.findViewById(R.id.courseInfo);
+                                        final EditText courseSite = courseAlertBox.findViewById(R.id.courseSite);
+
+                                        mCourses.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                    Log.d("testcourse", dataSnapshot.toString());
+                                                    final Course course = dataSnapshot.getValue(Course.class);
+                                                    Log.d("testcourse", course.getName() +" " +course.getSite() +" " +course.getInfo());
+
+
+
+                                                courseName.setText(course.getName());
+                                                courseName.setEnabled(false);
+                                                courseInfo.setText(course.getInfo());
+                                                courseSite.setText(course.getSite());
+
+                                                new AlertDialog.Builder(getContext())
+                                                        .setIcon(android.R.drawable.ic_input_add)
+                                                        .setTitle("Edit Course")
+                                                        .setMessage("Enter Course details:")
+                                                        .setView(courseAlertBox)
+                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                        String info = courseInfo.getText().toString();
+                                                                        final String site = courseSite.getText().toString();
+
+                                                                        mCourses.child(postKey).child("info").setValue(info, new DatabaseReference.CompletionListener() {
+                                                                                    @Override
+                                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                                        mCourses.child(postKey).child("site").setValue(site, new DatabaseReference.CompletionListener() {
+                                                                                            @Override
+                                                                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                                                Toast.makeText(getContext(), "Course Updated", Toast.LENGTH_LONG).show();
+
+                                                                                            }
+                                                                                        });
+                                                                                    }
+                                                                                });
+
+                                                                        ((ViewGroup) courseAlertBox.getParent()).removeView(courseAlertBox);
+                                                                    }
+                                                                }
+                                                        )
+                                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                ((ViewGroup) courseAlertBox.getParent()).removeView(courseAlertBox);
+
+                                                            }
+                                                        })
+                                                        .show();
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+
+                                        });
+
+
                                         break;
                                 }
                                 return false;
@@ -263,7 +338,6 @@ public class TeacherCourseFragment extends Fragment {
 
 //------------------------------------ViewHolder------------------------------------------------------
     public static class lessonViewHolder extends RecyclerView.ViewHolder {
-
 
         View mView;
         TextView teacherLessonButton;
