@@ -37,11 +37,9 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class TeacherCourseFragment extends Fragment {
 
-
     private FirebaseUser currentUser;
     private DatabaseReference myRefUser;
     private DatabaseReference mCourses;
-
 
     private TextView nameView;
     private TextView emailView;
@@ -52,10 +50,7 @@ public class TeacherCourseFragment extends Fragment {
     private String courseSite;
 
     private FloatingActionButton CreateNewLesson;
-
-
     private RecyclerView coursesList;
-
     private View mMainView;
 
 
@@ -77,7 +72,6 @@ public class TeacherCourseFragment extends Fragment {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         myRefUser = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
         mCourses = FirebaseDatabase.getInstance().getReference("Courses").child(currentUser.getUid());
-
 
         CreateNewLesson = (FloatingActionButton) mMainView.findViewById(R.id.create_new_lesson);
 
@@ -101,7 +95,6 @@ public class TeacherCourseFragment extends Fragment {
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-
 
                                         TeacherCourseFragment.this.courseName = courseName.getText().toString();
                                         TeacherCourseFragment.this.courseInfo = courseInfo.getText().toString();
@@ -139,7 +132,6 @@ public class TeacherCourseFragment extends Fragment {
 
                                                             }
                                                         });
-
                                                     }
                                                 }
 
@@ -148,7 +140,6 @@ public class TeacherCourseFragment extends Fragment {
 
                                                 }
                                             });
-
                                         }
 
                                         courseName.setText("");
@@ -166,8 +157,6 @@ public class TeacherCourseFragment extends Fragment {
                                 courseInfo.setText("");
                                 courseSite.setText("");
                                 ((ViewGroup) courseAlertBox.getParent()).removeView(courseAlertBox);
-
-
                             }
                         })
                         .show();
@@ -185,7 +174,7 @@ public class TeacherCourseFragment extends Fragment {
 //-------------------------------Firebase Adapter-------------------------------------
         FirebaseRecyclerAdapter<Course, lessonViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Course, lessonViewHolder>(
                 Course.class,
-                R.layout.teacher_single_lesson,
+                R.layout.single_teacher_lesson,
                 lessonViewHolder.class,
                 mCourses
         ) {
@@ -206,7 +195,6 @@ public class TeacherCourseFragment extends Fragment {
                         Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
                         startCourseActivity.putExtra("courseName", postKey);
                         startActivity(startCourseActivity);
-
 
                     }
                 });
@@ -328,12 +316,9 @@ public class TeacherCourseFragment extends Fragment {
                 });
 
             }
-
-
         };
 
         coursesList.setAdapter(firebaseRecyclerAdapter);
-
     }
 
 //------------------------------------ViewHolder------------------------------------------------------

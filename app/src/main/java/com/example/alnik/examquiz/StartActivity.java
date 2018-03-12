@@ -1,6 +1,7 @@
 package com.example.alnik.examquiz;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,14 +19,24 @@ import com.google.firebase.database.ValueEventListener;
 
 public class StartActivity extends AppCompatActivity {
 
+    private ProgressDialog mRegDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.start_activity);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        mRegDialog = new ProgressDialog(this);
+        mRegDialog.setMessage("Loading...");
+        mRegDialog.setCanceledOnTouchOutside(false);
+        mRegDialog.show();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -36,6 +47,8 @@ public class StartActivity extends AppCompatActivity {
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    mRegDialog.dismiss();
 
                     User user = dataSnapshot.getValue(User.class);
                     Toast.makeText(StartActivity.this, "Hello " +user.getName(), Toast.LENGTH_LONG).show();
@@ -57,6 +70,7 @@ public class StartActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
+                    mRegDialog.dismiss();
                     FirebaseAuth.getInstance().signOut();
                 }
             });

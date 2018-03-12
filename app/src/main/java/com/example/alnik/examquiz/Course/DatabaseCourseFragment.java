@@ -2,6 +2,7 @@ package com.example.alnik.examquiz.Course;
 
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +13,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -30,13 +33,16 @@ import com.example.alnik.examquiz.models.MultipleChoice;
 import com.example.alnik.examquiz.models.ShortAnswer;
 import com.example.alnik.examquiz.models.TrueFalse;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -50,6 +56,14 @@ public class DatabaseCourseFragment extends Fragment {
     private FloatingActionButton mFabMultiple;
     private FloatingActionButton mFabTrueFalse;
     private FloatingActionButton mFabShortAnswer;
+
+    private Button mutipleChoiceButton;
+    private Button trueFalseButton;
+    private Button shortAnswerbutton;
+
+    private ExpandableRelativeLayout expandable_layout_MultiChoise;
+    private ExpandableRelativeLayout expandable_layout_TrueFalse;
+    private ExpandableRelativeLayout expandable_layout_ShortAnswer;
 
     private RecyclerView MultipleChoiceList;
     private RecyclerView TrueFalseList;
@@ -74,6 +88,90 @@ public class DatabaseCourseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mDatabaseView = inflater.inflate(R.layout.fragment_database_course, container, false);
+
+        mutipleChoiceButton = mDatabaseView.findViewById(R.id.expMultiButton);
+        trueFalseButton = mDatabaseView.findViewById(R.id.expTrueFalseButton);
+        shortAnswerbutton = mDatabaseView.findViewById(R.id.expShortAnswerButton);
+
+        expandable_layout_MultiChoise = mDatabaseView.findViewById(R.id.multiExpand);
+        expandable_layout_TrueFalse = mDatabaseView.findViewById(R.id.trueFalseExpand);
+        expandable_layout_ShortAnswer = mDatabaseView.findViewById(R.id.shortAnswerExpand);
+
+        mutipleChoiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                if(expandable_layout_TrueFalse.isExpanded()){
+//                    expandable_layout_TrueFalse.collapse();
+//                }
+//
+//                if(expandable_layout_ShortAnswer.isExpanded()){
+//                    expandable_layout_ShortAnswer.collapse();
+//                }
+
+                if (expandable_layout_MultiChoise.isExpanded()) {
+                    expandable_layout_MultiChoise.collapse();
+                    fabMenu.showMenu(true);
+
+
+                } else if (!expandable_layout_MultiChoise.isExpanded()) {
+                    fabMenu.hideMenu(true);
+                    expandable_layout_MultiChoise.expand();
+
+                }
+            }
+        });
+
+        trueFalseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                if(expandable_layout_MultiChoise.isExpanded()){
+//                    expandable_layout_MultiChoise.collapse();
+//                }
+//
+//                if(expandable_layout_ShortAnswer.isExpanded()){
+//                    expandable_layout_ShortAnswer.collapse();
+//                }
+
+                if (expandable_layout_TrueFalse.isExpanded()) {
+                    expandable_layout_TrueFalse.collapse();
+                    fabMenu.showMenu(true);
+
+
+                } else if (!expandable_layout_TrueFalse.isExpanded()) {
+                    fabMenu.hideMenu(true);
+                    expandable_layout_TrueFalse.expand();
+
+                }
+            }
+        });
+
+        shortAnswerbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                if(expandable_layout_MultiChoise.isExpanded()){
+//                    expandable_layout_MultiChoise.collapse();
+//                }
+//
+//                if(expandable_layout_TrueFalse.isExpanded()){
+//                    expandable_layout_TrueFalse.collapse();
+//                }
+
+                if (expandable_layout_ShortAnswer.isExpanded()) {
+                    expandable_layout_ShortAnswer.collapse();
+                    fabMenu.showMenu(true);
+
+
+                } else if (!expandable_layout_ShortAnswer.isExpanded()) {
+                    fabMenu.hideMenu(true);
+                    expandable_layout_ShortAnswer.expand();
+
+                }
+            }
+        });
+
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("MultipleChoice");
@@ -299,7 +397,7 @@ public class DatabaseCourseFragment extends Fragment {
 
                 fabMenu.close(true);
 
-               AlertDialog alert =  new AlertDialog.Builder(getContext())
+                AlertDialog alert =  new AlertDialog.Builder(getContext())
                         .setIcon(android.R.drawable.ic_input_add)
                         .setTitle("Create New Question")
                         .setView(createShortAnswerQuestion)
@@ -370,20 +468,180 @@ public class DatabaseCourseFragment extends Fragment {
                 viewHolder.setOptionD(model.getOptionD());
 
 
-                //final DatabaseReference courseRef= getRef(position);
-                //final String postKey = courseRef.getKey();
-
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         fabMenu.close(true);
 
-                        Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
-//                        Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
-//                        startCourseActivity.putExtra("courseName", postKey);
-//                        startActivity(startCourseActivity);
+                        LayoutInflater factory = LayoutInflater.from(getContext());
+                        final View showMultipleChoice = factory.inflate(R.layout.create_multiple_choice, null);
+                        final EditText questionMultipleEnter = showMultipleChoice.findViewById(R.id.questionMultipleEnter);
+                        final EditText optionA = showMultipleChoice.findViewById(R.id.optionA);
+                        final EditText optionB = showMultipleChoice.findViewById(R.id.optionB);
+                        final EditText optionC = showMultipleChoice.findViewById(R.id.optionC);
+                        final EditText optionD = showMultipleChoice.findViewById(R.id.optionD);
+                        final RadioButton RadioOptionA = showMultipleChoice.findViewById(R.id.radioOptionA);
+                        final RadioButton RadioOptionB = showMultipleChoice.findViewById(R.id.radioOptionB);
+                        final RadioButton RadioOptionC = showMultipleChoice.findViewById(R.id.radioOptionC);
+                        final RadioButton RadioOptionD = showMultipleChoice.findViewById(R.id.radioOptionD);
 
+                        getRef(position).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                MultipleChoice question = (MultipleChoice) dataSnapshot.getValue(MultipleChoice.class);
+                                questionMultipleEnter.setText(question.getQuestion());
+                                optionA.setText(question.getOptionA());
+                                optionB.setText(question.getOptionB());
+                                optionC.setText(question.getOptionC());
+                                optionD.setText(question.getOptionD());
+
+                                if(question.getAnswer().equals(question.getOptionA())){
+                                    RadioOptionA.setChecked(true);
+
+                                } else if(question.getAnswer().equals(question.getOptionB())){
+                                    RadioOptionB.setChecked(true);
+
+                                } else if(question.getAnswer().equals(question.getOptionC())) {
+                                    RadioOptionC.setChecked(true);
+
+                                } else if(question.getAnswer().equals(question.getOptionD())) {
+                                    RadioOptionD.setChecked(true);
+
+                                }
+
+                                questionMultipleEnter.setFocusableInTouchMode(false);
+                                optionA.setFocusableInTouchMode(false);
+                                optionB.setFocusableInTouchMode(false);
+                                optionC.setFocusableInTouchMode(false);
+                                optionD.setFocusableInTouchMode(false);
+                                RadioOptionA.setClickable(false);
+                                RadioOptionB.setClickable(false);
+                                RadioOptionC.setClickable(false);
+                                RadioOptionD.setClickable(false);
+
+
+                                AlertDialog alert = new AlertDialog.Builder(getContext())
+                                        .setView(showMultipleChoice)
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                ((ViewGroup) showMultipleChoice.getParent()).removeView(showMultipleChoice);
+
+                                            }
+                                        })
+                                        .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                        ((ViewGroup) showMultipleChoice.getParent()).removeView(showMultipleChoice);
+                                                        questionMultipleEnter.setFocusableInTouchMode(true);
+                                                        optionA.setFocusableInTouchMode(true);
+                                                        optionB.setFocusableInTouchMode(true);
+                                                        optionC.setFocusableInTouchMode(true);
+                                                        optionD.setFocusableInTouchMode(true);
+                                                        RadioOptionA.setClickable(true);
+                                                        RadioOptionB.setClickable(true);
+                                                        RadioOptionC.setClickable(true);
+                                                        RadioOptionD.setClickable(true);
+
+                                                        AlertDialog alert = new AlertDialog.Builder(getContext())
+                                                                .setView(showMultipleChoice)
+                                                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                        ((ViewGroup) showMultipleChoice.getParent()).removeView(showMultipleChoice);
+
+                                                                    }
+                                                                })
+                                                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                                                                            @Override
+                                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                String q = questionMultipleEnter.getText().toString();
+                                                                                String a = optionA.getText().toString();
+                                                                                String b = optionB.getText().toString();
+                                                                                String c = optionC.getText().toString();
+                                                                                String d = optionD.getText().toString();
+                                                                                String answer;
+
+                                                                                if(RadioOptionA.isChecked()){
+                                                                                    answer = a;
+                                                                                    question.setAnswer(answer);
+
+                                                                                } else if(RadioOptionB.isChecked()){
+                                                                                    answer = b;
+                                                                                    question.setAnswer(answer);
+
+                                                                                } else if(RadioOptionC.isChecked()){
+                                                                                    answer = c;
+                                                                                    question.setAnswer(answer);
+
+                                                                                } else if(RadioOptionD.isChecked()){
+                                                                                    answer = d;
+                                                                                    question.setAnswer(answer);
+
+                                                                                }
+                                                                                question.setQuestion(q);
+                                                                                question.setOptionA(a);
+                                                                                question.setOptionB(b);
+                                                                                question.setOptionC(c);
+                                                                                question.setOptionD(d);
+
+                                                                                getRef(position).setValue(question, new DatabaseReference.CompletionListener() {
+                                                                                    @Override
+                                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                                        if(databaseError == null){
+                                                                                            Toast.makeText(getContext(), "Question succesfully updated.", Toast.LENGTH_LONG).show();
+
+                                                                                        } else {
+                                                                                            Toast.makeText(getContext(), "Could not update question. Try again!", Toast.LENGTH_LONG).show();
+
+                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                            }
+                                                                        }
+                                                                )
+                                                                .show();
+                                                        alert.setCanceledOnTouchOutside(false);
+                                                    }
+                                                }
+                                        )
+                                        .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                getRef(position).removeValue(new DatabaseReference.CompletionListener() {
+                                                    @Override
+                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                        if(databaseError == null){
+                                                            Toast.makeText(getContext(), "Question deleted", Toast.LENGTH_LONG).show();
+                                                            ((ViewGroup) showMultipleChoice.getParent()).removeView(showMultipleChoice);
+
+                                                        } else {
+                                                            Toast.makeText(getContext(), "An error occurred, try again!", Toast.LENGTH_LONG).show();
+                                                            ((ViewGroup) showMultipleChoice.getParent()).removeView(showMultipleChoice);
+
+                                                        }
+                                                    }
+                                                });
+
+                                            }
+                                        })
+                                        .show();
+                                alert.setCanceledOnTouchOutside(false);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
 
                     }
                 });
@@ -413,12 +671,134 @@ public class DatabaseCourseFragment extends Fragment {
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        fabMenu.close(true);
-                        Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
-//                        Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
-//                        startCourseActivity.putExtra("courseName", postKey);
-//                        startActivity(startCourseActivity);
 
+                        fabMenu.close(true);
+
+                        LayoutInflater factory = LayoutInflater.from(getContext());
+                        final View showTrueFalseChoice = factory.inflate(R.layout.create_true_false, null);
+                        final EditText questionTrueFalseEnter = showTrueFalseChoice.findViewById(R.id.questionTrueFalseEnter);
+                        final RadioButton RadioOptionTrue = showTrueFalseChoice.findViewById(R.id.radioOptionTrue);
+                        final RadioButton RadioOptionFalse = showTrueFalseChoice.findViewById(R.id.radioOptionFalse);
+
+                        getRef(position).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                TrueFalse question = (TrueFalse) dataSnapshot.getValue(TrueFalse.class);
+                                questionTrueFalseEnter.setText(question.getQuestion());
+
+                                if(question.getAnswer().equals(true)){
+                                    RadioOptionTrue.setChecked(true);
+
+                                } else if(question.getAnswer().equals(false)){
+                                    RadioOptionFalse.setChecked(true);
+
+                                }
+
+                                questionTrueFalseEnter.setFocusableInTouchMode(false);
+                                RadioOptionTrue.setClickable(false);
+                                RadioOptionFalse.setClickable(false);
+
+
+
+                                AlertDialog alert = new AlertDialog.Builder(getContext())
+                                        .setView(showTrueFalseChoice)
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                ((ViewGroup) showTrueFalseChoice.getParent()).removeView(showTrueFalseChoice);
+
+                                            }
+                                        })
+                                        .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                        ((ViewGroup) showTrueFalseChoice.getParent()).removeView(showTrueFalseChoice);
+                                                        questionTrueFalseEnter.setFocusableInTouchMode(true);
+                                                        RadioOptionTrue.setClickable(true);
+                                                        RadioOptionFalse.setClickable(true);
+
+                                                        AlertDialog alert = new AlertDialog.Builder(getContext())
+                                                                .setView(showTrueFalseChoice)
+                                                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                        ((ViewGroup) showTrueFalseChoice.getParent()).removeView(showTrueFalseChoice);
+
+                                                                    }
+                                                                })
+                                                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                                                                            @Override
+                                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                String q = questionTrueFalseEnter.getText().toString();
+
+                                                                                if(RadioOptionTrue.isChecked()){
+
+                                                                                    question.setAnswer(true);
+
+                                                                                } else if(RadioOptionFalse.isChecked()){
+
+                                                                                    question.setAnswer(false);
+
+                                                                                }
+                                                                                question.setQuestion(q);
+
+
+                                                                                getRef(position).setValue(question, new DatabaseReference.CompletionListener() {
+                                                                                    @Override
+                                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                                        if(databaseError == null){
+                                                                                            Toast.makeText(getContext(), "Question succesfully updated.", Toast.LENGTH_LONG).show();
+
+                                                                                        } else {
+                                                                                            Toast.makeText(getContext(), "Could not update question. Try again!", Toast.LENGTH_LONG).show();
+
+                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                            }
+                                                                        }
+                                                                )
+                                                                .show();
+                                                        alert.setCanceledOnTouchOutside(false);
+                                                    }
+                                                }
+                                        )
+                                        .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                getRef(position).removeValue(new DatabaseReference.CompletionListener() {
+                                                    @Override
+                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                        if(databaseError == null){
+                                                            Toast.makeText(getContext(), "Question deleted", Toast.LENGTH_LONG).show();
+                                                            ((ViewGroup) showTrueFalseChoice.getParent()).removeView(showTrueFalseChoice);
+
+                                                        } else {
+                                                            Toast.makeText(getContext(), "An error occurred, try again!", Toast.LENGTH_LONG).show();
+                                                            ((ViewGroup) showTrueFalseChoice.getParent()).removeView(showTrueFalseChoice);
+
+                                                        }
+                                                    }
+                                                });
+
+                                            }
+                                        })
+                                        .show();
+                                alert.setCanceledOnTouchOutside(false);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
 
                     }
                 });
@@ -426,7 +806,6 @@ public class DatabaseCourseFragment extends Fragment {
             }
 
         };
-
         TrueFalseList.setAdapter(trueFalsefirebaseRecyclerAdapter);
 
         //-------------------------------Firebase Adapter-------------------------------------
@@ -448,11 +827,109 @@ public class DatabaseCourseFragment extends Fragment {
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         fabMenu.close(true);
-                        Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
-//                        Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
-//                        startCourseActivity.putExtra("courseName", postKey);
-//                        startActivity(startCourseActivity);
+
+                        LayoutInflater factory = LayoutInflater.from(getContext());
+                        final View showShortAnswer = factory.inflate(R.layout.create_short_answer, null);
+                        final EditText questionShortAnswerEnter = showShortAnswer.findViewById(R.id.questionShortAnswerEnter);
+
+
+                        getRef(position).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                ShortAnswer question = (ShortAnswer) dataSnapshot.getValue(ShortAnswer.class);
+                                questionShortAnswerEnter.setText(question.getQuestion());
+
+                                questionShortAnswerEnter.setFocusableInTouchMode(false);
+
+                                AlertDialog alert = new AlertDialog.Builder(getContext())
+                                        .setView(showShortAnswer)
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                ((ViewGroup) showShortAnswer.getParent()).removeView(showShortAnswer);
+
+                                            }
+                                        })
+                                        .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                        ((ViewGroup) showShortAnswer.getParent()).removeView(showShortAnswer);
+                                                        questionShortAnswerEnter.setFocusableInTouchMode(true);
+
+                                                        AlertDialog alert = new AlertDialog.Builder(getContext())
+                                                                .setView(showShortAnswer)
+                                                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                        ((ViewGroup) showShortAnswer.getParent()).removeView(showShortAnswer);
+
+                                                                    }
+                                                                })
+                                                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                                                                            @Override
+                                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                String q = questionShortAnswerEnter.getText().toString();
+
+                                                                                question.setQuestion(q);
+
+                                                                                getRef(position).setValue(question, new DatabaseReference.CompletionListener() {
+                                                                                    @Override
+                                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                                        if(databaseError == null){
+                                                                                            Toast.makeText(getContext(), "Question succesfully updated.", Toast.LENGTH_LONG).show();
+
+                                                                                        } else {
+                                                                                            Toast.makeText(getContext(), "Could not update question. Try again!", Toast.LENGTH_LONG).show();
+
+                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                            }
+                                                                        }
+                                                                )
+                                                                .show();
+                                                        alert.setCanceledOnTouchOutside(false);
+                                                    }
+                                                }
+                                        )
+                                        .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                getRef(position).removeValue(new DatabaseReference.CompletionListener() {
+                                                    @Override
+                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                        if(databaseError == null){
+                                                            Toast.makeText(getContext(), "Question deleted", Toast.LENGTH_LONG).show();
+                                                            ((ViewGroup) showShortAnswer.getParent()).removeView(showShortAnswer);
+
+                                                        } else {
+                                                            Toast.makeText(getContext(), "An error occurred, try again!", Toast.LENGTH_LONG).show();
+                                                            ((ViewGroup) showShortAnswer.getParent()).removeView(showShortAnswer);
+
+                                                        }
+                                                    }
+                                                });
+
+                                            }
+                                        })
+                                        .show();
+                                alert.setCanceledOnTouchOutside(false);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
 
                     }
                 });

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grid="http://schemas.android.com/tools"
     android:id="@+id/single_multiple"
     android:layout_width="190dp"
     android:layout_height="160dp"
     android:layout_marginBottom="10dp"
-    android:layout_marginStart="10dp">
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginStart="10dp"
+    app:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,49 +25,55 @@
             android:layout_alignParentTop="true"
             android:gravity="center"
             android:text="TextView"
-            android:textSize="25sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/single_optionA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/single_multiple_question"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="13dp"
-            android:text="TextView"
-            android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/single_multiple_question"
+            android:layout_weight=".50"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/single_optionB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/single_optionD"
-            android:layout_alignBottom="@+id/single_optionD"
-            android:layout_alignStart="@+id/single_optionC"
-            android:text="TextView"
-            android:textSize="15sp" />
+            <TextView
+                android:id="@+id/single_optionA"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="fill"
+                android:layout_weight=".50"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/single_optionC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/single_optionA"
-            android:layout_alignBottom="@+id/single_optionA"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="11dp"
-            android:text="TextView"
-            android:textSize="15sp" />
+            <TextView
+                android:id="@+id/single_optionB"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".50"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/single_optionD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/single_optionA"
-            android:layout_below="@+id/single_optionA"
-            android:layout_marginTop="33dp"
-            android:text="TextView"
-            android:textSize="15sp" />
+            <TextView
+                android:id="@+id/single_optionC"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".50"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/single_optionD"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".50"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

@@ -5,8 +5,7 @@
     android:id="@+id/singleRowLesson"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_margin="5dp"
     android:theme="@style/CardView"
     app:cardCornerRadius="10dp">
 
@@ -23,17 +22,21 @@
             android:singleLine="true"
             android:text="TextView"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/teacherLessonOptionsButton"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_toRightOf="@+id/teacherLessonView"
+            android:adjustViewBounds="false"
             android:background="@color/cardview_light_background"
-            android:paddingTop="25dp"
-            android:scaleType="matrix"
-            android:src="@drawable/dots32"
+            android:cropToPadding="false"
+            android:paddingBottom="40dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_more_options"
             android:textAppearance="?android:textAppearanceLarge" />
 
         <TextView
