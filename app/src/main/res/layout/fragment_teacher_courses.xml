@@ -8,6 +8,17 @@
     tools:context="com.example.alnik.examquiz.Teacher.TeacherActivity">
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/teacher_lesson_recycleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </android.support.v7.widget.RecyclerView>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/create_new_lesson"
         android:layout_width="wrap_content"
@@ -28,20 +39,5 @@
         app:fab_shadowYOffset="3dp"
         app:fab_showShadow="true"
         app:srcCompat="@drawable/fab_add" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/teacher_lesson_recycleView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

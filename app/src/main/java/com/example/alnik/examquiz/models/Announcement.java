@@ -4,7 +4,7 @@ package com.example.alnik.examquiz.models;
  * Created by alnik on 09-Mar-18.
  */
 
-public class Notification {
+public class Announcement {
 
     String id;
     String title;
@@ -12,10 +12,10 @@ public class Notification {
     long time;
 
 
-    public Notification() {
+    public Announcement() {
     }
 
-    public Notification(String id, String title, String body) {
+    public Announcement(String id, String title, String body) {
         this.id = id;
         this.title = title;
         this.body = body;

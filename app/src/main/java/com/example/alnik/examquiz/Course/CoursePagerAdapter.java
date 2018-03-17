@@ -26,8 +26,8 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
                 return  TestsCourseFragment;
 
             case 2:
-                NotificationsCourseFragment NotificationsCourseFragment = new NotificationsCourseFragment();
-                return  NotificationsCourseFragment;
+                AnnouncementsCourseFragment AnnouncementsCourseFragment = new AnnouncementsCourseFragment();
+                return AnnouncementsCourseFragment;
 
             case 3:
                 SubsCourseFragment SubsCourseFragment = new SubsCourseFragment();
@@ -52,7 +52,7 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
                 return "TESTS";
 
             case 2:
-                return "NOTIFICATIONS";
+                return "ANNOUNCEMENTS";
 
             case 3:
                 return "SUSCRIBERS";

@@ -21,8 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alnik.examquiz.Course.CourseActivity;
+import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.models.Course;
+import com.example.alnik.examquiz.models.Time;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +42,12 @@ public class TeacherCourseFragment extends Fragment {
     private FirebaseUser currentUser;
     private DatabaseReference myRefUser;
     private DatabaseReference mCourses;
+    private DatabaseReference userCourseOwnership;
+    private DatabaseReference courseCourseOwnership;
+
+    private DatabaseReference courseAnnouncements;
+    private DatabaseReference courseTests;
+    private DatabaseReference courseQuestions;
 
     private TextView nameView;
     private TextView emailView;
@@ -71,7 +79,11 @@ public class TeacherCourseFragment extends Fragment {
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         myRefUser = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-        mCourses = FirebaseDatabase.getInstance().getReference("Courses").child(currentUser.getUid());
+        mCourses = FirebaseDatabase.getInstance().getReference("Courses");
+        userCourseOwnership = FirebaseDatabase.getInstance().getReference("CourseOwnership").child("User");
+        courseCourseOwnership  = FirebaseDatabase.getInstance().getReference("CourseOwnership").child("Course");
+
+
 
         CreateNewLesson = (FloatingActionButton) mMainView.findViewById(R.id.create_new_lesson);
 
@@ -106,7 +118,7 @@ public class TeacherCourseFragment extends Fragment {
 
                                         } else{
 
-                                            mCourses.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            userCourseOwnership.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     if (dataSnapshot.hasChild(TeacherCourseFragment.this.courseName)) {
@@ -119,9 +131,11 @@ public class TeacherCourseFragment extends Fragment {
                                                                 String fullname = dataSnapshot.getValue().toString();
                                                                 String courseId = mCourses.push().getKey();
                                                                 Course newCourse = new Course(TeacherCourseFragment.this.courseName, currentUser.getUid().toString(), fullname, courseId, TeacherCourseFragment.this.courseInfo, TeacherCourseFragment.this.courseSite);
-                                                                mCourses.child(TeacherCourseFragment.this.courseName).setValue(newCourse, new DatabaseReference.CompletionListener() {
+                                                                mCourses.child(courseId).setValue(newCourse, new DatabaseReference.CompletionListener() {
                                                                     @Override
                                                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                        userCourseOwnership.child(currentUser.getUid()).child(courseId).setValue(new Time(System.currentTimeMillis()));
+                                                                        courseCourseOwnership.child(newCourse.getName()).child(currentUser.getUid()).setValue(new Time(System.currentTimeMillis()));
                                                                         Toast.makeText(getContext(), "Course Created", Toast.LENGTH_LONG).show();
 
                                                                     }
@@ -172,30 +186,59 @@ public class TeacherCourseFragment extends Fragment {
         super.onStart();
 
 //-------------------------------Firebase Adapter-------------------------------------
-        FirebaseRecyclerAdapter<Course, lessonViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Course, lessonViewHolder>(
-                Course.class,
+        FirebaseRecyclerAdapter<Time, lessonViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Time, lessonViewHolder>(
+                Time.class,
                 R.layout.single_teacher_lesson,
                 lessonViewHolder.class,
-                mCourses
+                userCourseOwnership.child(currentUser.getUid())
         ) {
 
             @Override
-            protected void populateViewHolder(final lessonViewHolder viewHolder, Course model, int position) {
-                viewHolder.setName(model.getName());
-                viewHolder.setSubs(model.getSubscribers());
+            protected void populateViewHolder(final lessonViewHolder viewHolder, Time model, int position) {
+
 
                 final DatabaseReference courseRef= getRef(position);
                 final String postKey = courseRef.getKey();
+
+                mCourses.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Course mCourse = dataSnapshot.getValue(Course.class);
+                        viewHolder.setName(mCourse.getName());
+                        viewHolder.setSubs(mCourse.getSubscribers());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.teacherLessonButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                        //Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
-                        Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
-                        startCourseActivity.putExtra("courseName", postKey);
-                        startActivity(startCourseActivity);
+                        mCourses.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                                Log.d("test", dataSnapshot.toString());
+                                Global.course = dataSnapshot.getValue(Course.class);
+
+                                Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
+                                //startCourseActivity.putExtra("courseName", postKey);
+                                //startCourseActivity.putExtra("courseID", Global.course.getId());
+                                startActivity(startCourseActivity);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 });
 //-----------------------------------popup menu for 3 dots------------------------------------------------------------
@@ -203,11 +246,25 @@ public class TeacherCourseFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        //creating a popup menu
+                        mCourses.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Log.d("test", dataSnapshot.toString());
+
+
+                                Global.course = dataSnapshot.getValue(Course.class);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                         PopupMenu popup = new PopupMenu(view.getContext(), view);
-                        //inflating menu from xml resource
                         popup.inflate(R.menu.popup_menu);
-                        //adding click listener
                         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
@@ -223,8 +280,26 @@ public class TeacherCourseFragment extends Fragment {
                                                     public void onClick(DialogInterface dialogInterface, int i) {
 
                                                         Log.d("test", "populateViewHolder: " +postKey);
+                                                        mCourses.child(Global.course.getId()).removeValue(new DatabaseReference.CompletionListener() {
+                                                            @Override
+                                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                if(databaseError == null){
 
-                                                        mCourses.child(postKey).removeValue();
+                                                                    courseAnnouncements = FirebaseDatabase.getInstance().getReference("Announcements").child(Global.course.getId());
+                                                                    courseTests = FirebaseDatabase.getInstance().getReference("Test").child(Global.course.getId());
+                                                                    courseQuestions = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId());
+
+                                                                    userCourseOwnership.child(currentUser.getUid()).child(Global.course.getId()).removeValue();
+                                                                    courseCourseOwnership.child(Global.course.getName()).child(Global.course.getOwnersID()).removeValue();
+                                                                    courseAnnouncements.removeValue();
+                                                                    courseQuestions.removeValue();
+                                                                    courseTests.removeValue();
+                                                                }
+                                                            }
+                                                        });
+
+                                                        Toast.makeText(getContext(), "Course deleted.", Toast.LENGTH_LONG).show();
+
                                                     }
                                                 }
                                         )
@@ -240,7 +315,7 @@ public class TeacherCourseFragment extends Fragment {
                                         final EditText courseInfo = courseAlertBox.findViewById(R.id.courseInfo);
                                         final EditText courseSite = courseAlertBox.findViewById(R.id.courseSite);
 
-                                        mCourses.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        mCourses.child(Global.course.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -265,20 +340,34 @@ public class TeacherCourseFragment extends Fragment {
                                                                     public void onClick(DialogInterface dialogInterface, int i) {
 
                                                                         String info = courseInfo.getText().toString();
-                                                                        final String site = courseSite.getText().toString();
+                                                                        String site = courseSite.getText().toString();
+                                                                        Global.course.setInfo(info);
+                                                                        Global.course.setSite(site);
 
-                                                                        mCourses.child(postKey).child("info").setValue(info, new DatabaseReference.CompletionListener() {
-                                                                                    @Override
-                                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                                                                        mCourses.child(postKey).child("site").setValue(site, new DatabaseReference.CompletionListener() {
-                                                                                            @Override
-                                                                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                                                                                Toast.makeText(getContext(), "Course Updated", Toast.LENGTH_LONG).show();
+                                                                        mCourses.child(Global.course.getId()).setValue(Global.course, new DatabaseReference.CompletionListener() {
+                                                                            @Override
+                                                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                                if(databaseError == null){
+                                                                                    //userCourseOwnership.child(currentUser.getUid()).child(Global.course.getId()).setValue(Global.course);
+                                                                                    //courseCourseOwnership.child(Global.course.getName()).child(Global.course.getOwnersID()).setValue(Global.course);
+                                                                                    Toast.makeText(getContext(), "Course Updated", Toast.LENGTH_LONG).show();
 
-                                                                                            }
-                                                                                        });
-                                                                                    }
-                                                                                });
+                                                                                }
+                                                                            }
+                                                                        });
+
+//                                                                        mCourses.child(model.getId()).child("info").setValue(info, new DatabaseReference.CompletionListener() {
+//                                                                                    @Override
+//                                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                                                                                        mCourses.child(model.getId()).child("site").setValue(site, new DatabaseReference.CompletionListener() {
+//                                                                                            @Override
+//                                                                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                                                                                                Toast.makeText(getContext(), "Course Updated", Toast.LENGTH_LONG).show();
+//
+//                                                                                            }
+//                                                                                        });
+//                                                                                    }
+//                                                                                });
 
                                                                         ((ViewGroup) courseAlertBox.getParent()).removeView(courseAlertBox);
                                                                     }

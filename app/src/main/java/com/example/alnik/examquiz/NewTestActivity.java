@@ -79,11 +79,11 @@ public class NewTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_test);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        database = FirebaseDatabase.getInstance();
-        testRef = database.getReference("Test").child(currentUser.getUid()).child(CourseActivity.courseName);
-        multipleRef = database.getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("MultipleChoice");
-        trueFalseRef = database.getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("TrueFalse");
-        shortAnswerRef = database.getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("ShortAnswer");
+        testRef = FirebaseDatabase.getInstance().getReference("Test").child(Global.course.getId());
+        multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("MultipleChoice");
+        trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("TrueFalse");
+        shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("ShortAnswer");
+
 
         startTimeButton = findViewById(R.id.startButton);
         endTimeButon = findViewById(R.id.endButton);
@@ -103,21 +103,35 @@ public class NewTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String id = testRef.push().getKey();
                 String title = titleBox.getText().toString();
-                Test newTest = new Test(id, title, startDate, endDate, mQuestionArray);
-                testRef.child(id).setValue(newTest, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if (databaseError != null) {
-                            System.out.println("Data could not be saved. " + databaseError.getMessage());
-                            Toast.makeText(NewTestActivity.this, "Error,could not be saved.", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(NewTestActivity.this, "Succesfully created.", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
+                if (title.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please input a Title!", Toast.LENGTH_LONG).show();
+                } else {
+
+
+                    if (startDate == null || endDate == null) {
+
+                        Toast.makeText(getApplicationContext(), "Start Date and End Date should not be empty!", Toast.LENGTH_LONG).show();
+
+                    } else {
+
+
+                        String id = testRef.push().getKey();
+                        Test newTest = new Test(id, title, startDate, endDate, mQuestionArray);
+                        testRef.child(id).setValue(newTest, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if (databaseError != null) {
+                                    System.out.println("Data could not be saved. " + databaseError.getMessage());
+                                    Toast.makeText(NewTestActivity.this, "Error,could not be saved.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(NewTestActivity.this, "Succesfully created.", Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                            }
+                        });
                     }
-                });
+                }
 
             }
         });
@@ -706,10 +720,10 @@ public class NewTestActivity extends AppCompatActivity {
                                             }
 
                                         } else if(w.getClass() == TrueFalse.class){
-                                                if (((TrueFalse)w).getId().equals(id)){
-                                                    mQuestionArray.remove(w);
-                                                    break;
-                                                }
+                                            if (((TrueFalse)w).getId().equals(id)){
+                                                mQuestionArray.remove(w);
+                                                break;
+                                            }
                                         } else if(w.getClass() == ShortAnswer.class){
                                             if (((ShortAnswer)w).getId().equals(id)){
                                                 mQuestionArray.remove(w);

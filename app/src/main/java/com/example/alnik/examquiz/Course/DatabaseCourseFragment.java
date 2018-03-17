@@ -26,6 +26,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.Teacher.TeacherCourseFragment;
 import com.example.alnik.examquiz.models.Course;
@@ -174,9 +175,9 @@ public class DatabaseCourseFragment extends Fragment {
 
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("MultipleChoice");
-        trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("TrueFalse");
-        shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(currentUser.getUid()).child(CourseActivity.courseName).child("ShortAnswer");
+        multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("MultipleChoice");
+        trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("TrueFalse");
+        shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("ShortAnswer");
 
 
         MultipleChoiceList = mDatabaseView.findViewById(R.id.multiple_recycleView);

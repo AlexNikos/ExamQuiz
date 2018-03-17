@@ -1,5 +1,7 @@
 package com.example.alnik.examquiz.models;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,6 +28,16 @@ public class Test {
         this.startDate = startDate;
         this.endDate = endDate;
         this.questions = questions;
+
+        if(startDate == null){
+            startDate = new Date();
+            Log.d("test", startDate.toString());
+        }
+
+        if(endDate == null){
+            startDate = new Date();
+        }
+
         if (startDate.before(endDate)){
 
             active = true;

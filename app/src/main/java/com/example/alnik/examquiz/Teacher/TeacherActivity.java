@@ -116,34 +116,34 @@ public class TeacherActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.signout, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.signout, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.sign_out) {
-
-            FirebaseAuth.getInstance().signOut();
-            if (mAuth == null){
-                startActivity(new Intent(TeacherActivity.this, LoginActivity.class));
-                finish();
-            }
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.sign_out) {
+//
+//            FirebaseAuth.getInstance().signOut();
+//            if (mAuth == null){
+//                startActivity(new Intent(TeacherActivity.this, LoginActivity.class));
+//                finish();
+//            }
+//
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -159,9 +159,14 @@ public class TeacherActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        }  else if (id == R.id.nav_log_out) {
 
-        } else if (id == R.id.nav_send) {
+            FirebaseAuth.getInstance().signOut();
+            if (mAuth == null){
+                startActivity(new Intent(TeacherActivity.this, LoginActivity.class));
+                finish();
+            }
+
 
         }
 

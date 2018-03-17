@@ -1,12 +1,12 @@
-package com.example.alnik.examquiz;
+package com.example.alnik.examquiz.Student;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,8 +19,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.alnik.examquiz.Global;
+import com.example.alnik.examquiz.LoginActivity;
+import com.example.alnik.examquiz.R;
+import com.example.alnik.examquiz.models.Course;
+import com.example.alnik.examquiz.models.Time;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,13 +36,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+
 public class StudentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private FirebaseDatabase database;
-    private DatabaseReference myRefUser;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mUsersCoursesRef;
+    private DatabaseReference mCoursesRef;
+
 
     EditText lessonNameInput;
     TextView nameView;
@@ -44,6 +55,8 @@ public class StudentActivity extends AppCompatActivity
     String lessonName;
     String fullName;
 
+    RecyclerView mCoursesRecycleView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,19 +64,22 @@ public class StudentActivity extends AppCompatActivity
         setContentView(R.layout.activity_student);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Courses");
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        myRefUser = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-        Log.d("test", currentUser.getUid().toString());
+        mUsersRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+        mUsersCoursesRef = FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(currentUser.getUid());
+        mCoursesRef = FirebaseDatabase.getInstance().getReference("Courses");
 
-
+        mCoursesRecycleView = findViewById(R.id.mCoursesRecycleView);
+        mCoursesRecycleView.hasFixedSize();
+        mCoursesRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
 
         FloatingActionButton addNewLesson = (FloatingActionButton) findViewById(R.id.add_new_lesson);
 
         lessonNameInput = new EditText(StudentActivity.this);
         lessonNameInput.setSingleLine(true);
-
 
         addNewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,18 +119,16 @@ public class StudentActivity extends AppCompatActivity
         emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.emailView);
 
 
-        myRefUser.child("name").addValueEventListener(new ValueEventListener() {
+        mUsersRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 fullName = dataSnapshot.getValue().toString();
-                Log.d("test", fullName);
 
-                myRefUser.child("surname").addValueEventListener(new ValueEventListener() {
+                mUsersRef.child("surname").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         fullName = fullName +" " +dataSnapshot.getValue().toString();
-                        Log.d("test", fullName);
                         nameView.setText(fullName);
                         emailView.setText(currentUser.getEmail().toString());
                     }
@@ -150,7 +164,7 @@ public class StudentActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.signout, menu);
+        getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
 
@@ -162,13 +176,22 @@ public class StudentActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.sign_out) {
-            FirebaseAuth.getInstance().signOut();
-            if (mAuth == null){
-                startActivity(new Intent(StudentActivity.this, LoginActivity.class));
-                finish();
-            }
+//        if (id == R.id.sign_out) {
+//            FirebaseAuth.getInstance().signOut();
+//            if (mAuth == null){
+//                startActivity(new Intent(StudentActivity.this, LoginActivity.class));
+//                finish();
+//            }
+//            return true;
+//        }
+
+        if(id == R.id.searchCourse){
+
+            Intent i = new Intent(getApplicationContext(), SearchCourseActivity.class);
+            startActivity(i);
+
             return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -188,14 +211,117 @@ public class StudentActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_log_out) {
 
-        } else if (id == R.id.nav_send) {
+            FirebaseAuth.getInstance().signOut();
+            if (mAuth == null){
+                startActivity(new Intent(StudentActivity.this, LoginActivity.class));
+                finish();
+            }
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseRecyclerAdapter<Time, StudentCoursesViewHolder> mCoursesRecycleViewAdapter = new FirebaseRecyclerAdapter<Time, StudentCoursesViewHolder>(
+
+                Time.class,
+                R.layout.single_student_course,
+                StudentCoursesViewHolder.class,
+                mUsersCoursesRef
+
+
+        ) {
+            @Override
+            protected void populateViewHolder(final StudentCoursesViewHolder courseViewHolder, Time subs, int i) {
+
+                courseViewHolder.setDate(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(subs.getTime()));
+
+                final String course_id = getRef(i).getKey();
+                Log.d("test", course_id);
+                //final String[] courseName = new String[1];
+
+                mCoursesRef.child(course_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        Log.d("test", dataSnapshot.toString());
+                        //courseName[0] = dataSnapshot.child("name").getValue().toString();
+                        Course course = dataSnapshot.getValue(Course.class);
+                        Global.course = course;
+
+                        courseViewHolder.setName(course.getName());
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                courseViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Intent toCourse = new Intent();
+                        //toCourse.putExtra("course_id", course_id);
+                        //toCourse.putExtra("courseName", courseName[0]);
+                        startActivity(new Intent(StudentActivity.this, CourseStudentActivity.class));
+                    }
+                });
+
+                courseViewHolder.singleStudentCourseOptions.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+
+
+                            }
+                        });
+            }
+        };
+
+        mCoursesRecycleView.setAdapter(mCoursesRecycleViewAdapter);
+
+
+    }
+
+
+    public static class StudentCoursesViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+        TextView singleSudentSubscriptionTime;
+        TextView singleSudentCourseName;
+        ImageButton singleStudentCourseOptions;
+
+        public StudentCoursesViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+
+            singleSudentSubscriptionTime = mView.findViewById(R.id.singleSudentSubscriptionTime);
+            singleSudentCourseName = mView.findViewById(R.id.singleSudentCourseName);
+            singleStudentCourseOptions = mView.findViewById(R.id.singleStudentCourseOptions);
+
+        }
+
+        public void setDate(String time){
+
+            singleSudentSubscriptionTime.setText(time);
+
+        }
+
+        public void setName(String name){
+
+            singleSudentCourseName.setText(name);
+
+        }
+
     }
 }

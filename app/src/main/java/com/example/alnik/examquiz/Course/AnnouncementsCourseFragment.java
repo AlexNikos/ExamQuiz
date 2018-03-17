@@ -3,16 +3,12 @@ package com.example.alnik.examquiz.Course;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,9 +18,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
-import com.example.alnik.examquiz.models.Course;
-import com.example.alnik.examquiz.models.Notification;
+import com.example.alnik.examquiz.models.Announcement;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,23 +36,20 @@ import java.text.SimpleDateFormat;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotificationsCourseFragment extends Fragment {
+public class AnnouncementsCourseFragment extends Fragment {
 
-    public static String newline = System.getProperty("line.separator");
-
-    FirebaseRecyclerAdapter<Notification, notificationViewHolder> notificationRecyclerAdapter;
-
+    FirebaseRecyclerAdapter<Announcement, notificationViewHolder> notificationRecyclerAdapter;
     private View mNotificationView;
     private FloatingActionButton createNotification;
     private RecyclerView notificationsRecycleView;
 
     private DatabaseReference notificationRef;
+    private DatabaseReference announcementReadRef;
+
     private FirebaseUser currentUser;
 
 
-
-
-    public NotificationsCourseFragment() {
+    public AnnouncementsCourseFragment() {
         // Required empty public constructor
     }
 
@@ -68,7 +61,8 @@ public class NotificationsCourseFragment extends Fragment {
         mNotificationView = inflater.inflate(R.layout.fragment_notifications_course, container, false);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        notificationRef = FirebaseDatabase.getInstance().getReference("Notifications").child(currentUser.getUid()).child(CourseActivity.courseName);
+        notificationRef = FirebaseDatabase.getInstance().getReference("Announcements").child(Global.course.getId());
+        announcementReadRef = FirebaseDatabase.getInstance().getReference("AnnouncementsRead");
         createNotification = mNotificationView.findViewById(R.id.create_new_notification);
         createNotification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +75,7 @@ public class NotificationsCourseFragment extends Fragment {
 
                 AlertDialog alertNotification = new AlertDialog.Builder(getContext())
                         .setIcon(android.R.drawable.ic_input_add)
-                        .setTitle("Create New Notification")
+                        .setTitle("Create New Announcement")
                         .setView(notification)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
@@ -91,12 +85,12 @@ public class NotificationsCourseFragment extends Fragment {
                                 String body = notificationBody.getText().toString();
                                 String id = notificationRef.push().getKey();
 
-                                Notification mNotification = new Notification(id, title, body);
-                                notificationRef.child(id).setValue(mNotification, new DatabaseReference.CompletionListener() {
+                                Announcement mAnnouncement = new Announcement(id, title, body);
+                                notificationRef.child(id).setValue(mAnnouncement, new DatabaseReference.CompletionListener() {
                                     @Override
                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                         if(databaseError == null){
-                                            Toast.makeText(getContext(), "Notification Created", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getContext(), "Announcement Created", Toast.LENGTH_LONG).show();
                                             notificationsRecycleView.smoothScrollToPosition(notificationRecyclerAdapter.getItemCount());
                                             ((ViewGroup) notification.getParent()).removeView(notification);
 
@@ -152,15 +146,15 @@ public class NotificationsCourseFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        notificationRecyclerAdapter = new FirebaseRecyclerAdapter<Notification, notificationViewHolder>(
-                Notification.class,
+        notificationRecyclerAdapter = new FirebaseRecyclerAdapter<Announcement, notificationViewHolder>(
+                Announcement.class,
                 R.layout.single_notification,
                 notificationViewHolder.class,
                 notificationRef.orderByChild("time")
         ) {
 
             @Override
-            protected void populateViewHolder(final notificationViewHolder viewHolder, Notification model, int position) {
+            protected void populateViewHolder(final notificationViewHolder viewHolder, Announcement model, int position) {
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getTime()));
 
@@ -177,11 +171,8 @@ public class NotificationsCourseFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        //creating a popup menu
                         PopupMenu popup = new PopupMenu(view.getContext(), view);
-                        //inflating menu from xml resource
                         popup.inflate(R.menu.popup_menu);
-                        //adding click listener
                         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
@@ -191,12 +182,14 @@ public class NotificationsCourseFragment extends Fragment {
                                         new android.support.v7.app.AlertDialog.Builder(getContext())
                                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                                 .setTitle("Are you sure?")
-                                                .setMessage("Do you want to delete this Notification?")
+                                                .setMessage("Do you want to delete this Announcement?")
                                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                                                 notificationRef.child(key).removeValue();
+                                                                announcementReadRef.child(key).removeValue();
+
                                                             }
                                                         }
                                                 )
@@ -215,15 +208,14 @@ public class NotificationsCourseFragment extends Fragment {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                                final Notification mNotification = dataSnapshot.getValue(Notification.class);
+                                                final Announcement mAnnouncement = dataSnapshot.getValue(Announcement.class);
 
-                                                notificationTitle.setText(mNotification.getTitle());
-                                                notificationBody.setText(mNotification.getBody());
+                                                notificationTitle.setText(mAnnouncement.getTitle());
+                                                notificationBody.setText(mAnnouncement.getBody());
 
 
                                                 new android.support.v7.app.AlertDialog.Builder(getContext())
-                                                        .setIcon(android.R.drawable.ic_input_add)
-                                                        .setTitle("Edit Notification")
+                                                        .setTitle("Edit Announcement")
                                                         .setView(notification)
                                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                                     @Override
@@ -231,15 +223,15 @@ public class NotificationsCourseFragment extends Fragment {
 
                                                                         String title = notificationTitle.getText().toString();
                                                                         String body = notificationBody.getText().toString();
-                                                                        mNotification.setTitle(title);
-                                                                        mNotification.setBody(body);
+                                                                        mAnnouncement.setTitle(title);
+                                                                        mAnnouncement.setBody(body);
 
-                                                                        notificationRef.child(key).setValue(mNotification, new DatabaseReference.CompletionListener() {
+                                                                        notificationRef.child(key).setValue(mAnnouncement, new DatabaseReference.CompletionListener() {
                                                                             @Override
                                                                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
                                                                                 if(databaseError == null){
-                                                                                    Toast.makeText(getContext(), "Notification Edited", Toast.LENGTH_LONG).show();
+                                                                                    Toast.makeText(getContext(), "Announcement Edited", Toast.LENGTH_LONG).show();
 
                                                                                 } else {
                                                                                     Toast.makeText(getContext(), "An error occurred, try again!", Toast.LENGTH_LONG).show();

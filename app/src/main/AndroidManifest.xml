@@ -18,7 +18,7 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity android:name=".CreateAccountActivity" />
         <activity
-            android:name=".StudentActivity"
+            android:name=".Student.StudentActivity"
             android:label=""
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
@@ -36,7 +36,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewTestActivity"></activity>
+        <activity android:name=".NewTestActivity" />
+        <activity
+            android:name=".Student.CourseStudentActivity"
+            android:label="@string/title_activity_course_student"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Student.SearchCourseActivity"
+            android:label="@string/title_activity_search_course"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
     </application>
 
 </manifest>

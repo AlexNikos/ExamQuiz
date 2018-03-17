@@ -53,5 +53,18 @@
             android:scaleType="fitEnd"
             app:srcCompat="@drawable/dots" />
 
+        <TextView
+            android:id="@+id/newAnnouncement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/optionsNotification"
+            android:layout_alignEnd="@+id/optionsNotification"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/holo_red_light"
+            android:text="NEW"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
     </RelativeLayout>
 </android.support.v7.widget.CardView>

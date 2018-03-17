@@ -11,11 +11,13 @@
         android:id="@+id/titleTest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="Title"
         android:inputType="text"
-        android:singleLine="true"
         android:maxLines="1"
+        android:singleLine="true"
         android:textAlignment="center" />
 
     <LinearLayout

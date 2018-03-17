@@ -1,51 +1,56 @@
-package com.example.alnik.examquiz.Course;
+package com.example.alnik.examquiz.Student;
 
 
-import android.content.Intent;
-import android.graphics.Color;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alnik.examquiz.Global;
-import com.example.alnik.examquiz.NewTestActivity;
 import com.example.alnik.examquiz.R;
-import com.example.alnik.examquiz.models.Test;
+import com.example.alnik.examquiz.models.Announcement;
+import com.example.alnik.examquiz.models.Time;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TestsCourseFragment extends Fragment {
+public class AnnouncementsStudentFragment extends Fragment {
 
-    private FloatingActionButton createNewTest;
-    private RecyclerView testRecycleView;
-
-    private DatabaseReference testRef;
+    private DatabaseReference announcesReadRef;
+    private DatabaseReference announcementsRef;
     private FirebaseUser currentUser;
 
-    private FirebaseRecyclerAdapter<Test, testViewHolder> testRecyclerAdapter;
+    String courseName, courseId;
+    String announceId;// = "empty";
 
-    private View mView;
+    RecyclerView announcementsRecyclerView;
 
+    FirebaseRecyclerAdapter<Announcement, announcementsViewHolder> announcementsRecyclerAdapter;
 
-    public TestsCourseFragment() {
+    View mView;
+
+    public AnnouncementsStudentFragment() {
         // Required empty public constructor
     }
 
@@ -54,44 +59,22 @@ public class TestsCourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_tests_course, container, false);
+        mView = inflater.inflate(R.layout.fragment_announcements_student, container, false);
+
+        //courseName = getActivity().getIntent().getExtras().getString("courseName");
+        //courseId = getActivity().getIntent().getExtras().getString("course_id");
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        testRef = FirebaseDatabase.getInstance().getReference("Test").child(Global.course.getId());
+        announcementsRef = FirebaseDatabase.getInstance().getReference("Announcements").child(Global.course.getId());
 
-
-
-        createNewTest = mView.findViewById(R.id.create_new_test);
-        createNewTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), NewTestActivity.class));
-
-            }
-        });
-
-
-        testRecycleView = mView.findViewById(R.id.testRecycleView);
-        testRecycleView.setHasFixedSize(true);
+        announcementsRecyclerView = mView.findViewById(R.id.announcementsRecyclerView);
+        announcementsRecyclerView.hasFixedSize();
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
-        testRecycleView.setLayoutManager(mLayoutManager);
-        testRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        announcementsRecyclerView.setLayoutManager(mLayoutManager);
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    createNewTest.hide();
-                } else {
-                    createNewTest.show();
-                }
-            }
-        });
-
-
-        return mView;
+        return  mView;
     }
 
 
@@ -99,49 +82,111 @@ public class TestsCourseFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        testRecyclerAdapter = new FirebaseRecyclerAdapter<Test, testViewHolder>(
-                Test.class,
-                R.layout.single_test,
-                testViewHolder.class,
-                testRef
+        announcementsRecyclerAdapter = new FirebaseRecyclerAdapter<Announcement, announcementsViewHolder>(
+                Announcement.class,
+                R.layout.single_notification,
+                announcementsViewHolder.class,
+                announcementsRef.orderByChild("time")
         ) {
 
             @Override
-            protected void populateViewHolder(final testViewHolder viewHolder, Test model, int position) {
+            protected void populateViewHolder(final announcementsViewHolder viewHolder, Announcement model, int position) {
                 viewHolder.setTitle(model.getTitle());
-                viewHolder.setStartTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getStartDate()));
-                viewHolder.setEndTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getEndDate()));
+                viewHolder.setTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getTime()));
 
+                announceId = getRef(position).getKey();
+                Log.d("test", "announces Id" +announceId);
 
-                String key= getRef(position).getKey();
+                announcesReadRef = FirebaseDatabase.getInstance().getReference("AnnouncementsRead").child(announceId).child(currentUser.getUid());
+                announcesReadRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.exists()){
+
+                            viewHolder.newAnnouncement.setVisibility(View.VISIBLE);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
+                        announceId = getRef(position).getKey();
+                        Log.d("test", announceId);
+                        announcesReadRef = FirebaseDatabase.getInstance().getReference("AnnouncementsRead").child(announceId).child(currentUser.getUid());
+                        announcesReadRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.hasChildren()){
+
+                                    viewHolder.newAnnouncement.setVisibility(View.GONE);
+
+                                } else {
+
+                                    announcesReadRef.setValue(new Time(System.currentTimeMillis()));
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        LayoutInflater factory = LayoutInflater.from(getContext());
+                        final View notification = factory.inflate(R.layout.notification_create, null);
+                        final EditText notificationTitle = notification.findViewById(R.id.notificationTitle);
+                        final EditText notificationBody = notification.findViewById(R.id.notificationBody);
+
+                        announcementsRef.child(announceId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Announcement mAnnouncement = dataSnapshot.getValue(Announcement.class);
+
+                                notificationTitle.setText(mAnnouncement.getTitle());
+                                notificationTitle.setFocusable(false);
+                                notificationTitle.setClickable(false);
+                                notificationBody.setText(mAnnouncement.getBody());
+                                notificationBody.setFocusable(false);
+                                notificationBody.setClickable(false);
+
+
+                                AlertDialog alert = new AlertDialog.Builder(getContext(), android.R.style.ThemeOverlay_Material_Light)
+                                        .setTitle(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(mAnnouncement.getTime()))
+                                        .setView(notification)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                announcementsRecyclerView.removeAllViews();
+
+                                                ((ViewGroup) notification.getParent()).removeView(notification);
+
+                                            }
+                                        }).show();
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
                 });
-
-                Date currentDate = new Date();
-                if(model.getEndDate().after(currentDate)){
-
-                    viewHolder.activeButton.setText("Running");
-                    viewHolder.activeButton.setClickable(false);
-                    viewHolder.activeButton.setBackgroundColor(Color.GREEN);
-                } else {
-
-                    viewHolder.activeButton.setText("Ended");
-                    viewHolder.activeButton.setClickable(false);
-                    viewHolder.activeButton.setBackgroundColor(Color.RED);
-
-
-                }
 //-----------------------------------popup menu for 3 dots------------------------------------------------------------
 //                viewHolder.options.setOnClickListener(new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View view) {
 //
-//                        //creating a popup menu
 //                        PopupMenu popup = new PopupMenu(view.getContext(), view);
 //                        popup.inflate(R.menu.popup_menu);
 //                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -177,14 +222,13 @@ public class TestsCourseFragment extends Fragment {
 //                                            @Override
 //                                            public void onDataChange(DataSnapshot dataSnapshot) {
 //
-//                                                final Test mTest = dataSnapshot.getValue(Test.class);
+//                                                final Announcement mNotification = dataSnapshot.getValue(Announcement.class);
 //
-//                                                notificationTitle.setText(mTest.getTitle());
-//                                                notificationBody.setText(mN.getBody());
+//                                                notificationTitle.setText(mNotification.getTitle());
+//                                                notificationBody.setText(mNotification.getBody());
 //
 //
 //                                                new android.support.v7.app.AlertDialog.Builder(getContext())
-//                                                        .setIcon(android.R.drawable.ic_input_add)
 //                                                        .setTitle("Edit Announcement")
 //                                                        .setView(notification)
 //                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -242,49 +286,45 @@ public class TestsCourseFragment extends Fragment {
             }
         };
 
-        testRecycleView.setAdapter(testRecyclerAdapter);
+        announcementsRecyclerView.setAdapter(announcementsRecyclerAdapter);
 
     }
 
 
 
-
-    public static class testViewHolder extends RecyclerView.ViewHolder {
+    public static class announcementsViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
-        TextView testTitle;
-        Button activeButton;
-        TextView startTimeView;
-        TextView endTimeView;
+        TextView notificationTitle;
+        TextView newAnnouncement;
+        ImageButton options;
+        TextView timeView;
         View view;
 
-        public testViewHolder(View itemView) {
+        public announcementsViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            testTitle = itemView.findViewById(R.id.singleTestTitle);
-            activeButton = itemView.findViewById(R.id.activeTestButton);
-            startTimeView = itemView.findViewById(R.id.startTime);
-            endTimeView = itemView.findViewById(R.id.endTime);
-            view = itemView.findViewById(R.id.singleTestView);
-
+            notificationTitle = itemView.findViewById(R.id.sinleNotificationTitle);
+            options = itemView.findViewById(R.id.optionsNotification);
+            options.setVisibility(View.INVISIBLE);
+            options.setEnabled(false);
+            newAnnouncement = itemView.findViewById(R.id.newAnnouncement);
+            timeView = itemView.findViewById(R.id.timeNotification);
+            view = itemView.findViewById(R.id.singelNotificationView);
 
         }
 
         public void setTitle(String title) {
 
-            testTitle.setText(title);
+            notificationTitle.setText(title);
         }
 
-        public void setStartTime(String time){
+        public void setTime(String time){
 
-            startTimeView.setText(time);
-        }
-
-        public void setEndTime(String time){
-
-            endTimeView.setText(time);
+            timeView.setText(time);
         }
 
 
     }
+
 }
