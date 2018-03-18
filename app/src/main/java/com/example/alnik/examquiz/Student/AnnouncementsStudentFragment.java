@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -43,6 +44,7 @@ public class AnnouncementsStudentFragment extends Fragment {
 
     String courseName, courseId;
     String announceId;// = "empty";
+    Query byTime;
 
     RecyclerView announcementsRecyclerView;
 
@@ -64,7 +66,6 @@ public class AnnouncementsStudentFragment extends Fragment {
         //courseName = getActivity().getIntent().getExtras().getString("courseName");
         //courseId = getActivity().getIntent().getExtras().getString("course_id");
 
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         announcementsRef = FirebaseDatabase.getInstance().getReference("Announcements").child(Global.course.getId());
 
         announcementsRecyclerView = mView.findViewById(R.id.announcementsRecyclerView);
@@ -74,6 +75,7 @@ public class AnnouncementsStudentFragment extends Fragment {
         mLayoutManager.setStackFromEnd(true);
         announcementsRecyclerView.setLayoutManager(mLayoutManager);
 
+
         return  mView;
     }
 
@@ -82,11 +84,28 @@ public class AnnouncementsStudentFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//        FirebaseDatabase.getInstance().getReference("Subscriptions").child("Courses").child(Global.course.getId()).child(currentUser.getUid())
+//                .child("time").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                long time = (long)dataSnapshot.getValue();
+//                Log.d("test", "onDataChange: " +time);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
         announcementsRecyclerAdapter = new FirebaseRecyclerAdapter<Announcement, announcementsViewHolder>(
                 Announcement.class,
                 R.layout.single_notification,
                 announcementsViewHolder.class,
-                announcementsRef.orderByChild("time")
+                announcementsRef.orderByChild("time").startAt(Global.timeSubscripted)
+
         ) {
 
             @Override
@@ -287,6 +306,8 @@ public class AnnouncementsStudentFragment extends Fragment {
         };
 
         announcementsRecyclerView.setAdapter(announcementsRecyclerAdapter);
+
+
 
     }
 

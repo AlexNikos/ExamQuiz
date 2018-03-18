@@ -11,5 +11,6 @@ public class Global {
 
     public static Course course;
     public static User user;
+    public static long timeSubscripted;
 
 }

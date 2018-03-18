@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,6 +38,9 @@ public class CourseStudentActivity extends AppCompatActivity
         setContentView(R.layout.activity_course_student);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Log.d("test", "CourseStudentActivity " +Global.course.getName() );
+
 
         //courseName = getIntent().getExtras().getString("courseName");
         //courseId = getIntent().getExtras().getString("course_id");

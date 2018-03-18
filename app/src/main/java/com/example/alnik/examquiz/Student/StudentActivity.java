@@ -76,32 +76,12 @@ public class StudentActivity extends AppCompatActivity
         mCoursesRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
 
-        FloatingActionButton addNewLesson = (FloatingActionButton) findViewById(R.id.add_new_lesson);
-
-        lessonNameInput = new EditText(StudentActivity.this);
-        lessonNameInput.setSingleLine(true);
-
-        addNewLesson.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton findNewLesson = (FloatingActionButton) findViewById(R.id.find_new_lesson);
+        findNewLesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(StudentActivity.this)
-                        .setIcon(android.R.drawable.ic_input_add)
-                        .setTitle("Add New Lesson")
-                        .setMessage("Enter Lesson name:")
-                        .setView(lessonNameInput)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                                        lessonName = lessonNameInput.getText().toString();
-                                        lessonNameInput.setText("");
-                                        Log.d("test", lessonName);
-                                        ((ViewGroup) lessonNameInput.getParent()).removeView(lessonNameInput);
-                                    }
-                                }
-                        )
-                        .setNegativeButton("Cancel", null)
-                        .show();
+                startActivity(new Intent(getApplicationContext(), SearchCourseActivity.class));
 
             }
         });
@@ -243,7 +223,7 @@ public class StudentActivity extends AppCompatActivity
 
                 courseViewHolder.setDate(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(subs.getTime()));
 
-                final String course_id = getRef(i).getKey();
+                String course_id = getRef(i).getKey();
                 Log.d("test", course_id);
                 //final String[] courseName = new String[1];
 
@@ -269,11 +249,43 @@ public class StudentActivity extends AppCompatActivity
                 courseViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        String course_id = getRef(i).getKey();
 
-                        Intent toCourse = new Intent();
-                        //toCourse.putExtra("course_id", course_id);
-                        //toCourse.putExtra("courseName", courseName[0]);
-                        startActivity(new Intent(StudentActivity.this, CourseStudentActivity.class));
+                        mCoursesRef.child(course_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Course course = dataSnapshot.getValue(Course.class);
+                                Global.course = course;
+                                Log.d("test", "on click course name " +Global.course.getName());
+
+                                FirebaseDatabase.getInstance().getReference("Subscriptions").child("Courses").child(Global.course.getId()).child(currentUser.getUid())
+                                        .child("time").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Global.timeSubscripted = (long)dataSnapshot.getValue();
+                                        Log.d("test", "onDataChange: " +Global.timeSubscripted);
+
+                                        startActivity(new Intent(StudentActivity.this, CourseStudentActivity.class));
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
                 });
 

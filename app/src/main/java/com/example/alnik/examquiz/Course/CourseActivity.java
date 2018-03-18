@@ -175,6 +175,11 @@ public class CourseActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if(id == R.id.subs_requests){
+
+            startActivity(new Intent(CourseActivity.this, RequestsActivity.class));
+
+        }
 
         if(id == R.id.subs_settings){
 

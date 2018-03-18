@@ -44,7 +44,8 @@
         <activity
             android:name=".Student.SearchCourseActivity"
             android:label="@string/title_activity_search_course"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity android:name=".Course.RequestsActivity"></activity>
     </application>
 
 </manifest>
