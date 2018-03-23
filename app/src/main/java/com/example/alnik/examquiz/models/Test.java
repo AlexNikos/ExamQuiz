@@ -13,37 +13,24 @@ public class Test {
 
     private String id;
     private String title;
-    private Date startDate;
-    private Date endDate;
-    private boolean active;
+    private String courseID;
+    private  long startDate;
+    private long endDate;
 
     private ArrayList<Object> questions;
+    //private ArrayList<Integer> maxGrades;
 
     public Test() {
     }
 
-    public Test(String id, String title, Date startDate, Date endDate, ArrayList questions) {
+    public Test(String id, String title, String courseID, long startDate, long endDate, ArrayList questions) {
         this.id = id;
         this.title = title;
+        this.courseID = courseID;
         this.startDate = startDate;
         this.endDate = endDate;
         this.questions = questions;
 
-        if(startDate == null){
-            startDate = new Date();
-            Log.d("test", startDate.toString());
-        }
-
-        if(endDate == null){
-            startDate = new Date();
-        }
-
-        if (startDate.before(endDate)){
-
-            active = true;
-        } else {
-            active = false;
-        }
     }
 
     public String getId() {
@@ -62,19 +49,27 @@ public class Test {
         this.title = title;
     }
 
-    public Date getStartDate() {
+    public String getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(String courseID) {
+        this.courseID = courseID;
+    }
+
+    public long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(long startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(long endDate) {
         this.endDate = endDate;
     }
 
@@ -86,11 +81,11 @@ public class Test {
         this.questions = questions;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+//    public ArrayList<Integer> getMaxGrades() {
+//        return maxGrades;
+//    }
+//
+//    public void setMaxGrades(ArrayList<Integer> maxGrades) {
+//        this.maxGrades = maxGrades;
+//    }
 }

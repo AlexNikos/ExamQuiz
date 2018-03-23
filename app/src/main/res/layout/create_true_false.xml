@@ -23,7 +23,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/TRUE"
+            android:id="@+id/TRUEview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
@@ -31,7 +31,7 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/FALSE"
+            android:id="@+id/FALSEview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="FALSE"

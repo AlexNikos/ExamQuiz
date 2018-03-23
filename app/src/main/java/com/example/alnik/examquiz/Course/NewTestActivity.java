@@ -1,4 +1,4 @@
-package com.example.alnik.examquiz;
+package com.example.alnik.examquiz.Course;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alnik.examquiz.Course.CourseActivity;
+import com.example.alnik.examquiz.CustomDateTimePicker;
+import com.example.alnik.examquiz.Global;
+import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.models.MultipleChoice;
 import com.example.alnik.examquiz.models.ShortAnswer;
 import com.example.alnik.examquiz.models.Test;
@@ -42,10 +46,9 @@ import java.util.Date;
 
 public class NewTestActivity extends AppCompatActivity {
 
-
     private CustomDateTimePicker custom;
-    private Date startDate;
-    private Date endDate;
+    private long startDate;
+    private long endDate;
 
     private FirebaseDatabase database;
     private DatabaseReference testRef;
@@ -64,13 +67,13 @@ public class NewTestActivity extends AppCompatActivity {
     private ExpandableRelativeLayout expandable_layout_ShortAnswer;
 
     private LinearLayout insertPoint;
-    //View addView;
 
     private RecyclerView pickMultipleChoiseRecycleView;
     private RecyclerView pickTrueFalseRecycleView;
     private RecyclerView pickShortAnswerRecycleView;
 
     ArrayList<Object> mQuestionArray = new ArrayList<>();
+    ArrayList<Integer> maxMarks = new ArrayList<>();
 
 
     @Override
@@ -83,7 +86,6 @@ public class NewTestActivity extends AppCompatActivity {
         multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("MultipleChoice");
         trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("TrueFalse");
         shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("ShortAnswer");
-
 
         startTimeButton = findViewById(R.id.startButton);
         endTimeButon = findViewById(R.id.endButton);
@@ -109,22 +111,38 @@ public class NewTestActivity extends AppCompatActivity {
                 } else {
 
 
-                    if (startDate == null || endDate == null) {
+                    if (Long.valueOf(startDate) == 0 || Long.valueOf(endDate) == 0) {
 
                         Toast.makeText(getApplicationContext(), "Start Date and End Date should not be empty!", Toast.LENGTH_LONG).show();
 
+                    } else if(mQuestionArray.isEmpty()){
+
+                        Toast.makeText(NewTestActivity.this, "Please add at least one question!", Toast.LENGTH_LONG).show();
+
                     } else {
 
+                        int count = insertPoint.getChildCount();
+                        View v = null;
+                        for(int i=0; i<count; i++) {
+                            v = insertPoint.getChildAt(i);
+                            EditText m = v.findViewById(R.id.maxMark);
+                            maxMarks.add(Integer.valueOf(m.getText().toString()));
+
+                        }
+
+                        fillQuestionsMarks(mQuestionArray, maxMarks);
 
                         String id = testRef.push().getKey();
-                        Test newTest = new Test(id, title, startDate, endDate, mQuestionArray);
+                        Test newTest = new Test(id, title, Global.course.getId(), startDate, endDate, mQuestionArray/*, maxMarks*/);
                         testRef.child(id).setValue(newTest, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                 if (databaseError != null) {
-                                    System.out.println("Data could not be saved. " + databaseError.getMessage());
+
                                     Toast.makeText(NewTestActivity.this, "Error,could not be saved.", Toast.LENGTH_LONG).show();
+
                                 } else {
+
                                     Toast.makeText(NewTestActivity.this, "Succesfully created.", Toast.LENGTH_LONG).show();
                                     finish();
                                 }
@@ -132,7 +150,6 @@ public class NewTestActivity extends AppCompatActivity {
                         });
                     }
                 }
-
             }
         });
 
@@ -147,7 +164,6 @@ public class NewTestActivity extends AppCompatActivity {
         pickShortAnswerRecycleView = findViewById(R.id.pickShortAnswerRecycleView);
         pickShortAnswerRecycleView.setHasFixedSize(true);
         pickShortAnswerRecycleView.setLayoutManager(new LinearLayoutManager(this));
-
 
         expandable_layout_MultiChoise = findViewById(R.id.expandableLayoutMultiChoice);
         expandable_layout_TrueFalse = findViewById(R.id.expandableLayoutTrueFalse);
@@ -222,8 +238,6 @@ public class NewTestActivity extends AppCompatActivity {
             }
         });
 
-
-
         startTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -239,9 +253,9 @@ public class NewTestActivity extends AppCompatActivity {
                                               int hour24, int hour12, int min, int sec,
                                               String AM_PM) {
 
-                                startDate = dateSelected;
+                                startDate = dateSelected.getTime();
                                 startTimeButton.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(startDate));
-                                Log.d("test", startDate.toString());
+                                Log.d("test", String.valueOf(startDate));
 
                             }
 
@@ -258,7 +272,6 @@ public class NewTestActivity extends AppCompatActivity {
             }
         });
 
-
         endTimeButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -274,7 +287,7 @@ public class NewTestActivity extends AppCompatActivity {
                                               int hour24, int hour12, int min, int sec,
                                               String AM_PM) {
 
-                                endDate = dateSelected;
+                                endDate = dateSelected.getTime();
                                 endTimeButon.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(endDate));
 
                             }
@@ -340,48 +353,12 @@ public class NewTestActivity extends AppCompatActivity {
 
                                     final MultipleChoice question = dataSnapshot.getValue(MultipleChoice.class);
                                     Log.d("test", question.getId());
-                                    //multipleChoiceArray.add(question);
                                     mQuestionArray.add(question);
-                                    Log.d("test", "Multi ArrayList is:");
-                                    for (/*MultipleChoice w : multipleChoiceArray*/Object w : mQuestionArray) {
 
-                                        if(w.getClass() == MultipleChoice.class){
-                                            Log.d("test", ((MultipleChoice)w).getQuestion());
-                                            Log.d("test", ((MultipleChoice)w).getId());
-                                            Log.d("test", ((MultipleChoice)w).getType());
-
-
-                                        } else if(w.getClass() == TrueFalse.class){
-                                            Log.d("test", ((TrueFalse)w).getQuestion());
-                                            Log.d("test", ((TrueFalse)w).getId());
-                                            Log.d("test", ((TrueFalse)w).getType());
-
-                                        }
-
-
-
-                                    }
-
-                                    LayoutInflater layoutInflater =
-                                            (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                    View addView = layoutInflater.inflate(R.layout.course_single_multiple_choice, null);
-                                    addView.setTag(question.getId());
-                                    TextView questionText = (TextView)addView.findViewById(R.id.single_multiple_question);
-                                    TextView optionA = (TextView)addView.findViewById(R.id.single_optionA);
-                                    TextView optionB = (TextView)addView.findViewById(R.id.single_optionB);
-                                    TextView optionC = (TextView)addView.findViewById(R.id.single_optionC);
-                                    TextView optionD = (TextView)addView.findViewById(R.id.single_optionD);
-                                    questionText.setText(question.getQuestion());
-                                    optionA.setText(question.getOptionA());
-                                    optionB.setText(question.getOptionB());
-                                    optionC.setText(question.getOptionC());
-                                    optionD.setText(question.getOptionD());
+                                    View multipleView =  insertMultipleChoice(question);
                                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                                    layoutParams.setMargins(0, 10, 0, 20);
-                                    insertPoint.addView(addView,layoutParams);
-
-
-
+                                    layoutParams.setMargins(5, 10, 5, 10);
+                                    insertPoint.addView(multipleView,layoutParams);
 
                                 }
 
@@ -525,15 +502,10 @@ public class NewTestActivity extends AppCompatActivity {
 
                                     }
 
-                                    LayoutInflater layoutInflater =
-                                            (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                    View addView = layoutInflater.inflate(R.layout.course_single_truefalse, null);
-                                    addView.setTag(question.getId());
-                                    TextView questionText = (TextView)addView.findViewById(R.id.single_trueFalse_question);
-                                    questionText.setText(question.getQuestion());
+                                    View trueFalseView =  insertTrueFalse(question);
                                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     layoutParams.setMargins(0, 10, 0, 20);
-                                    insertPoint.addView(addView,layoutParams);
+                                    insertPoint.addView(trueFalseView,layoutParams);
                                 }
 
                                 @Override
@@ -676,15 +648,10 @@ public class NewTestActivity extends AppCompatActivity {
 
                                     }
 
-                                    LayoutInflater layoutInflater =
-                                            (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                    View addView = layoutInflater.inflate(R.layout.course_single_shortanswer, null);
-                                    addView.setTag(question.getId());
-                                    TextView questionText = (TextView)addView.findViewById(R.id.single_shortanswer_question);
-                                    questionText.setText(question.getQuestion());
+                                    View shortAnswerView =  insertShortAnswer(question);
                                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     layoutParams.setMargins(0, 10, 0, 20);
-                                    insertPoint.addView(addView,layoutParams);
+                                    insertPoint.addView(shortAnswerView,layoutParams);
                                 }
 
                                 @Override
@@ -756,7 +723,6 @@ public class NewTestActivity extends AppCompatActivity {
 
         pickShortAnswerRecycleView.setAdapter(shortAnswerfirebaseRecyclerAdapter);
 
-
     }
 
     public static class CheckViewHolder extends RecyclerView.ViewHolder {
@@ -774,11 +740,11 @@ public class NewTestActivity extends AppCompatActivity {
         public CheckViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            question = itemView.findViewById(R.id.qqq);
-            optionA = itemView.findViewById(R.id.qqq1);
-            optionB = itemView.findViewById(R.id.qqq2);
-            optionC = itemView.findViewById(R.id.qqq3);
-            optionD = itemView.findViewById(R.id.qqq4);
+            question = itemView.findViewById(R.id.question);
+            optionA = itemView.findViewById(R.id.optionA);
+            optionB = itemView.findViewById(R.id.optionB);
+            optionC = itemView.findViewById(R.id.optionC);
+            optionD = itemView.findViewById(R.id.optionD);
             check = itemView.findViewById(R.id.checkBox);
 
             view = itemView.findViewById(R.id.singleCheck);
@@ -861,6 +827,147 @@ public class NewTestActivity extends AppCompatActivity {
 
 
 
+    public View insertMultipleChoice( MultipleChoice question ){
+        Log.d("test", question.getQuestion());
+
+        LayoutInflater layoutInflater =
+                (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View addView = layoutInflater.inflate(R.layout.single_inserted_multi_test, null);
+        addView.setTag(question.getId());
+        TextView questionText = (TextView)addView.findViewById(R.id.question);
+        TextView optionA = (TextView)addView.findViewById(R.id.optionA);
+        TextView optionB = (TextView)addView.findViewById(R.id.optionB);
+        TextView optionC = (TextView)addView.findViewById(R.id.optionC);
+        TextView optionD = (TextView)addView.findViewById(R.id.optionD);
+        EditText maxMark = addView.findViewById(R.id.maxMark);
+        questionText.setText(question.getQuestion());
+        optionA.setText(question.getOptionA());
+        optionB.setText(question.getOptionB());
+        optionC.setText(question.getOptionC());
+        optionD.setText(question.getOptionD());
+
+        maxMark.setText("0");
+        maxMark.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(maxMark.getText().toString().equals("")){
+                    maxMark.setText("0");
+
+                }
+
+            }
+        });
+
+        return addView;
+
+    }
+
+    public View insertTrueFalse(TrueFalse question){
+
+        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View addView = layoutInflater.inflate(R.layout.single_inserted_truefalse_test, null);
+        addView.setTag(question.getId());
+        TextView questionText = (TextView)addView.findViewById(R.id.singleTrueFalseQuestion);
+        questionText.setText(question.getQuestion());
+        EditText maxMark = addView.findViewById(R.id.maxMark);
+
+        maxMark.setText("0");
+        maxMark.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(maxMark.getText().toString().equals("")){
+                    maxMark.setText("0");
+
+                }
+
+            }
+        });
+
+        return addView;
+
+    }
+
+    public View insertShortAnswer(ShortAnswer question){
+
+        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View addView = layoutInflater.inflate(R.layout.single_inserted_shortanswer_test, null);
+        addView.setTag(question.getId());
+        TextView questionText = (TextView)addView.findViewById(R.id.singleShortAnswerQuestion);
+        questionText.setText(question.getQuestion());
+
+        EditText maxMark = addView.findViewById(R.id.maxMark);
+
+        maxMark.setText("0");
+        maxMark.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(maxMark.getText().toString().equals("")){
+                    maxMark.setText("0");
+
+                }
+
+            }
+        });
+
+        return addView;
+
+
+    }
+
+    public void fillQuestionsMarks(ArrayList<Object> mQuestionArray, ArrayList<Integer> maxGrades){
+
+        for (Object w : mQuestionArray) {
+
+            int index = mQuestionArray.indexOf(w);
+
+            if(w.getClass() == MultipleChoice.class){
+
+                ((MultipleChoice)w).setMaxGrade(maxGrades.get(index));
+
+            } else if(w.getClass() == TrueFalse.class){
+
+                ((TrueFalse)w).setMaxGrade(maxGrades.get(index));
+
+            } else if(w.getClass() == ShortAnswer.class){
+
+                ((ShortAnswer)w).setMaxGrade(maxGrades.get(index));
+
+            }
+        }
+    }
 }
 
 

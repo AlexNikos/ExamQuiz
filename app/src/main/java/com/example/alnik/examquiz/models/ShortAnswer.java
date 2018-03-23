@@ -10,6 +10,8 @@ public class ShortAnswer {
     private String answer;
     private String id;
     private String type;
+    private long maxGrade;
+
 
     public ShortAnswer() {
     }
@@ -19,6 +21,7 @@ public class ShortAnswer {
         this.answer = "";
         this.id = id;
         type = "ShortAnswer";
+        maxGrade = 0;
     }
 
     public String getQuestion() {
@@ -46,4 +49,11 @@ public class ShortAnswer {
         return type;
     }
 
+    public long getMaxGrade() {
+        return maxGrade;
+    }
+
+    public void setMaxGrade(long maxGrade) {
+        this.maxGrade = maxGrade;
+    }
 }

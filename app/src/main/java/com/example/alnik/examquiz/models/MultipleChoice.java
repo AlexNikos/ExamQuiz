@@ -14,6 +14,7 @@ public class MultipleChoice {
     private String answer;
     private String id;
     private String type;
+    private long maxGrade;
 
     public MultipleChoice() {
     }
@@ -27,6 +28,7 @@ public class MultipleChoice {
         this.answer = answer;
         this.id = id;
         type = "MultipleChoice";
+        maxGrade = 0;
     }
 
     public String getQuestion() {
@@ -85,4 +87,11 @@ public class MultipleChoice {
         return type;
     }
 
+    public long getMaxGrade() {
+        return maxGrade;
+    }
+
+    public void setMaxGrade(long maxGrade) {
+        this.maxGrade = maxGrade;
+    }
 }

@@ -21,21 +21,13 @@
             android:layout_marginStart="39dp"
             android:text="TextView" />
 
-        <CheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="11dp" />
-
         <TextView
             android:id="@+id/optionA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/singleTrueFalseQuestion"
             android:layout_below="@+id/checkBox1"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="40dp"
             android:text="TRUE" />
 
         <TextView
@@ -46,6 +38,35 @@
             android:layout_below="@+id/optionA"
             android:layout_marginTop="26dp"
             android:text="FALSE" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/optionB"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="Max Mark :  "
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/maxMark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:ems="10"
+                android:inputType="number"
+                android:singleLine="true" />
+        </LinearLayout>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

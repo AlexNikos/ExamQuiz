@@ -44,12 +44,9 @@ public class RequestsActivity extends AppCompatActivity {
         mCurrentuser = FirebaseAuth.getInstance().getCurrentUser();
         courseRequestsRef = FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId());
 
-
         requestsRecycleView = findViewById(R.id.requestsRecycleView);
         requestsRecycleView.hasFixedSize();
         requestsRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-
 
     }
 
@@ -95,17 +92,13 @@ public class RequestsActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         Toast.makeText(getApplicationContext(), "Accepted\n" +id, Toast.LENGTH_LONG).show();
-                        FirebaseDatabase.getInstance().getReference("Subscriptions").child("Courses").child(Global.course.getId()).child(id).setValue(new Time(System.currentTimeMillis()));
-                        FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(id).child(Global.course.getId()).setValue(new Time(System.currentTimeMillis()));
+                        Time timeSub = new Time(System.currentTimeMillis());
+                        FirebaseDatabase.getInstance().getReference("Subscriptions").child("Courses").child(Global.course.getId()).child(id).setValue(timeSub);
+                        FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(id).child(Global.course.getId()).setValue(timeSub);
                         FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId()).child(id).removeValue();
                         FirebaseDatabase.getInstance().getReference("Requests").child("Users").child(id).child(Global.course.getId()).removeValue();
                         Global.course.setSubscribers(Global.course.getSubscribers() + 1);
                         FirebaseDatabase.getInstance().getReference("Courses").child(Global.course.getId()).setValue(Global.course);
-
-
-
-
-
 
                     }
                 });

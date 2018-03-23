@@ -1,6 +1,7 @@
 package com.example.alnik.examquiz.Course;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alnik.examquiz.Global;
-import com.example.alnik.examquiz.NewTestActivity;
 import com.example.alnik.examquiz.R;
+import com.example.alnik.examquiz.Student.RunningTestActivity;
+import com.example.alnik.examquiz.Teacher.ResultsActivity;
 import com.example.alnik.examquiz.models.Test;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -119,11 +125,25 @@ public class TestsCourseFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
+                        testRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Global.test = dataSnapshot.getValue(Test.class);
+                                Log.d("test", "testID is  " +Global.test.getId());
+                                startActivity(new Intent(getContext(), ResultsActivity.class));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 });
 
-                Date currentDate = new Date();
-                if(model.getEndDate().after(currentDate)){
+                long currentDate = System.currentTimeMillis();
+                if(model.getEndDate() > currentDate){
 
                     viewHolder.activeButton.setText("Running");
                     viewHolder.activeButton.setClickable(false);

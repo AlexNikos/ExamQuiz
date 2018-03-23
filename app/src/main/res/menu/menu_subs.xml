@@ -4,8 +4,7 @@
 
     <item
         android:id="@+id/subs_requests"
-        android:icon="@android:drawable/stat_notify_chat"
-        android:orderInCategory="100"
+        android:orderInCategory="0"
         android:title="Requests"
         app:showAsAction="always" />
 

@@ -20,14 +20,6 @@
             android:layout_marginStart="14dp"
             android:text="TextView" />
 
-        <CheckBox
-            android:id="@+id/singleShortAnswercheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp" />
-
         <EditText
             android:id="@+id/editText"
             android:layout_width="wrap_content"
@@ -40,6 +32,35 @@
             android:ems="10"
             android:focusable="false"
             android:inputType="textMultiLine" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="Max Mark :  "
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/maxMark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:ems="10"
+                android:inputType="number"
+                android:singleLine="true" />
+        </LinearLayout>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

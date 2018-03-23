@@ -10,6 +10,8 @@ public class TrueFalse {
     private Boolean answer;
     private String id;
     private String type;
+    private long maxGrade;
+
 
     public TrueFalse() {
     }
@@ -19,6 +21,7 @@ public class TrueFalse {
         this.answer = answer;
         this.id = id;
         type = "TrueFalse";
+        maxGrade = 0;
     }
 
     public String getQuestion() {
@@ -45,4 +48,11 @@ public class TrueFalse {
         return type;
     }
 
+    public long getMaxGrade() {
+        return maxGrade;
+    }
+
+    public void setMaxGrade(long maxGrade) {
+        this.maxGrade = maxGrade;
+    }
 }

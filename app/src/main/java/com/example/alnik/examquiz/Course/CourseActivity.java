@@ -2,9 +2,11 @@ package com.example.alnik.examquiz.Course;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,6 +107,34 @@ public class CourseActivity extends AppCompatActivity
                 if(position == 3){
                     toolbar.getMenu().clear();
                     toolbar.inflateMenu(R.menu.menu_subs);
+                    FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId())
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    long count = dataSnapshot.getChildrenCount();
+                                    if(count == 0){
+
+                                        toolbar.getMenu().getItem(0).setTitle("No new requests");
+
+                                    } else if(count == 1 ){
+
+                                        toolbar.getMenu().getItem(0).setTitle(count +" new request");
+
+                                    } else{
+
+                                        toolbar.getMenu().getItem(0).setTitle(count +" new requests");
+
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                 }
 
             }
@@ -132,7 +163,6 @@ public class CourseActivity extends AppCompatActivity
         nameView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.course_nav_name);
         emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.course_nav_email);
 
-
         myRefUser.child("fullname").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -159,6 +189,7 @@ public class CourseActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

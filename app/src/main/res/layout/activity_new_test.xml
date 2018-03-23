@@ -5,7 +5,7 @@
     android:id="@+id/relativeParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.alnik.examquiz.NewTestActivity">
+    tools:context="com.example.alnik.examquiz.Course.NewTestActivity">
 
     <EditText
         android:id="@+id/titleTest"

@@ -28,4 +28,8 @@
     <string name="title_activity_course">CourseActivity</string>
     <string name="title_activity_course_student">CourseStudentActivity</string>
     <string name="title_activity_search_course">SearchCourseActivity</string>
+    <string name="title_activity_results">ResultsActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

@@ -1,35 +1,23 @@
 package com.example.alnik.examquiz.Course;
 
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
-import com.example.alnik.examquiz.Teacher.TeacherCourseFragment;
-import com.example.alnik.examquiz.models.Course;
 import com.example.alnik.examquiz.models.MultipleChoice;
 import com.example.alnik.examquiz.models.ShortAnswer;
 import com.example.alnik.examquiz.models.TrueFalse;
@@ -44,8 +32,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
 
 
 /**
