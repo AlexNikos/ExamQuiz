@@ -851,6 +851,8 @@ public class NewTestActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                maxMark.setSelection(maxMark.getText().length());
+
             }
 
             @Override
@@ -863,6 +865,8 @@ public class NewTestActivity extends AppCompatActivity {
 
                 if(maxMark.getText().toString().equals("")){
                     maxMark.setText("0");
+                    maxMark.setSelection(maxMark.getText().length());
+
 
                 }
 
@@ -887,6 +891,8 @@ public class NewTestActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                maxMark.setSelection(maxMark.getText().length());
+
             }
 
             @Override
@@ -899,6 +905,7 @@ public class NewTestActivity extends AppCompatActivity {
 
                 if(maxMark.getText().toString().equals("")){
                     maxMark.setText("0");
+                    maxMark.setSelection(maxMark.getText().length());
 
                 }
 
@@ -924,6 +931,8 @@ public class NewTestActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                maxMark.setSelection(maxMark.getText().length());
+
             }
 
             @Override
@@ -936,6 +945,7 @@ public class NewTestActivity extends AppCompatActivity {
 
                 if(maxMark.getText().toString().equals("")){
                     maxMark.setText("0");
+                    maxMark.setSelection(maxMark.getText().length());
 
                 }
 
