@@ -24,7 +24,7 @@
             android:textSize="30sp" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/answerRunning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,8 +32,6 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="30dp"
             android:ems="10"
-            android:hint="Answer"
-            android:inputType="textMultiLine"
             android:lines="2"
             android:maxLines="10"
             android:textSize="25sp" />
@@ -65,7 +63,8 @@
                 android:layout_weight="25"
                 android:ems="10"
                 android:inputType="number"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textAlignment="center" />
 
             <TextView
                 android:layout_width="0dp"

@@ -28,6 +28,7 @@
         android:layout_below="@id/appbar"
         android:background="@drawable/backgroundrunning"
         android:orientation="vertical"
+        android:paddingBottom="10dp"
         android:paddingTop="40dp">
 
     </RelativeLayout>
@@ -49,6 +50,7 @@
             android:text="Previous" />
 
         <LinearLayout
+            android:id="@+id/indexLinear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="20"
@@ -64,7 +66,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/middle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="33.3"

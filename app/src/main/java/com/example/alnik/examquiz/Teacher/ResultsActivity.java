@@ -24,15 +24,16 @@ public class ResultsActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(Global.test.getTitle());
+        getSupportActionBar().setTitle(null);
+
+        TextView title = findViewById(R.id.title);
+        title.setText(Global.test.getTitle());
 
 
         mFrameLayout = findViewById(R.id.main_frame);
@@ -58,8 +59,6 @@ public class ResultsActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
     }
 
     private void setFragment(Fragment fragment) {

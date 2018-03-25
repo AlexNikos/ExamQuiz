@@ -20,6 +20,7 @@ import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.Teacher.ResultsActivity;
 import com.example.alnik.examquiz.models.Test;
 import com.example.alnik.examquiz.models.Time;
+import com.example.alnik.examquiz.models.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,9 +28,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,8 +89,35 @@ public class ResultsStudentsFragment extends Fragment {
                 FirebaseDatabase.getInstance().getReference("Users").child(studentID).child("fullname").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String name = (String) dataSnapshot.getValue();
+
+                        String name = (String)dataSnapshot.getValue();
                         viewHolder.setName(name);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                GenericTypeIndicator<ArrayList<Long>> s = new GenericTypeIndicator<ArrayList<Long>>() {};
+                FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(studentID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        ArrayList<Long> marks = dataSnapshot.getValue(s);
+
+                        long mark = 0;
+                        long maxMark = marks.get(marks.size()-1);
+                        for(long q: marks){
+
+                            mark = mark + q;
+                        }
+
+                        mark = mark - maxMark;
+
+                        viewHolder.setGrade(mark +"/" +maxMark);
 
                     }
 
@@ -105,9 +135,24 @@ public class ResultsStudentsFragment extends Fragment {
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
-                        Global.studentID = getRef(position).getKey();
-                        startActivity(new Intent(getActivity(), CheckTestActivity.class));
+
+                        String studentID = getRef(position).getKey();
+                        FirebaseDatabase.getInstance().getReference("Users").child(studentID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Global.student = dataSnapshot.getValue(User.class);
+                                Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(getActivity(), CheckTestActivity.class));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
 
                     }
                 });

@@ -93,18 +93,22 @@ public class CourseActivity extends AppCompatActivity
             public void onPageSelected(int position) {
 
                 if(position == 0){
+
                     toolbar.getMenu().clear();
                     toolbar.inflateMenu(R.menu.menu_database);
                 }
                 if(position == 1){
+
                     toolbar.getMenu().clear();
 
                 }
                 if(position == 2){
+
                     toolbar.getMenu().clear();
 
                 }
                 if(position == 3){
+
                     toolbar.getMenu().clear();
                     toolbar.inflateMenu(R.menu.menu_subs);
                     FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId())
@@ -126,7 +130,6 @@ public class CourseActivity extends AppCompatActivity
                                         toolbar.getMenu().getItem(0).setTitle(count +" new requests");
 
                                     }
-
                                 }
 
                                 @Override
@@ -134,7 +137,6 @@ public class CourseActivity extends AppCompatActivity
 
                                 }
                             });
-
                 }
 
             }

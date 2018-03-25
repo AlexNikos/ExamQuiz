@@ -12,6 +12,7 @@ public class Global {
 
     public static Course course;
     public static User user;
+    public static User student;
     public static Test test;
     public static long timeSubscripted;
     public static String studentID;

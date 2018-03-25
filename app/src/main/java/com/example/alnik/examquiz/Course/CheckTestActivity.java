@@ -4,13 +4,18 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
@@ -25,6 +30,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,7 +41,9 @@ public class CheckTestActivity extends AppCompatActivity {
     Button PreviousBtn ,NextBtn;
     TextView currentQuestionNumber;
     TextView totalQuestionsNumber;
+    TextView middle;
     RelativeLayout questionsInsert;
+    LinearLayout indexLinear;
 
     private FirebaseUser currentUser;
     private DatabaseReference answersTestsParticipation;
@@ -46,6 +56,7 @@ public class CheckTestActivity extends AppCompatActivity {
     ArrayList<Object> questions;
     ArrayList<String> ans;
     ArrayList<Long> marks;
+    long timePartitipation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,21 +66,28 @@ public class CheckTestActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(Global.test.getTitle());
 
-        answersTestsParticipation = FirebaseDatabase.getInstance().getReference("Answers").child("Tests").child(Global.test.getId()).child(Global.studentID);
-        marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.studentID);
+        answersTestsParticipation = FirebaseDatabase.getInstance().getReference("Answers").child("Tests").child(Global.test.getId()).child(Global.student.getId());
+        marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.student.getId());
+        FirebaseDatabase.getInstance().getReference("TestParticipations").child("Tests").child(Global.test.getId()).child(Global.student.getId()).child("time").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                timePartitipation = (long)dataSnapshot.getValue();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
         answersTestsParticipation.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
                 ans = dataSnapshot.getValue(t);
-                Log.d("test", "onDataChange: " +ans.toString());
 
                 GenericTypeIndicator<ArrayList<Long>> s = new GenericTypeIndicator<ArrayList<Long>>() {};
-
                 marksTestsParticipation.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -80,8 +98,6 @@ public class CheckTestActivity extends AppCompatActivity {
                             Log.d("test", "marks: " +l);
 
                         }
-
-
 
                         questions = new ArrayList<>();
 
@@ -117,10 +133,7 @@ public class CheckTestActivity extends AppCompatActivity {
                             }
                         }
 
-
-
-
-
+                        indexLinear = findViewById(R.id.indexLinear);
                         PreviousBtn = findViewById(R.id.PreviousBtn);
                         NextBtn = findViewById(R.id.NextBtn);
                         questionsInsert = findViewById(R.id.questionsInsert);
@@ -128,6 +141,7 @@ public class CheckTestActivity extends AppCompatActivity {
                         currentQuestionNumber.setText(String.valueOf(j));
                         totalQuestionsNumber = findViewById(R.id.totalQuestionsNumber);
                         totalQuestionsNumber.setText(String.valueOf(questions.size()));
+                        middle = findViewById(R.id.middle);
 
                         PreviousBtn.setEnabled(false);
                         PreviousBtn.setVisibility(View.INVISIBLE);
@@ -145,13 +159,11 @@ public class CheckTestActivity extends AppCompatActivity {
 
                         typeQuestion(i);
 
-
                         PreviousBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
 
                                 Log.d("test","i before is " +String.valueOf(i));
-
 
                                 if(j == questions.size() && questions.size() != 1){
                                     NextBtn.setEnabled(true);
@@ -171,13 +183,23 @@ public class CheckTestActivity extends AppCompatActivity {
 
                                 }
 
-
-
                                 if(i == 0){
 
                                     PreviousBtn.setEnabled(false);
                                     PreviousBtn.setVisibility(View.INVISIBLE);
 
+                                }
+
+                                if(indexLinear.getVisibility() == View.INVISIBLE){
+                                    NextBtn.setEnabled(true);
+                                    NextBtn.setVisibility(View.VISIBLE);
+                                    indexLinear.setVisibility(View.VISIBLE);
+                                    i = questions.size() - 1;
+                                    j = i+1;
+                                    typeQuestion(i);
+                                    NextBtn.setText("Overal Score");
+                                    currentQuestionNumber.setText(String.valueOf(j));
+                                    totalQuestionsNumber.setText(String.valueOf(questions.size()));
                                 }
 
                                 Log.d("test", "i after is " +String.valueOf(i));
@@ -211,22 +233,26 @@ public class CheckTestActivity extends AppCompatActivity {
                                     }
 
                                     if(j == questions.size()){
-                                        // NextBtn.setText("Submit");
-                                        NextBtn.setEnabled(false);
-                                        NextBtn.setVisibility(View.INVISIBLE);
+
+                                        NextBtn.setText("Overal Score");
+                                        //NextBtn.setEnabled(false);
+                                        //NextBtn.setVisibility(View.INVISIBLE);
                                     }
 
                                 }
-//                        else if(NextBtn.getText().equals("Submit")){
-//
-//                            Toast.makeText(getApplicationContext(), "End", Toast.LENGTH_LONG).show();
-//
-//                        }
+                        else if(NextBtn.getText().equals("Overal Score")){
+
+                                    questionsInsert.removeAllViews();
+                                    View mView = overalScore();
+                                    questionsInsert.addView(mView);
+                                    NextBtn.setEnabled(false);
+                                    NextBtn.setVisibility(View.INVISIBLE);
+                                    indexLinear.setVisibility(View.INVISIBLE);
+
+                        }
 
                             }
                         });
-
-
                     }
 
                     @Override
@@ -344,16 +370,81 @@ public class CheckTestActivity extends AppCompatActivity {
         LayoutInflater factory = LayoutInflater.from(getApplicationContext());
         final View shortAnswerQuestion = factory.inflate(R.layout.checking_shortanswer, null);
         final TextView questionShortAnswerEnter = shortAnswerQuestion.findViewById(R.id.questionRunning);
-        final EditText answerShortAnswer = shortAnswerQuestion.findViewById(R.id.answerRunning);
+        final TextView answerShortAnswer = shortAnswerQuestion.findViewById(R.id.answerRunning);
         final TextView maxMark = shortAnswerQuestion.findViewById(R.id.maxMark);
         final EditText mark = shortAnswerQuestion.findViewById(R.id.mark);
         questionShortAnswerEnter.setText(question.getQuestion());
         mark.setText(String.valueOf(grade));
-        maxMark.setText(String.valueOf(maxGrade));
+        maxMark.setText(String.valueOf(question.getMaxGrade()));
 
         if(ans.get(i) != null){
             answerShortAnswer.setText(ans.get(i));
         }
+
+        mark.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                mark.setSelection(mark.getText().length());
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(mark.getText().toString().equals("")){
+                    mark.setText("0");
+                    mark.setSelection(mark.getText().length());
+
+
+                }
+
+                if( Long.parseLong( mark.getText().toString()) > question.getMaxGrade()){
+
+                    Toast.makeText(getApplicationContext(), "Max mark is " +question.getMaxGrade(), Toast.LENGTH_LONG).show();
+                    mark.setText("0");
+                    mark.setSelection(mark.getText().length());
+
+                }
+                marks.set(i, Long.parseLong( mark.getText().toString()));
+
+                for(long g: marks){
+                    Log.d("test", "shortAnswer: " +g);
+
+                }
+
+            }
+        });
+
+//        mark.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//
+//                if(mark.getText().toString().equals("")){
+//                    mark.setText("0");
+//
+//                }
+//
+//                if( Long.parseLong( mark.getText().toString()) > question.getMaxGrade()){
+//
+//                    Toast.makeText(getApplicationContext(), "Max mark is " +question.getMaxGrade(), Toast.LENGTH_LONG).show();
+//                    mark.setText("0");
+//                }
+//                marks.set(i, Long.parseLong( mark.getText().toString()));
+//
+//                for(long g: marks){
+//                    Log.d("test", "shortAnswer: " +g);
+//
+//                }
+//                return false;
+//            }
+//        });
+
 
 
 
@@ -387,30 +478,94 @@ public class CheckTestActivity extends AppCompatActivity {
 
     }
 
-    public long gradeCalculate(ArrayList<Object> questions, String[] ans){
-        long grade = 0;
 
-        for(Object w: questions){
 
-            if(w.getClass() == MultipleChoice.class) {
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
-                if( ans[questions.indexOf(w)].equals( ((MultipleChoice)w).getAnswer()) ){
+        FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.student.getId()).setValue(marks, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if(databaseError == null){
 
-                    grade = grade + ((MultipleChoice)w).getMaxGrade();
+                    FirebaseDatabase.getInstance().getReference("Marks").child("Users").child(Global.student.getId()).child(Global.test.getId()).setValue(marks, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError == null){
+                                finish();
+                            }
+                        }
+                    });
+
                 }
+            }
+        });
+    }
 
+    public View overalScore(){
 
-            } else if(w.getClass() == TrueFalse.class){
+        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        final View score = factory.inflate(R.layout.checking_score, null);
+        final TextView name = score.findViewById(R.id.nameS);
+        final TextView email = score.findViewById(R.id.emailS);
+        final TextView time = score.findViewById(R.id.timeS);
+        final TextView mark = score.findViewById(R.id.mark);
+        final TextView maxMark = score.findViewById(R.id.maxMark);
+        final LinearLayout insertPoint = score.findViewById(R.id.insertPoint);
 
-                if( ans[questions.indexOf(w)] == String.valueOf( ((TrueFalse)w).getAnswer()) ){
+        name.setText(Global.student.getFullname());
+        email.setText(Global.student.getEmail());
+        time.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(timePartitipation));
 
-                    grade = grade + ((TrueFalse)w).getMaxGrade();
-                }
+        long markt = 0;
+        long maxMarkt = marks.get(marks.size()-1);
+        for(long q: marks){
+
+            markt = markt + q;
+        }
+        markt = markt - maxMarkt;
+
+        mark.setText(String.valueOf(markt));
+        maxMark.setText(String.valueOf(maxMarkt));
+
+        int k = 1;
+        for(int j = 0; j < marks.size()-1; j++){
+
+            LayoutInflater factory2 = LayoutInflater.from(getApplicationContext());
+            final View score2 = factory.inflate(R.layout.single_overal_check, null);
+            final TextView question = score2.findViewById(R.id.question);
+            final TextView markTextView = score2.findViewById(R.id.mark);
+
+//            question.setText("Question " +k +" :");
+//            markTextView.setText(marks.get(j) +"/" +maxMarkt);
+
+            if(questions.get(j).getClass() == MultipleChoice.class){
+
+                question.setText("Question " +k +" :");
+                markTextView.setText(marks.get(j) +"/" +((MultipleChoice)questions.get(j)).getMaxGrade());
+                k++;
+
+            } else if(questions.get(j).getClass() == TrueFalse.class){
+
+                question.setText("Question " +k +" :");
+                markTextView.setText(marks.get(j) +"/" +((TrueFalse)questions.get(j)).getMaxGrade());
+                k++;
+
+            } else if(questions.get(j).getClass() == ShortAnswer.class){
+
+                question.setText("Question " +k +" :" );
+                markTextView.setText(marks.get(j) +"/" +((ShortAnswer)questions.get(j)).getMaxGrade());
+                k++;
 
             }
 
+            insertPoint.addView(score2);
+
         }
 
-        return grade;
+        return score;
     }
+
+
 }
