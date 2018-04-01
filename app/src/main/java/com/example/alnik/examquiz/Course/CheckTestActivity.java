@@ -52,7 +52,7 @@ public class CheckTestActivity extends AppCompatActivity {
 
 
     int i = 0, j = 1;
-    long grade = 0, maxGrade = 0;
+    long maxGrade = 0;
     ArrayList<Object> questions;
     ArrayList<String> ans;
     ArrayList<Long> marks;
@@ -65,6 +65,17 @@ public class CheckTestActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(Global.test.getTitle());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+
+            }
+        });
 
         answersTestsParticipation = FirebaseDatabase.getInstance().getReference("Answers").child("Tests").child(Global.test.getId()).child(Global.student.getId());
         marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.student.getId());

@@ -40,6 +40,17 @@ public class RequestsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarRequests);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Student Requests");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+
+            }
+        });
 
         mCurrentuser = FirebaseAuth.getInstance().getCurrentUser();
         courseRequestsRef = FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId());
@@ -97,7 +108,6 @@ public class RequestsActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(id).child(Global.course.getId()).setValue(timeSub);
                         FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId()).child(id).removeValue();
                         FirebaseDatabase.getInstance().getReference("Requests").child("Users").child(id).child(Global.course.getId()).removeValue();
-                        Global.course.setSubscribers(Global.course.getSubscribers() + 1);
                         FirebaseDatabase.getInstance().getReference("Courses").child(Global.course.getId()).setValue(Global.course);
 
                     }

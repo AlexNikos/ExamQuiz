@@ -205,7 +205,20 @@ public class TeacherCourseFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Course mCourse = dataSnapshot.getValue(Course.class);
                         viewHolder.setName(mCourse.getName());
-                        viewHolder.setSubs(mCourse.getSubscribers());
+                        FirebaseDatabase.getInstance().getReference("Subscriptions").child("Courses").child(mCourse.getId()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                long subscount = dataSnapshot.getChildrenCount();
+                                viewHolder.setSubs(subscount);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
 
                     @Override

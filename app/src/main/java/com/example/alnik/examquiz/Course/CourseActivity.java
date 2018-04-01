@@ -293,6 +293,11 @@ public class CourseActivity extends AppCompatActivity
 
             FirebaseAuth.getInstance().signOut();
             if (mAuth == null){
+                Global.currentUser = null;
+                Global.test = null;
+                Global.student = null;
+                Global.course = null;
+                Global.timeSubscripted = 0;
                 startActivity(new Intent(CourseActivity.this, LoginActivity.class));
                 finish();
             }

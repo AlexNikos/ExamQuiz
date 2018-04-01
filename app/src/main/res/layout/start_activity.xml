@@ -10,5 +10,9 @@
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/quiz_150908823" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:hapticFeedbackEnabled="false"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/drdr" />
 </RelativeLayout>

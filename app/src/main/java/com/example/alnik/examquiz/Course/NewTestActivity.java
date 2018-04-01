@@ -643,9 +643,6 @@ public class NewTestActivity extends AppCompatActivity {
                                             Log.d("test", ((ShortAnswer)w).getType());
 
                                         }
-
-
-
                                     }
 
                                     View shortAnswerView =  insertShortAnswer(question);
@@ -824,8 +821,6 @@ public class NewTestActivity extends AppCompatActivity {
             question.setText(mQuestion);
         }
     }
-
-
 
     public View insertMultipleChoice( MultipleChoice question ){
         Log.d("test", question.getQuestion());

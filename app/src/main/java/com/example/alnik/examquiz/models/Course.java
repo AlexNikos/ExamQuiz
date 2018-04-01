@@ -12,7 +12,6 @@ public class Course {
     private String id;
     private String info;
     private String site;
-    private long subscribers;
 
     public Course() {
     }
@@ -24,7 +23,6 @@ public class Course {
         this.id = id;
         this.info = info;
         this.site = site;
-        subscribers = 0;
     }
 
     public String getName() {
@@ -75,11 +73,4 @@ public class Course {
         this.site = site;
     }
 
-    public Long getSubscribers() {
-        return subscribers;
-    }
-
-    public void setSubscribers(Long subscribers) {
-        this.subscribers = subscribers;
-    }
 }

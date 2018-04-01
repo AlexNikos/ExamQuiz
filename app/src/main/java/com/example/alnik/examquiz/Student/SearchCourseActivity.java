@@ -10,12 +10,14 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.models.Course;
 import com.example.alnik.examquiz.models.Time;
@@ -38,6 +40,7 @@ public class SearchCourseActivity extends AppCompatActivity {
     private DatabaseReference mCourses;
     //private DatabaseReference userRequest;
     private DatabaseReference requestRef;
+    private DatabaseReference subscriptionsRef;
     FirebaseRecyclerAdapter<Course, searchViewHolder> searchRecycleViewAdapter1;
 
 
@@ -45,12 +48,25 @@ public class SearchCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_course);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+
+            }
+        });
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         mCourses = FirebaseDatabase.getInstance().getReference("Courses");
         requestRef = FirebaseDatabase.getInstance().getReference("Requests");
+        subscriptionsRef = FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(Global.currentUser.getId());
         searchView = findViewById(R.id.searchView);
         searchRecycleView = findViewById(R.id.searchRecycleView);
         searchRecycleView.hasFixedSize();
@@ -98,36 +114,72 @@ public class SearchCourseActivity extends AppCompatActivity {
                         viewHolder.setName(model.getName());
                         viewHolder.setOwnerName(model.getOwnersName());
 
-                        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        String courseID = getRef(position).getKey();
+
+                        requestRef.child("Users").child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Log.d("test", courseID);
+
+                                Log.d("test", dataSnapshot.toString());
+                                if(dataSnapshot.hasChild(courseID)){
+
+                                    viewHolder.request.setText("Cancel Request");
+
+                                } else {
+
+                                    subscriptionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            if(dataSnapshot.hasChild(courseID)){
+                                                viewHolder.request.setText("Subscribed");
+                                                viewHolder.request.setEnabled(false);
+
+                                            } else{
+
+                                                viewHolder.request.setText("Request");
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        viewHolder.request.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
 
                                 String courseID = getRef(position).getKey();
 
-                                requestRef.child("Users").child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(viewHolder.request.getText().toString().equals("Request")){
 
-                                        Log.d("test", courseID);
+                                    requestRef.child("Users").child(mCurrentUser.getUid()).child(courseID).setValue(new Time(System.currentTimeMillis()));
+                                    requestRef.child("Courses").child(courseID).child(mCurrentUser.getUid()).setValue(new Time(System.currentTimeMillis()));
+                                    viewHolder.request.setText("Cancel Request");
 
-                                        Log.d("test", dataSnapshot.toString());
-                                        if(!dataSnapshot.hasChild(courseID)){
 
-                                            requestRef.child("Users").child(mCurrentUser.getUid()).child(courseID).setValue(new Time(System.currentTimeMillis()));
-                                            requestRef.child("Courses").child(courseID).child(mCurrentUser.getUid()).setValue(new Time(System.currentTimeMillis()));
+                                } else if(viewHolder.request.getText().toString().equals("Cancel Request")){
 
-                                        } else {
+                                    requestRef.child("Users").child(mCurrentUser.getUid()).child(courseID).removeValue();
+                                    requestRef.child("Courses").child(courseID).child(mCurrentUser.getUid()).removeValue();
+                                    viewHolder.request.setText("Request");
 
-                                            Toast.makeText(getApplicationContext(), "You already have requested", Toast.LENGTH_LONG).show();
 
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
+                                }
 
                             }
                         });
@@ -154,42 +206,75 @@ public class SearchCourseActivity extends AppCompatActivity {
                 viewHolder.setName(model.getName());
                 viewHolder.setOwnerName(model.getOwnersName());
 
+                String courseID = getRef(position).getKey();
 
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                requestRef.child("Users").child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        String courseID = getRef(position).getKey();
+                        Log.d("test", courseID);
 
-                        requestRef.child("Users").child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d("test", dataSnapshot.toString());
+                        if(dataSnapshot.hasChild(courseID)){
 
-                                Log.d("test", courseID);
+                            viewHolder.request.setText("Cancel Request");
 
-                                Log.d("test", dataSnapshot.toString());
-                                if(!dataSnapshot.hasChild(courseID)){
+                        } else {
 
-                                    requestRef.child("Users").child(mCurrentUser.getUid()).child(courseID).setValue(new Time(System.currentTimeMillis()));
-                                    requestRef.child("Courses").child(courseID).child(mCurrentUser.getUid()).setValue(new Time(System.currentTimeMillis()));
+                            subscriptionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                } else {
+                                    if(dataSnapshot.hasChild(courseID)){
+                                        viewHolder.request.setText("Subscribed");
+                                        viewHolder.request.setEnabled(false);
 
-                                    Toast.makeText(getApplicationContext(), "You already have requested", Toast.LENGTH_LONG).show();
+                                    } else{
+
+                                        viewHolder.request.setText("Request");
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
                                 }
-                            }
+                            });
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                        }
+                    }
 
-                            }
-                        });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
                     }
                 });
 
+                viewHolder.request.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+                       String courseID = getRef(position).getKey();
+
+                       if(viewHolder.request.getText().toString().equals("Request")){
+
+                           requestRef.child("Users").child(mCurrentUser.getUid()).child(courseID).setValue(new Time(System.currentTimeMillis()));
+                           requestRef.child("Courses").child(courseID).child(mCurrentUser.getUid()).setValue(new Time(System.currentTimeMillis()));
+                           viewHolder.request.setText("Cancel Request");
+
+
+                       } else if(viewHolder.request.getText().toString().equals("Cancel Request")){
+
+                           requestRef.child("Users").child(mCurrentUser.getUid()).child(courseID).removeValue();
+                           requestRef.child("Courses").child(courseID).child(mCurrentUser.getUid()).removeValue();
+                           viewHolder.request.setText("Request");
+
+
+                       }
+
+                    }
+                });
             }
         };
         searchRecycleView.setAdapter(searchRecycleViewAdapter1);
@@ -201,6 +286,7 @@ public class SearchCourseActivity extends AppCompatActivity {
         View mView;
         TextView searchName;
         TextView ownerName;
+        Button request;
         View view;
 
         public searchViewHolder(View itemView) {
@@ -208,6 +294,7 @@ public class SearchCourseActivity extends AppCompatActivity {
             mView = itemView;
             searchName = itemView.findViewById(R.id.searchName);
             ownerName = itemView.findViewById(R.id.ownerName);
+            request = itemView.findViewById(R.id.request);
 
             view = itemView.findViewById(R.id.single_searchCourse);
 

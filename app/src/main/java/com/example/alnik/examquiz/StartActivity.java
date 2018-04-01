@@ -50,16 +50,18 @@ public class StartActivity extends AppCompatActivity {
 
                     mRegDialog.dismiss();
 
-                    User user = dataSnapshot.getValue(User.class);
-                    Toast.makeText(StartActivity.this, "Hello " +user.getName(), Toast.LENGTH_LONG).show();
+                    //User user = dataSnapshot.getValue(User.class);
+                    Global.currentUser = dataSnapshot.getValue(User.class);
 
-                    if(user.getType().equals("Student")){
+                    Toast.makeText(StartActivity.this, "Hello " +Global.currentUser.getName(), Toast.LENGTH_LONG).show();
+
+                    if(Global.currentUser.getType().equals("Student")){
                         Intent accountIntent = new Intent(StartActivity.this, StudentActivity.class );
                         accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(accountIntent);
                         finish();
 
-                    } else if(user.getType().equals("Teacher")){
+                    } else if(Global.currentUser.getType().equals("Teacher")){
                         Intent accountIntent = new Intent(StartActivity.this, TeacherActivity.class );
                         accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(accountIntent);

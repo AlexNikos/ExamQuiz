@@ -1,6 +1,7 @@
 package com.example.alnik.examquiz.Student;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,10 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.Course.CheckTestActivity;
 import com.example.alnik.examquiz.Course.TestsCourseFragment;
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.models.Test;
+import com.example.alnik.examquiz.models.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -100,7 +103,22 @@ public class TestsStudentFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
 
-                                    Toast.makeText(getContext(), "You have already participated in this test.", Toast.LENGTH_LONG).show();
+                                    testRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            Global.test = dataSnapshot.getValue(Test.class);
+                                            Log.d("test", "testID is  " +Global.test.getId());
+                                            Toast.makeText(getContext(), "Your results for " +Global.test.getTitle() , Toast.LENGTH_LONG).show();
+                                            startActivity(new Intent(getContext(), StudentScoreActivity.class));
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 } else {
 
                                     testRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -126,8 +144,6 @@ public class TestsStudentFragment extends Fragment {
 
                             }
                         });
-
-
                     }
                 });
 

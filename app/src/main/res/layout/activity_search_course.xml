@@ -12,22 +12,31 @@
         android:theme="@style/AppBarOverlay"
         android:id="@+id/appBarLayout">
 
-        <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--app:popupTheme="@style/PopupOverlay" />-->
 
-        <android.support.v7.widget.SearchView
-            android:id="@+id/searchView"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
-            android:iconifiedByDefault="false"
-            android:queryHint="Search Course"
-            app:queryHint="Search Course"
-            app:iconifiedByDefault="false"/>
+            app:popupTheme="@style/PopupOverlay">
+
+            <android.support.v7.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@color/colorPrimaryDark"
+                android:foregroundGravity="right"
+                android:gravity="right"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search Course"
+                app:iconifiedByDefault="false"
+                app:queryHint="Search Course"
+                app:searchIcon="@null" />
+
+        </android.support.v7.widget.Toolbar>
+
+
 
     </android.support.design.widget.AppBarLayout>
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/single_searchCourse"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:layout_margin="5dp"
     app:cardCornerRadius="10dp">
 
@@ -15,9 +15,8 @@
             android:id="@+id/searchName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
+            android:layout_alignStart="@+id/textView41"
+            android:layout_marginTop="15dp"
             android:text="TextView"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -40,5 +39,14 @@
             android:layout_marginStart="6dp"
             android:layout_toEndOf="@+id/textView41"
             android:text="Name" />
+
+        <Button
+            android:id="@+id/request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Status" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

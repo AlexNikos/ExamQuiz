@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.LoginActivity;
 import com.example.alnik.examquiz.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -163,6 +164,11 @@ public class TeacherActivity extends AppCompatActivity
 
             FirebaseAuth.getInstance().signOut();
             if (mAuth == null){
+                Global.currentUser = null;
+                Global.test = null;
+                Global.student = null;
+                Global.course = null;
+                Global.timeSubscripted = 0;
                 startActivity(new Intent(TeacherActivity.this, LoginActivity.class));
                 finish();
             }

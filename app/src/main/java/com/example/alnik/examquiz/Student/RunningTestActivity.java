@@ -1,5 +1,8 @@
 package com.example.alnik.examquiz.Student;
 
+import android.content.Intent;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -32,12 +35,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class RunningTestActivity extends AppCompatActivity {
 
     Button PreviousBtn ,NextBtn;
     TextView currentQuestionNumber;
     TextView totalQuestionsNumber;
+    TextView timer;
     RelativeLayout questionsInsert;
 
     private FirebaseUser currentUser;
@@ -48,14 +55,14 @@ public class RunningTestActivity extends AppCompatActivity {
     private DatabaseReference marksTestsParticipation;
     private DatabaseReference marksUsersParticipation;
 
-
-
-
     int i = 0, j = 1;
     long grade = 0, maxGrade = 0;
     ArrayList<Object> questions;
     String[] ans;
     long[] marks;
+
+    CountDownTimer myCountDownTimerObject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,21 @@ public class RunningTestActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(Global.test.getTitle());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                finish();
+
+            }
+        });
+
+        timer = findViewById(R.id.timer);
+
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         testUsersParticipation = FirebaseDatabase.getInstance().getReference("TestParticipations").child("Users").child(currentUser.getUid()).child(Global.test.getId());
@@ -126,6 +148,21 @@ public class RunningTestActivity extends AppCompatActivity {
 
         PreviousBtn.setEnabled(false);
         PreviousBtn.setVisibility(View.INVISIBLE);
+
+        long time = Global.test.getEndDate() - System.currentTimeMillis();
+        myCountDownTimerObject = new CountDownTimer(time, 1000)
+        {
+            public void onTick(long millisUntilFinished) {
+
+                formattedTimeLeft(millisUntilFinished);
+            }
+
+            public void onFinish() {
+
+                submitTest();
+
+            }
+        }.start();
 
         if(questions.size() == 1){
 
@@ -201,44 +238,22 @@ public class RunningTestActivity extends AppCompatActivity {
 
                 } else if(NextBtn.getText().equals("Submit")){
 
-                    marks[marks.length-1] = maxGrade;
+                    submitTest();
 
-
-                    Time time = new Time(System.currentTimeMillis());
-                    testTestsParticipation.setValue(time, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                            if(databaseError == null){
-
-                                testUsersParticipation.setValue(time, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                        if(databaseError == null){
-
-                                            List ansList = new ArrayList<String>(Arrays.asList(ans));
-                                            List marksList = new ArrayList<>();
-                                            for(long l : marks) marksList.add(l);
-                                            answersTestsParticipation.setValue(ansList);
-                                            answersUsersParticipation.setValue(ansList);
-                                            marksTestsParticipation.setValue(marksList);
-                                            marksUsersParticipation.setValue(marksList);
-                                            Toast.makeText(getApplicationContext(), "Test successfully submitted.", Toast.LENGTH_LONG).show();
-                                            finish();
-                                        }
-
-                                    }
-                                });
-                            }
-                        }
-                    });
                 }
 
                 Log.d("test", "i after is " +String.valueOf(i));
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        myCountDownTimerObject.cancel();
+
     }
 
     public View multiple(MultipleChoice question, String choice){
@@ -513,26 +528,62 @@ public class RunningTestActivity extends AppCompatActivity {
 
     }
 
-    public long maxGradeCalculate(ArrayList<Object> questions){
-        long grade = 0;
+    void formattedTimeLeft(long millis) {
 
-        for(Object w: questions){
+        int days = (int) (MILLISECONDS.toDays(millis) % 24);
+        int hrs = (int) (MILLISECONDS.toHours(millis) % 24);
+        int min = (int) (MILLISECONDS.toMinutes(millis) % 60);
+        int sec = (int) (MILLISECONDS.toSeconds(millis) % 60);
+        //int mls = (int) (millis % 1000);
+        if(days == 0){
 
-            if(w.getClass() == MultipleChoice.class) {
+            timer.setText( String.format("Time left: %02d:%02d:%02d", hrs, min, sec ) );
 
-                    grade = grade + ((MultipleChoice)w).getMaxGrade();
+        } else{
 
-            } else if(w.getClass() == TrueFalse.class){
+            timer.setText( String.format("Time left: %d days and %02d:%02d:%02d", days, hrs, min, sec));
 
-                    grade = grade + ((TrueFalse)w).getMaxGrade();
-
-            } else if(w.getClass() == ShortAnswer.class){
-
-                grade = grade + ((ShortAnswer)w).getMaxGrade();
-
-            }
         }
-        return grade;
+
+    }
+
+
+
+    public void submitTest(){
+
+        marks[marks.length-1] = maxGrade;
+
+        Time time = new Time(System.currentTimeMillis());
+        testTestsParticipation.setValue(time, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                if(databaseError == null){
+
+                    testUsersParticipation.setValue(time, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                            if(databaseError == null){
+
+                                List ansList = new ArrayList<String>(Arrays.asList(ans));
+                                List marksList = new ArrayList<>();
+                                for(long l : marks) marksList.add(l);
+                                answersTestsParticipation.setValue(ansList);
+                                answersUsersParticipation.setValue(ansList);
+                                marksTestsParticipation.setValue(marksList);
+                                marksUsersParticipation.setValue(marksList);
+                                Toast.makeText(getApplicationContext(), "Test successfully submitted.", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+
+                        }
+                    });
+                }
+            }
+        });
+
+
     }
 }
 

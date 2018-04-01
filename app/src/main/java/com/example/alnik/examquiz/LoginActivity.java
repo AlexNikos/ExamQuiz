@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.alnik.examquiz.Student.StudentActivity;
 import com.example.alnik.examquiz.Teacher.TeacherActivity;
+import com.example.alnik.examquiz.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -195,14 +196,31 @@ public class LoginActivity extends AppCompatActivity {
                              mUser = mAuth.getCurrentUser();
 
                              myRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
-                             nameRef = myRef.child("name");
-                             typeRef = myRef.child("type");
+                             //nameRef = myRef.child("name");
+                             //typeRef = myRef.child("type");
 
-                             nameRef.addValueEventListener(new ValueEventListener() {
+                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                  @Override
                                  public void onDataChange(DataSnapshot dataSnapshot) {
-                                     Toast.makeText(LoginActivity.this, "Hello " +dataSnapshot.getValue().toString(), Toast.LENGTH_LONG)
+
+                                     Global.currentUser = dataSnapshot.getValue(User.class);
+                                     Toast.makeText(LoginActivity.this, "Hello " +Global.currentUser.getFullname(), Toast.LENGTH_LONG)
                                              .show();
+
+                                     if(Global.currentUser.getType().equals("Student")){
+                                         Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
+                                         accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                         startActivity(accountIntent);
+                                         finish();
+
+                                     } else if(Global.currentUser.getType().equals("Teacher")){
+                                         Intent accountIntent = new Intent(LoginActivity.this, TeacherActivity.class );
+                                         accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                         startActivity(accountIntent);
+                                         finish();
+
+                                     }
+
                                  }
 
                                  @Override
@@ -211,36 +229,49 @@ public class LoginActivity extends AppCompatActivity {
                                  }
                              });
 
-                            Log.d("test", myRef.toString());
-                            typeRef.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Log.d("test", dataSnapshot.toString());
+//                             nameRef.addValueEventListener(new ValueEventListener() {
+//                                 @Override
+//                                 public void onDataChange(DataSnapshot dataSnapshot) {
+//                                     Toast.makeText(LoginActivity.this, "Hello " +dataSnapshot.getValue().toString(), Toast.LENGTH_LONG)
+//                                             .show();
+//                                 }
+//
+//                                 @Override
+//                                 public void onCancelled(DatabaseError databaseError) {
+//
+//                                 }
+//                             });
 
-                                    String type = dataSnapshot.getValue().toString();
-                                    Log.d("test", "type on server is  " + type);
-                                    if(type.equals("Student")){
-                                        Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
-                                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(accountIntent);
-                                        finish();
-
-                                    } else if(type.equals("Teacher")){
-                                        Intent accountIntent = new Intent(LoginActivity.this, TeacherActivity.class );
-                                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(accountIntent);
-                                        finish();
-
-                                    }
-
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    Log.d("test","onCancelled");
-
-                                }
-                            });
+//                            Log.d("test", myRef.toString());
+//                            typeRef.addValueEventListener(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(DataSnapshot dataSnapshot) {
+//                                    Log.d("test", dataSnapshot.toString());
+//
+//                                    String type = dataSnapshot.getValue().toString();
+//                                    Log.d("test", "type on server is  " + type);
+//                                    if(type.equals("Student")){
+//                                        Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
+//                                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                        startActivity(accountIntent);
+//                                        finish();
+//
+//                                    } else if(type.equals("Teacher")){
+//                                        Intent accountIntent = new Intent(LoginActivity.this, TeacherActivity.class );
+//                                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                        startActivity(accountIntent);
+//                                        finish();
+//
+//                                    }
+//
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(DatabaseError databaseError) {
+//                                    Log.d("test","onCancelled");
+//
+//                                }
+//                            });
 
                         }else {
                             mRegDialog.hide();
