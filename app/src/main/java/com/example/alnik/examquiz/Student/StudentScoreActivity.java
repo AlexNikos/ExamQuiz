@@ -64,14 +64,20 @@ public class StudentScoreActivity extends AppCompatActivity {
         NextBtn = findViewById(R.id.NextBtn);
         questionsInsert = findViewById(R.id.questionsInsert);
 
-
         marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.currentUser.getId());
+
+        try{
+            marksTestsParticipation.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
         FirebaseDatabase.getInstance().getReference("TestParticipations").child("Tests").child(Global.test.getId()).child(Global.currentUser.getId()).child("time").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 timePartitipation = (long)dataSnapshot.getValue();
-
-
 
                 GenericTypeIndicator<ArrayList<Long>> s = new GenericTypeIndicator<ArrayList<Long>>() {};
                 marksTestsParticipation.addListenerForSingleValueEvent(new ValueEventListener() {

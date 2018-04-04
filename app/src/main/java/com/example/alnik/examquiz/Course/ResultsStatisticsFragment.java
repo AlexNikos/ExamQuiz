@@ -54,10 +54,7 @@ import java.util.List;
 public class ResultsStatisticsFragment extends Fragment {
 
     View mView;
-    //private PieChart mChart;
     LinearLayout insert;
-    //private float[] ydata = {25.0f, 75.0f};
-    //private String[] xdata = {"aaa", "bbb"};
 
 
     DatabaseReference answersTestsParticipation;
@@ -85,13 +82,22 @@ public class ResultsStatisticsFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_results_statistics, container, false);
 
-        answersTestsParticipation = FirebaseDatabase.getInstance().getReference("Answers").child("Tests").child(Global.test.getId());// .child(Global.student.getId());
-        marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId());// .child(Global.student.getId());
+        answersTestsParticipation = FirebaseDatabase.getInstance().getReference("Answers").child("Tests").child(Global.test.getId());
+        marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId());
         usersTestsParticipation = FirebaseDatabase.getInstance().getReference("TestParticipations").child("Tests").child(Global.test.getId());
         courseSubscribers = FirebaseDatabase.getInstance().getReference("Subscriptions").child("Courses").child(Global.course.getId());
 
-        insert = mView.findViewById(R.id.insert);
+        try{
+            answersTestsParticipation.keepSynced(true);
+            marksTestsParticipation.keepSynced(true);
+            usersTestsParticipation.keepSynced(true);
+            courseSubscribers.keepSynced(true);
 
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
+        insert = mView.findViewById(R.id.insert);
 
         loadQuestions();
         calculateParticipation();
@@ -206,7 +212,7 @@ public class ResultsStatisticsFragment extends Fragment {
                 ArrayList<Long> marks = new ArrayList<>();
                 marks = dataSnapshot.getValue(s);
                 long sum = 0;
-                for(int i = 0; i < marks.size()-2; i++){
+                for(int i = 0; i < marks.size()-1; i++){
                     sum = sum + marks.get(i);
                 }
 
@@ -322,7 +328,7 @@ public class ResultsStatisticsFragment extends Fragment {
         xAxis.setGranularity(1f);
         xAxis.setGranularityEnabled(true);
 
-        int[] colors = new int[] {Color.GREEN, Color.RED, Color.GRAY};
+        int[] colors = new int[] {Color.GREEN, Color.RED, Color.LTGRAY};
 
         BarDataSet barDataSet = new BarDataSet(barEntries,null);
         barDataSet.setValueTextSize(14);

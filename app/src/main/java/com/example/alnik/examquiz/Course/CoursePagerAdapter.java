@@ -49,7 +49,7 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
                 return "DATABASE";
 
             case 1:
-                return "TESTS";
+                return "ASSIGNMENTS";
 
             case 2:
                 return "ANNOUNCEMENTS";

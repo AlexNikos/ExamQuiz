@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -55,6 +56,13 @@ public class RequestsActivity extends AppCompatActivity {
         mCurrentuser = FirebaseAuth.getInstance().getCurrentUser();
         courseRequestsRef = FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId());
 
+        try{
+            courseRequestsRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
         requestsRecycleView = findViewById(R.id.requestsRecycleView);
         requestsRecycleView.hasFixedSize();
         requestsRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -91,12 +99,12 @@ public class RequestsActivity extends AppCompatActivity {
                     }
                 });
 //---------------------------------action on click a Course----------------------------------------------------------
-                viewHolder.view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),"Button pressed", Toast.LENGTH_LONG).show();
-                    }
-                });
+//                viewHolder.view.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Toast.makeText(getApplicationContext(),"Button pressed", Toast.LENGTH_LONG).show();
+//                    }
+//                });
 
                 viewHolder.acceptRequest.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -108,7 +116,7 @@ public class RequestsActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(id).child(Global.course.getId()).setValue(timeSub);
                         FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId()).child(id).removeValue();
                         FirebaseDatabase.getInstance().getReference("Requests").child("Users").child(id).child(Global.course.getId()).removeValue();
-                        FirebaseDatabase.getInstance().getReference("Courses").child(Global.course.getId()).setValue(Global.course);
+                        //FirebaseDatabase.getInstance().getReference("Courses").child(Global.course.getId()).setValue(Global.course);
 
                     }
                 });
@@ -118,6 +126,9 @@ public class RequestsActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         Toast.makeText(getApplicationContext(), "Rejected\n" +id, Toast.LENGTH_LONG).show();
+                        FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId()).child(id).removeValue();
+                        FirebaseDatabase.getInstance().getReference("Requests").child("Users").child(id).child(Global.course.getId()).removeValue();
+
 
                     }
                 });

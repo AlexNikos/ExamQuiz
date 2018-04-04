@@ -71,20 +71,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-//        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//
-//                mUser = firebaseAuth.getCurrentUser();
-//
-//                if(mUser != null){
-//                    Toast.makeText(LoginActivity.this, "Signed in as: " + mUser.getEmail(), Toast.LENGTH_LONG).show();
-//                }
-//
-//            }
-//        };
-
-
         emailField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -180,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(String email, String password){
 
         mRegDialog.setTitle("Loging in...");
-        mRegDialog.setMessage("Please wait while you login your account!");
+        mRegDialog.setMessage("Please wait!");
         mRegDialog.setCanceledOnTouchOutside(false);
         mRegDialog.show();
 
@@ -196,8 +182,6 @@ public class LoginActivity extends AppCompatActivity {
                              mUser = mAuth.getCurrentUser();
 
                              myRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
-                             //nameRef = myRef.child("name");
-                             //typeRef = myRef.child("type");
 
                              myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                  @Override
@@ -229,49 +213,7 @@ public class LoginActivity extends AppCompatActivity {
                                  }
                              });
 
-//                             nameRef.addValueEventListener(new ValueEventListener() {
-//                                 @Override
-//                                 public void onDataChange(DataSnapshot dataSnapshot) {
-//                                     Toast.makeText(LoginActivity.this, "Hello " +dataSnapshot.getValue().toString(), Toast.LENGTH_LONG)
-//                                             .show();
-//                                 }
-//
-//                                 @Override
-//                                 public void onCancelled(DatabaseError databaseError) {
-//
-//                                 }
-//                             });
 
-//                            Log.d("test", myRef.toString());
-//                            typeRef.addValueEventListener(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(DataSnapshot dataSnapshot) {
-//                                    Log.d("test", dataSnapshot.toString());
-//
-//                                    String type = dataSnapshot.getValue().toString();
-//                                    Log.d("test", "type on server is  " + type);
-//                                    if(type.equals("Student")){
-//                                        Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
-//                                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                        startActivity(accountIntent);
-//                                        finish();
-//
-//                                    } else if(type.equals("Teacher")){
-//                                        Intent accountIntent = new Intent(LoginActivity.this, TeacherActivity.class );
-//                                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                        startActivity(accountIntent);
-//                                        finish();
-//
-//                                    }
-//
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(DatabaseError databaseError) {
-//                                    Log.d("test","onCancelled");
-//
-//                                }
-//                            });
 
                         }else {
                             mRegDialog.hide();
@@ -285,41 +227,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//
-//        if (currentUser != null){
-//            FirebaseDatabase database = FirebaseDatabase.getInstance();
-//            DatabaseReference userRef = database.getReference("Users").child(currentUser.getUid());
-//
-//            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                    User user = dataSnapshot.getValue(User.class);
-//                    Toast.makeText(LoginActivity.this, "Hello " +user.getName(), Toast.LENGTH_LONG).show();
-//
-//                    if(user.getType().equals("Student")){
-//                        Intent accountIntent = new Intent(LoginActivity.this, StudentActivity.class );
-//                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(accountIntent);
-//                        finish();
-//
-//                    } else if(user.getType().equals("Teacher")){
-//                        Intent accountIntent = new Intent(LoginActivity.this, TeacherActivity.class );
-//                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(accountIntent);
-//                        finish();
-//
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    FirebaseAuth.getInstance().signOut();
-//                }
-//            });
-//
-//        }
+
     }
 
 

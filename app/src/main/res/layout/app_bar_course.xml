@@ -16,7 +16,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/courseToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:popupTheme="@style/PopupOverlay" />
 
@@ -24,10 +24,13 @@
             android:id="@+id/courseTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/button_background"
             app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorAccent"
             app:tabMode="scrollable"
-            app:tabTextAppearance="@style/CustomTabText">
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabTextAppearance="@style/CustomTabText"
+            app:tabTextColor="@color/common_google_signin_btn_text_dark_focused">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/DatabaseTab"
@@ -39,7 +42,7 @@
                 android:id="@+id/TestsTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tests" />
+                android:text="Assignements" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/NotificationsTab"

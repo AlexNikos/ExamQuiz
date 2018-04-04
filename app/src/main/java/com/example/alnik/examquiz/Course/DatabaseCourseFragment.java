@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,6 +165,15 @@ public class DatabaseCourseFragment extends Fragment {
         multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("MultipleChoice");
         trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("TrueFalse");
         shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("ShortAnswer");
+
+        try{
+            multipleRef.keepSynced(true);
+            trueFalseRef.keepSynced(true);
+            shortAnswerRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
 
 
         MultipleChoiceList = mDatabaseView.findViewById(R.id.multiple_recycleView);

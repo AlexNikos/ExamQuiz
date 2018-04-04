@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/questionRunning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +21,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:text="TextView"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:maxLines="3"
+            app:minTextSize="10sp"/>
 
 
         <TextView
@@ -52,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="25"
-                android:text="Mark :  "
+                android:text="Score :  "
                 android:textAlignment="center"
                 android:textSize="16sp" />
 

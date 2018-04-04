@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,9 +66,21 @@ public class TestsStudentFragment extends Fragment {
         testUsersParticipation = FirebaseDatabase.getInstance().getReference("TestParticipations").child("Users").child(currentUser.getUid());
         testTestsParticipation = FirebaseDatabase.getInstance().getReference("TestParticipations").child("Tests");
 
+        try{
+            testRef.keepSynced(true);
+            testUsersParticipation.keepSynced(true);
+            testTestsParticipation.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
         testsStudentRecucleView = mView.findViewById(R.id.testsStudentRecucleView);
         testsStudentRecucleView.hasFixedSize();
-        testsStudentRecucleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        testsStudentRecucleView.setLayoutManager(mLayoutManager);
 
 
         return mView;
@@ -88,8 +101,8 @@ public class TestsStudentFragment extends Fragment {
             @Override
             protected void populateViewHolder(final testStudentViewHolder viewHolder, Test model, int position) {
                 viewHolder.setTitle(model.getTitle());
-                viewHolder.setStartTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getStartDate()));
-                viewHolder.setEndTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getEndDate()));
+                viewHolder.setStartTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getStartDate()));
+                viewHolder.setEndTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getEndDate()));
 
 
                 String key= getRef(position).getKey();
@@ -127,7 +140,22 @@ public class TestsStudentFragment extends Fragment {
 
                                             Global.test = dataSnapshot.getValue(Test.class);
                                             Log.d("test", "testID is  " +Global.test.getId());
-                                            startActivity(new Intent(getContext(), RunningTestActivity.class));
+
+                                            long currentTime = System.currentTimeMillis();
+                                            if(Global.test.getStartDate() > currentTime){
+
+                                                Toast.makeText(getContext(), "Not Available yet!", Toast.LENGTH_LONG).show();
+
+                                            } else if(Global.test.getEndDate() < currentTime){
+
+                                                Toast.makeText(getContext(), "Assignement has ended!", Toast.LENGTH_LONG).show();
+
+
+                                            } else{
+
+                                                startActivity(new Intent(getContext(), RunningTestActivity.class));
+
+                                            }
                                         }
 
                                         @Override

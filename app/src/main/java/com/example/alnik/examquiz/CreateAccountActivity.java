@@ -211,8 +211,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void register(final String email, final String password){
@@ -261,24 +259,21 @@ public class CreateAccountActivity extends AppCompatActivity {
                             mUser = mAuth.getCurrentUser();
                             Toast.makeText(CreateAccountActivity.this, "Welcome " +name, Toast.LENGTH_LONG).show();
 
-                            mUser = mAuth.getCurrentUser();
-                            myRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("type");
+                            myRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
                             // Log.d("test","uid is " + mUser.getUid());
                             Log.d("test", myRef.toString());
-                            myRef.addValueEventListener(new ValueEventListener() {
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Log.d("test", dataSnapshot.toString());
 
-                                    String type = dataSnapshot.getValue().toString();
-                                    Log.d("test", "type on server is  " + type);
-                                    if(type.equals("Student")){
+                                    Global.currentUser = dataSnapshot.getValue(User.class);
+                                    if(Global.currentUser.getType().equals("Student")){
                                         Intent accountIntent = new Intent(CreateAccountActivity.this, StudentActivity.class );
                                         accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(accountIntent);
                                         finish();
 
-                                    } else if(type.equals("Teacher")){
+                                    } else if(Global.currentUser.getType().equals("Teacher")){
                                         Intent accountIntent = new Intent(CreateAccountActivity.this, TeacherActivity.class );
                                         accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(accountIntent);

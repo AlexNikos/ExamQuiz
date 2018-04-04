@@ -79,6 +79,15 @@ public class CheckTestActivity extends AppCompatActivity {
 
         answersTestsParticipation = FirebaseDatabase.getInstance().getReference("Answers").child("Tests").child(Global.test.getId()).child(Global.student.getId());
         marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.student.getId());
+
+
+        try{
+            answersTestsParticipation.keepSynced(true);
+            marksTestsParticipation.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
         FirebaseDatabase.getInstance().getReference("TestParticipations").child("Tests").child(Global.test.getId()).child(Global.student.getId()).child("time").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -251,7 +260,7 @@ public class CheckTestActivity extends AppCompatActivity {
                                     }
 
                                 }
-                        else if(NextBtn.getText().equals("Overal Score")){
+                                else if(NextBtn.getText().equals("Overal Score")){
 
                                     questionsInsert.removeAllViews();
                                     View mView = overalScore();
@@ -260,7 +269,7 @@ public class CheckTestActivity extends AppCompatActivity {
                                     NextBtn.setVisibility(View.INVISIBLE);
                                     indexLinear.setVisibility(View.INVISIBLE);
 
-                        }
+                                }
 
                             }
                         });
@@ -302,45 +311,66 @@ public class CheckTestActivity extends AppCompatActivity {
         maxMark.setText(String.valueOf(question.getMaxGrade()));
 
 
-        if (choice.equals(question.getOptionA())){
+        if(choice.equals("")){
 
-            optionA.setBackgroundColor(Color.RED);
+            if (question.getAnswer().equals(question.getOptionA())) {
 
-        } else if (choice.equals(question.getOptionB())){
+                optionA.setBackgroundColor(Color.BLUE);
 
-            optionB.setBackgroundColor(Color.RED);
+            } else if (question.getAnswer().equals(question.getOptionB())) {
 
-        } else if(choice.equals(question.getOptionC())){
+                optionB.setBackgroundColor(Color.BLUE);
 
-            optionC.setBackgroundColor(Color.RED);
+            } else if (question.getAnswer().equals(question.getOptionC())) {
 
-        } else if(choice.equals(question.getOptionD())){
+                optionC.setBackgroundColor(Color.BLUE);
 
-            optionD.setBackgroundColor(Color.RED);
+            } else if (question.getAnswer().equals(question.getOptionD())) {
+
+                optionD.setBackgroundColor(Color.BLUE);
+            }
+
+        }else {
+            if (choice.equals(question.getOptionA())) {
+
+                optionA.setBackgroundColor(Color.RED);
+
+            } else if (choice.equals(question.getOptionB())) {
+
+                optionB.setBackgroundColor(Color.RED);
+
+            } else if (choice.equals(question.getOptionC())) {
+
+                optionC.setBackgroundColor(Color.RED);
+
+            } else if (choice.equals(question.getOptionD())) {
+
+                optionD.setBackgroundColor(Color.RED);
+            }
+
+
+            if (question.getAnswer().equals(question.getOptionA())) {
+
+                optionA.setBackgroundColor(Color.GREEN);
+
+            } else if (question.getAnswer().equals(question.getOptionB())) {
+
+                optionB.setBackgroundColor(Color.GREEN);
+
+            } else if (question.getAnswer().equals(question.getOptionC())) {
+
+                optionC.setBackgroundColor(Color.GREEN);
+
+            } else if (question.getAnswer().equals(question.getOptionD())) {
+
+                optionD.setBackgroundColor(Color.GREEN);
+            }
         }
-
-        if (question.getAnswer().equals(question.getOptionA())){
-
-            optionA.setBackgroundColor(Color.GREEN);
-
-        } else if (question.getAnswer().equals(question.getOptionB())){
-
-            optionB.setBackgroundColor(Color.GREEN);
-
-        } else if(question.getAnswer().equals(question.getOptionC())){
-
-            optionC.setBackgroundColor(Color.GREEN);
-
-        } else if(question.getAnswer().equals(question.getOptionD())){
-
-            optionD.setBackgroundColor(Color.GREEN);
-        }
-
 
         return multipleChoice;
     }
 
-    public View trueFalse(TrueFalse question, String choice, long grade){
+    public View trueFalse(TrueFalse question, String choice, long grade) {
 
         LayoutInflater factory = LayoutInflater.from(getApplicationContext());
         final View trueFalseQuestion = factory.inflate(R.layout.checking_truefalse, null);
@@ -353,23 +383,38 @@ public class CheckTestActivity extends AppCompatActivity {
         mark.setText(String.valueOf(grade));
         maxMark.setText(String.valueOf(question.getMaxGrade()));
 
-        if(choice.equals("true")){
+        if (choice.equals("")) {
 
-            trueView.setBackgroundColor(Color.RED);
-        } else if(choice.equals("false")){
+            if (String.valueOf(question.getAnswer()).equals("true")) {
 
-            falseView.setBackgroundColor(Color.RED);
+                trueView.setBackgroundColor(Color.BLUE);
 
-        }
+            } else {
 
-        if(String.valueOf(question.getAnswer()).equals("true")){
+                falseView.setBackgroundColor(Color.BLUE);
 
-            trueView.setBackgroundColor(Color.GREEN);
+            }
 
-        } else{
+        } else {
 
-            falseView.setBackgroundColor(Color.GREEN);
+            if (choice.equals("true")) {
 
+                trueView.setBackgroundColor(Color.RED);
+            } else if (choice.equals("false")) {
+
+                falseView.setBackgroundColor(Color.RED);
+
+            }
+
+            if (String.valueOf(question.getAnswer()).equals("true")) {
+
+                trueView.setBackgroundColor(Color.GREEN);
+
+            } else {
+
+                falseView.setBackgroundColor(Color.GREEN);
+
+            }
         }
 
         return  trueFalseQuestion;
@@ -417,7 +462,7 @@ public class CheckTestActivity extends AppCompatActivity {
 
                 if( Long.parseLong( mark.getText().toString()) > question.getMaxGrade()){
 
-                    Toast.makeText(getApplicationContext(), "Max mark is " +question.getMaxGrade(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Max score is " +question.getMaxGrade(), Toast.LENGTH_LONG).show();
                     mark.setText("0");
                     mark.setSelection(mark.getText().length());
 

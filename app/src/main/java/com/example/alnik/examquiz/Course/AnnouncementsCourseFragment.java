@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +64,15 @@ public class AnnouncementsCourseFragment extends Fragment {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         notificationRef = FirebaseDatabase.getInstance().getReference("Announcements").child(Global.course.getId());
         announcementReadRef = FirebaseDatabase.getInstance().getReference("AnnouncementsRead");
+
+        try{
+            notificationRef.keepSynced(true);
+            announcementReadRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
         createNotification = mNotificationView.findViewById(R.id.create_new_notification);
         createNotification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +166,7 @@ public class AnnouncementsCourseFragment extends Fragment {
             @Override
             protected void populateViewHolder(final notificationViewHolder viewHolder, Announcement model, int position) {
                 viewHolder.setTitle(model.getTitle());
-                viewHolder.setTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getTime()));
+                viewHolder.setTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getTime()));
 
                 String key= getRef(position).getKey();
 //---------------------------------action on click a Course----------------------------------------------------------
@@ -164,7 +174,46 @@ public class AnnouncementsCourseFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
-                    }
+
+                        LayoutInflater factory = LayoutInflater.from(getContext());
+                        final View notification = factory.inflate(R.layout.notification_create, null);
+                        final EditText notificationTitle = notification.findViewById(R.id.notificationTitle);
+                        final EditText notificationBody = notification.findViewById(R.id.notificationBody);
+
+                        notificationRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Announcement mAnnouncement = dataSnapshot.getValue(Announcement.class);
+
+                                notificationTitle.setText(mAnnouncement.getTitle());
+                                notificationTitle.setFocusable(false);
+                                notificationTitle.setClickable(false);
+                                notificationBody.setText(mAnnouncement.getBody());
+                                notificationBody.setFocusable(false);
+                                notificationBody.setClickable(false);
+
+
+                                AlertDialog alert = new AlertDialog.Builder(getContext(), android.R.style.ThemeOverlay_Material_Light)
+                                        .setTitle(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(mAnnouncement.getTime()))
+                                        .setView(notification)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                ((ViewGroup) notification.getParent()).removeView(notification);
+
+                                            }
+                                        }).show();
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                            }
                 });
 //-----------------------------------popup menu for 3 dots------------------------------------------------------------
                 viewHolder.options.setOnClickListener(new View.OnClickListener() {

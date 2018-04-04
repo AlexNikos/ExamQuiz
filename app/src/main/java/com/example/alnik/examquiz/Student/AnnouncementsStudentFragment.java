@@ -63,10 +63,14 @@ public class AnnouncementsStudentFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_announcements_student, container, false);
 
-        //courseName = getActivity().getIntent().getExtras().getString("courseName");
-        //courseId = getActivity().getIntent().getExtras().getString("course_id");
-
         announcementsRef = FirebaseDatabase.getInstance().getReference("Announcements").child(Global.course.getId());
+
+        try{
+            announcementsRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
 
         announcementsRecyclerView = mView.findViewById(R.id.announcementsRecyclerView);
         announcementsRecyclerView.hasFixedSize();
@@ -117,6 +121,13 @@ public class AnnouncementsStudentFragment extends Fragment {
                 Log.d("test", "announces Id" +announceId);
 
                 announcesReadRef = FirebaseDatabase.getInstance().getReference("AnnouncementsRead").child(announceId).child(currentUser.getUid());
+
+                try{
+                    announcesReadRef.keepSynced(true);
+
+                }catch (Exception e){
+                    Log.d("test", "error: "+ e.toString());
+                }
                 announcesReadRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -176,7 +187,6 @@ public class AnnouncementsStudentFragment extends Fragment {
                                 notificationBody.setFocusable(false);
                                 notificationBody.setClickable(false);
 
-
                                 AlertDialog alert = new AlertDialog.Builder(getContext(), android.R.style.ThemeOverlay_Material_Light)
                                         .setTitle(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(mAnnouncement.getTime()))
                                         .setView(notification)
@@ -201,113 +211,11 @@ public class AnnouncementsStudentFragment extends Fragment {
 
                     }
                 });
-//-----------------------------------popup menu for 3 dots------------------------------------------------------------
-//                viewHolder.options.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        PopupMenu popup = new PopupMenu(view.getContext(), view);
-//                        popup.inflate(R.menu.popup_menu);
-//                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                            @Override
-//                            public boolean onMenuItemClick(MenuItem item) {
-//                                switch (item.getItemId()) {
-//                                    case R.id.delete:
-//
-//                                        new android.support.v7.app.AlertDialog.Builder(getContext())
-//                                                .setIcon(android.R.drawable.ic_dialog_alert)
-//                                                .setTitle("Are you sure?")
-//                                                .setMessage("Do you want to delete this Announcement?")
-//                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                                                            @Override
-//                                                            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                                                notificationRef.child(key).removeValue();
-//                                                            }
-//                                                        }
-//                                                )
-//                                                .setNegativeButton("No", null)
-//                                                .show();
-//
-//                                        break;
-//                                    case R.id.edit:
-//
-//                                        LayoutInflater factory = LayoutInflater.from(getContext());
-//                                        final View notification = factory.inflate(R.layout.notification_create, null);
-//                                        final EditText notificationTitle = notification.findViewById(R.id.notificationTitle);
-//                                        final EditText notificationBody = notification.findViewById(R.id.notificationBody);
-//
-//                                        notificationRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-//                                            @Override
-//                                            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                                final Announcement mNotification = dataSnapshot.getValue(Announcement.class);
-//
-//                                                notificationTitle.setText(mNotification.getTitle());
-//                                                notificationBody.setText(mNotification.getBody());
-//
-//
-//                                                new android.support.v7.app.AlertDialog.Builder(getContext())
-//                                                        .setTitle("Edit Announcement")
-//                                                        .setView(notification)
-//                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                                                    @Override
-//                                                                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                                                        String title = notificationTitle.getText().toString();
-//                                                                        String body = notificationBody.getText().toString();
-//                                                                        mNotification.setTitle(title);
-//                                                                        mNotification.setBody(body);
-//
-//                                                                        notificationRef.child(key).setValue(mNotification, new DatabaseReference.CompletionListener() {
-//                                                                            @Override
-//                                                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-//
-//                                                                                if(databaseError == null){
-//                                                                                    Toast.makeText(getContext(), "Announcement Edited", Toast.LENGTH_LONG).show();
-//
-//                                                                                } else {
-//                                                                                    Toast.makeText(getContext(), "An error occurred, try again!", Toast.LENGTH_LONG).show();
-//
-//                                                                                }
-//
-//                                                                            }
-//                                                                        });
-//
-//                                                                        ((ViewGroup) notification.getParent()).removeView(notification);
-//                                                                    }
-//                                                                }
-//                                                        )
-//                                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                                            @Override
-//                                                            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                                                ((ViewGroup) notification.getParent()).removeView(notification);
-//
-//                                                            }
-//                                                        })
-//                                                        .show();
-//                                            }
-//
-//                                            @Override
-//                                            public void onCancelled(DatabaseError databaseError) {
-//
-//                                            }
-//                                        });
-//                                        break;
-//                                }
-//                                return false;
-//                            }
-//                        });
-//                        popup.show();
-//                    }
-//                });
+
             }
         };
 
         announcementsRecyclerView.setAdapter(announcementsRecyclerAdapter);
-
-
 
     }
 

@@ -94,6 +94,17 @@ public class RunningTestActivity extends AppCompatActivity {
         answersUsersParticipation = FirebaseDatabase.getInstance().getReference("Answers").child("Users").child(currentUser.getUid()).child(Global.test.getId());
         marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(currentUser.getUid());
         marksUsersParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Users").child(currentUser.getUid()).child(Global.test.getId());
+        try{
+            testTestsParticipation.keepSynced(true);
+            testTestsParticipation.keepSynced(true);
+            answersTestsParticipation.keepSynced(true);
+            answersUsersParticipation.keepSynced(true);
+            marksTestsParticipation.keepSynced(true);
+            marksUsersParticipation.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error " +e.toString());
+        }
 
         questions = new ArrayList<>();
 

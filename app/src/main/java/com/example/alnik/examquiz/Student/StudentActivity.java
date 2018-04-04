@@ -71,6 +71,15 @@ public class StudentActivity extends AppCompatActivity
         mUsersCoursesRef = FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(currentUser.getUid());
         mCoursesRef = FirebaseDatabase.getInstance().getReference("Courses");
 
+        try{
+            mUsersRef.keepSynced(true);
+            mUsersCoursesRef.keepSynced(true);
+            mCoursesRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
         mCoursesRecycleView = findViewById(R.id.mCoursesRecycleView);
         mCoursesRecycleView.hasFixedSize();
         mCoursesRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

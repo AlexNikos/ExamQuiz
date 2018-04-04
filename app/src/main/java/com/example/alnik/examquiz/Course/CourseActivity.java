@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -35,14 +36,11 @@ import com.google.firebase.database.ValueEventListener;
 public class CourseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    //public static String courseName;
-    //public static String courseID;
 
     private ViewPager mViewPager;
     private CoursePagerAdapter mCoursePagerAdapter;
     private TabLayout mTabLayout;
     private Toolbar toolbar;
-
 
     private DatabaseReference myRefUser;
     private FirebaseUser currentUser;
@@ -52,7 +50,6 @@ public class CourseActivity extends AppCompatActivity
     private DatabaseReference trueFalseRef;
     private DatabaseReference shortAnswerRef;
     private DatabaseReference allQuestionsRef;
-
 
     private TextView nameView;
     private TextView emailView;
@@ -66,7 +63,7 @@ public class CourseActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.courseToolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
         //courseName = intent.getExtras().getString("courseName");
         //courseID = intent.getExtras().getString("courseID");
         //courseName = Global.course.getName();
@@ -77,6 +74,16 @@ public class CourseActivity extends AppCompatActivity
         trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("TrueFalse");
         shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("ShortAnswer");
         allQuestionsRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId());
+
+        try{
+            multipleRef.keepSynced(true);
+            trueFalseRef.keepSynced(true);
+            shortAnswerRef.keepSynced(true);
+            allQuestionsRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
 
 
         mViewPager = (ViewPager) findViewById(R.id.CourseViewPager);
@@ -111,23 +118,27 @@ public class CourseActivity extends AppCompatActivity
 
                     toolbar.getMenu().clear();
                     toolbar.inflateMenu(R.menu.menu_subs);
+
                     FirebaseDatabase.getInstance().getReference("Requests").child("Courses").child(Global.course.getId())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                            .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                                     long count = dataSnapshot.getChildrenCount();
                                     if(count == 0){
 
-                                        toolbar.getMenu().getItem(0).setTitle("No new requests");
+                                        toolbar.getMenu().getItem(0).setTitle("");
+                                        toolbar.getMenu().getItem(0).setIcon(R.drawable.ic_notification);
 
                                     } else if(count == 1 ){
 
                                         toolbar.getMenu().getItem(0).setTitle(count +" new request");
+                                        toolbar.getMenu().getItem(0).setIcon(R.drawable.notifynew);
 
                                     } else{
 
                                         toolbar.getMenu().getItem(0).setTitle(count +" new requests");
+                                        toolbar.getMenu().getItem(0).setIcon(R.drawable.notifynew);
 
                                     }
                                 }
@@ -214,7 +225,7 @@ public class CourseActivity extends AppCompatActivity
 
         }
 
-        if(id == R.id.subs_settings){
+        if(id == R.id.subs_clear_all){
 
             Toast.makeText(getApplicationContext(),"Settings Pressed!", Toast.LENGTH_LONG).show();
             return true;

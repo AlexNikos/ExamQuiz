@@ -12,49 +12,69 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/question"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="50dp"
-            android:text="TextView" />
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:maxLines="4"
+            android:text="TextView"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:minTextSize="10sp" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/optionA"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/question"
             android:layout_below="@+id/question"
-            android:layout_marginTop="46dp"
-            android:text="TextView" />
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:maxLines="2"
+            android:text="TextView"
+            android:textSize="15dp"
+            app:minTextSize="10sp" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/optionB"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/optionA"
             android:layout_below="@+id/optionA"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="26dp"
-            android:text="TextView" />
+            android:maxLines="2"
+            android:text="TextView"
+            android:textSize="15dp"
+            app:minTextSize="10sp" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/optionC"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/optionB"
             android:layout_below="@+id/optionB"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="19dp"
-            android:text="TextView" />
+            android:maxLines="2"
+            android:text="TextView"
+            android:textSize="15dp"
+            app:minTextSize="10sp" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/optionD"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/optionC"
             android:layout_below="@+id/optionC"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="21dp"
+            android:autoSizeMinTextSize="10dp"
+            android:maxLines="2"
             android:text="TextView" />
 
         <LinearLayout
@@ -73,8 +93,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
-                android:text="Max Mark :  "
-                android:textSize="16sp"/>
+                android:text="Max Score:  "
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/maxMark"

@@ -13,15 +13,19 @@
         android:layout_height="match_parent">
 
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/questionRunning"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="32dp"
+            android:maxLines="3"
             android:text="TextView"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            app:minTextSize="10sp" />
 
         <LinearLayout
             android:id="@+id/A"
@@ -41,14 +45,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="10" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/optionA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="90"
                 android:text="TextView"
                 android:textAlignment="textStart"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:maxLines="1"
+                app:minTextSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -97,14 +103,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="10" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/optionC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="90"
                 android:text="TextView"
                 android:textAlignment="textStart"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:maxLines="1"
+                app:minTextSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -126,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="10" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/optionD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,7 +143,9 @@
                 android:layout_weight="90"
                 android:text="TextView"
                 android:textAlignment="textStart"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:maxLines="1"
+                app:minTextSize="10sp"/>
         </LinearLayout>
 
     </RelativeLayout>

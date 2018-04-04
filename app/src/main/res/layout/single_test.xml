@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/singleTestView"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:layout_margin="5dp"
     app:cardCornerRadius="10dp">
 
@@ -19,46 +19,61 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
             android:text="Title"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
+            android:id="@+id/startLinear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/singleTestTitle"
             android:layout_below="@id/singleTestTitle"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
-            android:text="Start:  "
-            android:textSize="15sp" />
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/startTime"
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="28"
+                android:text="Start:  "
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="72"
+                android:text="0000/00/00/ 00:00"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/endLinear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/singleTestTitle"
-            android:layout_marginTop="13dp"
-            android:layout_toRightOf="@id/textView2"
-            android:text="ttttttttttttttt"
-            android:textSize="12sp" />
+            android:orientation="horizontal"
+            android:layout_alignLeft="@id/startLinear"
+            android:layout_below="@id/startLinear"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/singleTestTitle"
-            android:layout_marginLeft="200dp"
-            android:layout_marginTop="10dp"
-            android:text="End:  " />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="28"
+                android:text="End:    " />
 
-        <TextView
-            android:id="@+id/endTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_below="@+id/singleTestTitle"
-            android:layout_marginTop="13dp"
-            android:layout_toRightOf="@id/textView"
-            android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="72"
+                android:text="0000/00/00/ 00:00"
+                android:textSize="12sp" />
+        </LinearLayout>
 
 
         <Button

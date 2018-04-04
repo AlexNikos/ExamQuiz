@@ -17,16 +17,20 @@
         android:layout_height="match_parent">
 
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/single_multiple_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:gravity="center"
-            android:text="TextView"
+            android:maxLines="3"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="TextView of Question"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:minTextSize="10sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,42 +39,52 @@
             android:layout_weight=".50"
             android:orientation="vertical">
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/single_optionA"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="fill"
                 android:layout_weight=".50"
                 android:gravity="center"
+                android:maxLines="1"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
                 android:text="TextView"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                app:minTextSize="8sp" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/single_optionB"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".50"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="TextView"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                app:minTextSize="8sp" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/single_optionC"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".50"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="TextView"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                app:minTextSize="8sp" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/single_optionD"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".50"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="TextView"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                app:minTextSize="8sp" />
 
         </LinearLayout>
 

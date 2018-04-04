@@ -65,6 +65,13 @@ public class ResultsStudentsFragment extends Fragment {
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         userParticipationRef = FirebaseDatabase.getInstance().getReference("TestParticipations").child("Tests").child(Global.test.getId());
 
+        try{
+            userParticipationRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
 
         return  mView;
     }

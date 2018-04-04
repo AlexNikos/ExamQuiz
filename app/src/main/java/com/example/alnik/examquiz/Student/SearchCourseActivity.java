@@ -72,6 +72,15 @@ public class SearchCourseActivity extends AppCompatActivity {
         searchRecycleView.hasFixedSize();
         searchRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
+        try{
+            mCourses.keepSynced(true);
+            requestRef.keepSynced(true);
+            subscriptionsRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
         ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
 
         closeButton.setOnClickListener(new View.OnClickListener() {

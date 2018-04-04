@@ -46,7 +46,7 @@ public class StudentPagerAdapter extends FragmentPagerAdapter {
                 return "ANNOUNCEMENTS";
 
             case 1:
-                return "TESTS";
+                return "ASSIGNMENTS";
 
             default:
                 return null;

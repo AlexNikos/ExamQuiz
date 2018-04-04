@@ -65,7 +65,12 @@ public class TestsCourseFragment extends Fragment {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         testRef = FirebaseDatabase.getInstance().getReference("Test").child(Global.course.getId());
 
+        try{
+            testRef.keepSynced(true);
 
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
 
         createNewTest = mView.findViewById(R.id.create_new_test);
         createNewTest.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +120,8 @@ public class TestsCourseFragment extends Fragment {
             @Override
             protected void populateViewHolder(final testViewHolder viewHolder, Test model, int position) {
                 viewHolder.setTitle(model.getTitle());
-                viewHolder.setStartTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getStartDate()));
-                viewHolder.setEndTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getEndDate()));
+                viewHolder.setStartTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getStartDate()));
+                viewHolder.setEndTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getEndDate()));
 
 
                 String key= getRef(position).getKey();

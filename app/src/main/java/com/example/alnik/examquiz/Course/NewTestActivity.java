@@ -87,6 +87,16 @@ public class NewTestActivity extends AppCompatActivity {
         trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("TrueFalse");
         shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("ShortAnswer");
 
+        try{
+            testRef.keepSynced(true);
+            multipleRef.keepSynced(true);
+            trueFalseRef.keepSynced(true);
+            shortAnswerRef.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error: "+ e.toString());
+        }
+
         startTimeButton = findViewById(R.id.startButton);
         endTimeButon = findViewById(R.id.endButton);
         insertPoint = findViewById(R.id.insertPoint);
@@ -254,7 +264,7 @@ public class NewTestActivity extends AppCompatActivity {
                                               String AM_PM) {
 
                                 startDate = dateSelected.getTime();
-                                startTimeButton.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(startDate));
+                                startTimeButton.setText(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(startDate));
                                 Log.d("test", String.valueOf(startDate));
 
                             }
@@ -288,7 +298,7 @@ public class NewTestActivity extends AppCompatActivity {
                                               String AM_PM) {
 
                                 endDate = dateSelected.getTime();
-                                endTimeButon.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(endDate));
+                                endTimeButon.setText(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(endDate));
 
                             }
 
@@ -553,7 +563,7 @@ public class NewTestActivity extends AppCompatActivity {
                                         }
                                     }
 
-                                    for(int index=0; index<insertPoint.getChildCount(); ++index) {
+                                    for(int index=0; index < insertPoint.getChildCount(); ++index) {
                                         View nextChild = insertPoint.getChildAt(index);
                                         if(nextChild.getTag().toString().equals(id)){
                                             ((LinearLayout)nextChild.getParent()).removeView(nextChild);

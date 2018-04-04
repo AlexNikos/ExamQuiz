@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/questionRunning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +21,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:text="TextView"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:maxLines="3"
+            app:minTextSize="10sp"/>
 
         <LinearLayout
             android:id="@+id/A"
@@ -35,14 +37,16 @@
             android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
             android:orientation="horizontal">
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/optionA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="90"
                 android:text="TextView"
                 android:textAlignment="textStart"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:maxLines="1"
+                app:minTextSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -57,14 +61,16 @@
             android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
             android:orientation="horizontal">
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/optionB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="90"
                 android:text="TextView"
                 android:textAlignment="textStart"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:maxLines="1"
+                app:minTextSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -79,14 +85,16 @@
             android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
             android:orientation="horizontal">
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/optionC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="90"
                 android:text="TextView"
                 android:textAlignment="textStart"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:maxLines="1"
+                app:minTextSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -102,7 +110,7 @@
             android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
             android:orientation="horizontal">
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/optionD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,7 +119,9 @@
                 android:layout_weight="90"
                 android:text="TextView"
                 android:textAlignment="textStart"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:maxLines="1"
+                app:minTextSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -125,13 +135,13 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/textView3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="35"
                 android:singleLine="true"
-                android:text="Mark :  "
+                android:text="Score: "
                 android:textAlignment="center"
                 android:textSize="16sp" />
 

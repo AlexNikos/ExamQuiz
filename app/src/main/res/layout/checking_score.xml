@@ -141,7 +141,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="35"
                     android:singleLine="true"
-                    android:text="Overal Mark :  "
+                    android:text="Overal Score:  "
                     android:textAlignment="center"
                     android:textSize="20sp"
                     android:textStyle="bold" />
