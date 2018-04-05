@@ -53,7 +53,7 @@ public class TeacherCourseFragment extends Fragment {
     private TextView emailView;
     private String fullName;
 
-    private String courseName;
+    private String courseNameS;
     private String courseInfo;
     private String courseSite;
 
@@ -108,20 +108,20 @@ public class TeacherCourseFragment extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                                        TeacherCourseFragment.this.courseName = courseName.getText().toString();
+                                        TeacherCourseFragment.this.courseNameS = courseName.getText().toString();
                                         TeacherCourseFragment.this.courseInfo = courseInfo.getText().toString();
                                         TeacherCourseFragment.this.courseSite = courseSite.getText().toString();
 
-                                        if(TeacherCourseFragment.this.courseName.isEmpty()){
+                                        if(TeacherCourseFragment.this.courseNameS.isEmpty()){
 
                                             Toast.makeText(getContext(),"Please enter a name", Toast.LENGTH_LONG).show();
 
                                         } else{
 
-                                            userCourseOwnership.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            courseCourseOwnership.child(courseNameS).addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    if (dataSnapshot.hasChild(TeacherCourseFragment.this.courseName)) {
+                                                    if (dataSnapshot.hasChild(currentUser.getUid())) {
                                                         Toast.makeText(getContext(), "Course already exist!", Toast.LENGTH_LONG).show();
                                                     } else {
                                                         myRefUser.child("fullname").addValueEventListener(new ValueEventListener() {
@@ -130,12 +130,14 @@ public class TeacherCourseFragment extends Fragment {
 
                                                                 String fullname = dataSnapshot.getValue().toString();
                                                                 String courseId = mCourses.push().getKey();
-                                                                Course newCourse = new Course(TeacherCourseFragment.this.courseName, currentUser.getUid().toString(), fullname, courseId, TeacherCourseFragment.this.courseInfo, TeacherCourseFragment.this.courseSite);
+                                                                Course newCourse = new Course(TeacherCourseFragment.this.courseNameS, currentUser.getUid().toString(), fullname, courseId, TeacherCourseFragment.this.courseInfo, TeacherCourseFragment.this.courseSite);
                                                                 mCourses.child(courseId).setValue(newCourse, new DatabaseReference.CompletionListener() {
                                                                     @Override
                                                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                                                        userCourseOwnership.child(currentUser.getUid()).child(courseId).setValue(new Time(System.currentTimeMillis()));
-                                                                        courseCourseOwnership.child(newCourse.getName()).child(currentUser.getUid()).setValue(new Time(System.currentTimeMillis()));
+
+                                                                        long time = System.currentTimeMillis();
+                                                                        userCourseOwnership.child(currentUser.getUid()).child(courseId).setValue(new Time(time));
+                                                                        courseCourseOwnership.child(newCourse.getName()).child(currentUser.getUid()).setValue(new Time(time));
                                                                         Toast.makeText(getContext(), "Course Created", Toast.LENGTH_LONG).show();
 
                                                                     }

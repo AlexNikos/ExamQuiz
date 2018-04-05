@@ -36,6 +36,9 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_below="@id/single_multiple_question"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight=".50"
             android:orientation="vertical">
 
@@ -51,7 +54,7 @@
                 android:paddingRight="2dp"
                 android:text="TextView"
                 android:textSize="15sp"
-                app:minTextSize="8sp" />
+                app:minTextSize="6sp" />
 
             <me.grantland.widget.AutofitTextView
                 android:id="@+id/single_optionB"
@@ -62,7 +65,7 @@
                 android:maxLines="1"
                 android:text="TextView"
                 android:textSize="15sp"
-                app:minTextSize="8sp" />
+                app:minTextSize="6sp" />
 
             <me.grantland.widget.AutofitTextView
                 android:id="@+id/single_optionC"
@@ -73,7 +76,7 @@
                 android:maxLines="1"
                 android:text="TextView"
                 android:textSize="15sp"
-                app:minTextSize="8sp" />
+                app:minTextSize="6sp" />
 
             <me.grantland.widget.AutofitTextView
                 android:id="@+id/single_optionD"
@@ -84,7 +87,7 @@
                 android:maxLines="1"
                 android:text="TextView"
                 android:textSize="15sp"
-                app:minTextSize="8sp" />
+                app:minTextSize="6sp" />
 
         </LinearLayout>
 

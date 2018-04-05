@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.Anonymous.AnonymousActivity;
 import com.example.alnik.examquiz.Student.StudentActivity;
 import com.example.alnik.examquiz.Teacher.TeacherActivity;
 import com.example.alnik.examquiz.models.User;
