@@ -41,8 +41,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:scrollbars="horizontal">
+                    android:layout_marginTop="10dp">
 
                 </android.support.v7.widget.RecyclerView>
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
@@ -73,8 +72,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:scrollbars="horizontal">
+                    android:layout_marginTop="10dp">
 
                 </android.support.v7.widget.RecyclerView>
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
@@ -105,8 +103,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:scrollbars="horizontal" />
+                    android:layout_marginTop="10dp" />
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
         </RelativeLayout>

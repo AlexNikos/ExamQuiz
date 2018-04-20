@@ -12,7 +12,7 @@
     <item
         android:id="@+id/navigation_students"
         android:icon="@drawable/ic_person_black_24dp"
-        android:title="Students"
+        android:title="Participants"
         app:showAsAction="always" />
 
 </menu>

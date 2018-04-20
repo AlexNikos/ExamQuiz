@@ -1,25 +1,26 @@
-package com.example.alnik.examquiz.Teacher;
+package com.example.alnik.examquiz.Anonymous;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.LoginActivity;
 import com.example.alnik.examquiz.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,52 +29,43 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-
-public class TeacherActivity extends AppCompatActivity
+public class RoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
     private ViewPager mViewPager;
-    private TeacherPagerAdapter mTeacherPagerAdapter;
+    private RoomPagerAdapter mRoomPagerAdapter;
     private TabLayout mTabLayout;
 
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private FirebaseDatabase database;
+    private FirebaseDatabase questions;
     private DatabaseReference myRefUser;
-    private DatabaseReference mCourses;
+    private DatabaseReference mRooms;
 
     private TextView nameView;
     private TextView emailView;
     private String fullName;
 
-
-    private EditText CourseNameInput;
-    private String CourseName;
-
-    private RecyclerView CoursesList;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher);
+        setContentView(R.layout.activity_room);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(Global.room.getName());
 
-        mViewPager = (ViewPager) findViewById(R.id.teacherViewPager);
-        mTeacherPagerAdapter = new TeacherPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mTeacherPagerAdapter);
+        mViewPager = (ViewPager) findViewById(R.id.roomViewPager);
+        mRoomPagerAdapter = new RoomPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mRoomPagerAdapter);
 
-        mTabLayout = (TabLayout) findViewById(R.id.teacherTab);
+        mTabLayout = (TabLayout) findViewById(R.id.roomTab);
         mTabLayout.setupWithViewPager(mViewPager);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         myRefUser = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-        mCourses = FirebaseDatabase.getInstance().getReference("Courses").child(currentUser.getUid());
+        mRooms = FirebaseDatabase.getInstance().getReference("Anonymous").child("Rooms");
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -87,7 +79,6 @@ public class TeacherActivity extends AppCompatActivity
 
         nameView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_fullname);
         emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_email);
-
 
         myRefUser.child("fullname").addValueEventListener(new ValueEventListener() {
             @Override
@@ -104,7 +95,6 @@ public class TeacherActivity extends AppCompatActivity
 
             }
         });
-
     }
 
     @Override
@@ -141,7 +131,7 @@ public class TeacherActivity extends AppCompatActivity
                 Global.student = null;
                 Global.course = null;
                 Global.timeSubscripted = 0;
-                startActivity(new Intent(TeacherActivity.this, LoginActivity.class));
+                startActivity(new Intent(RoomActivity.this, LoginActivity.class));
                 finish();
             }
 
@@ -154,6 +144,4 @@ public class TeacherActivity extends AppCompatActivity
     }
 
 
-
 }
-

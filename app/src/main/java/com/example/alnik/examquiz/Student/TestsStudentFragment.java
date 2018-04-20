@@ -178,12 +178,12 @@ public class TestsStudentFragment extends Fragment {
                 long currentDate = System.currentTimeMillis();
                 if(model.getEndDate() > currentDate){
 
-                    viewHolder.activeButton.setText("Running");
+                    viewHolder.activeButton.setText("Active");
                     viewHolder.activeButton.setClickable(false);
                     viewHolder.activeButton.setBackgroundColor(Color.GREEN);
                 } else {
 
-                    viewHolder.activeButton.setText("Ended");
+                    viewHolder.activeButton.setText("Inactive");
                     viewHolder.activeButton.setClickable(false);
                     viewHolder.activeButton.setBackgroundColor(Color.RED);
 

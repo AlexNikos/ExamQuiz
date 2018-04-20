@@ -46,7 +46,7 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return "DATABASE";
+                return "QUESTIONS";
 
             case 1:
                 return "ASSIGNMENTS";
@@ -55,7 +55,7 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
                 return "ANNOUNCEMENTS";
 
             case 3:
-                return "SUSCRIBERS";
+                return "SUBSCRIBERS";
 
 
             default:

@@ -1,44 +1,43 @@
-package com.example.alnik.examquiz.Course;
+package com.example.alnik.examquiz.Anonymous;
 
+        import android.content.DialogInterface;
+        import android.os.Bundle;
+        import android.support.v4.app.Fragment;
+        import android.support.v7.app.AlertDialog;
+        import android.support.v7.widget.GridLayoutManager;
+        import android.support.v7.widget.RecyclerView;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.Button;
+        import android.widget.EditText;
+        import android.widget.RadioButton;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.alnik.examquiz.Global;
-import com.example.alnik.examquiz.R;
-import com.example.alnik.examquiz.models.MultipleChoice;
-import com.example.alnik.examquiz.models.ShortAnswer;
-import com.example.alnik.examquiz.models.TrueFalse;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+        import com.example.alnik.examquiz.Global;
+        import com.example.alnik.examquiz.R;
+        import com.example.alnik.examquiz.models.MultipleChoice;
+        import com.example.alnik.examquiz.models.ShortAnswer;
+        import com.example.alnik.examquiz.models.TrueFalse;
+        import com.firebase.ui.database.FirebaseRecyclerAdapter;
+        import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+        import com.github.clans.fab.FloatingActionButton;
+        import com.github.clans.fab.FloatingActionMenu;
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.auth.FirebaseUser;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
+        import com.google.firebase.database.ValueEventListener;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DatabaseCourseFragment extends Fragment {
+public class QuestionsFragment extends Fragment {
 
     private FloatingActionMenu fabMenu;
     private FloatingActionButton mFabMultiple;
@@ -66,7 +65,7 @@ public class DatabaseCourseFragment extends Fragment {
     private View mDatabaseView;
 
 
-    public DatabaseCourseFragment() {
+    public QuestionsFragment() {
         // Required empty public constructor
     }
 
@@ -75,19 +74,20 @@ public class DatabaseCourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mDatabaseView = inflater.inflate(R.layout.fragment_database_course, container, false);
+        mDatabaseView = inflater.inflate(R.layout.fragment_questions, container, false);
+
 
         mutipleChoiceButton = mDatabaseView.findViewById(R.id.expMultiButton);
         trueFalseButton = mDatabaseView.findViewById(R.id.expTrueFalseButton);
         shortAnswerbutton = mDatabaseView.findViewById(R.id.expShortAnswerButton);
 
         expandable_layout_MultiChoise = mDatabaseView.findViewById(R.id.multiExpand);
-        expandable_layout_TrueFalse = mDatabaseView.findViewById(R.id.trueFalseExpand);
-        expandable_layout_ShortAnswer = mDatabaseView.findViewById(R.id.shortAnswerExpand);
-
         expandable_layout_MultiChoise.collapse();
+        expandable_layout_TrueFalse = mDatabaseView.findViewById(R.id.trueFalseExpand);
         expandable_layout_TrueFalse.collapse();
+        expandable_layout_ShortAnswer = mDatabaseView.findViewById(R.id.shortAnswerExpand);
         expandable_layout_ShortAnswer.collapse();
+
 
         mutipleChoiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,9 +166,9 @@ public class DatabaseCourseFragment extends Fragment {
 
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("MultipleChoice");
-        trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("TrueFalse");
-        shortAnswerRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("ShortAnswer");
+        multipleRef = FirebaseDatabase.getInstance().getReference("Anonymous").child("Questions").child(Global.room.getId()).child("MultipleChoice");
+        trueFalseRef = FirebaseDatabase.getInstance().getReference("Anonymous").child("Questions").child(Global.room.getId()).child("TrueFalse");
+        shortAnswerRef = FirebaseDatabase.getInstance().getReference("Anonymous").child("Questions").child(Global.room.getId()).child("ShortAnswer");
 
         try{
             multipleRef.keepSynced(true);

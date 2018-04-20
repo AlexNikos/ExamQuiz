@@ -34,6 +34,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="50"
+            android:background="@android:drawable/toast_frame"
             android:text="Start Date" />
 
         <Button
@@ -43,6 +44,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="50"
+            android:background="@android:drawable/toast_frame"
             android:text="End Date" />
     </LinearLayout>
 
@@ -93,10 +95,9 @@
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
             android:id="@+id/expandableLayoutMultiChoice"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@android:drawable/spinner_dropdown_background"
+            android:background="@drawable/loginbackgroung"
             android:padding="16dp"
             app:ael_duration="400"
             app:ael_expanded="false"
@@ -106,7 +107,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/pickMultiChoiceRecycleView"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="450dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
@@ -115,8 +116,7 @@
             android:id="@+id/expandableLayoutTrueFalse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@android:drawable/spinner_dropdown_background"
+            android:background="@drawable/loginbackgroung"
             android:padding="16dp"
             app:ael_duration="400"
             app:ael_expanded="false"
@@ -126,7 +126,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/pickTrueFalseRecycleView"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="450dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
@@ -135,8 +135,7 @@
             android:id="@+id/expandableLayoutShortAnswer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@android:drawable/spinner_dropdown_background"
+            android:background="@drawable/loginbackgroung"
             android:padding="16dp"
             app:ael_duration="400"
             app:ael_expanded="false"
@@ -146,7 +145,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/pickShortAnswerRecycleView"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="450dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>

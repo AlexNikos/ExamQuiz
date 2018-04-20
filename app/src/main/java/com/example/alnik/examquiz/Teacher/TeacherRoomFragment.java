@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.Anonymous.RoomActivity;
 import com.example.alnik.examquiz.Course.CourseActivity;
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
@@ -220,6 +221,8 @@ public class TeacherRoomFragment extends Fragment {
 
 
                 viewHolder.subs.setVisibility(View.GONE);
+                viewHolder.subsText.setVisibility(View.GONE);
+
 
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.teacherLessonButton.setOnClickListener(new View.OnClickListener() {
@@ -234,8 +237,8 @@ public class TeacherRoomFragment extends Fragment {
                                 Global.room = dataSnapshot.getValue(Room.class);
 
                                 Toast.makeText(getContext(), "Room to enter", Toast.LENGTH_LONG).show();
-                                //Intent startCourseActivity = new Intent(getActivity(), RoomActivity.class);
-                                //startActivity(startCourseActivity);
+                                Intent startCourseActivity = new Intent(getActivity(), RoomActivity.class);
+                                startActivity(startCourseActivity);
 
                             }
 
@@ -288,8 +291,8 @@ public class TeacherRoomFragment extends Fragment {
                                                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                                                         if(databaseError == null){
 
-                                                                            //roomQuestionmark = FirebaseDatabase.getInstance("Anonymous").getReference().child("Questionmarks").child(Global.room.getId());
-                                                                            //roomQuestions = FirebaseDatabase.getInstance("Anonymous").getReference().child("Questions").child(Global.room.getId());
+                                                                            //roomQuestionmark = FirebaseDatabase.getInstance().getReference("Anonymous").child("Questionmarks").child(Global.room.getId());
+                                                                            //roomQuestions = FirebaseDatabase.getInstance().getReference("Anonymous").child("Questions").child(Global.room.getId());
 
                                                                             userRoomOwnership.child(currentUser.getUid()).child(Global.room.getId()).removeValue();
                                                                             roomRoomOwnership.child(Global.room.getName()).child(Global.room.getOwnersID()).removeValue();
@@ -417,6 +420,7 @@ public class TeacherRoomFragment extends Fragment {
         TextView teacherLessonButton;
         ImageButton teacherlessonOptionsButton;
         TextView subs;
+        TextView subsText;
 
         View view;
 
@@ -426,6 +430,7 @@ public class TeacherRoomFragment extends Fragment {
             teacherlessonOptionsButton = itemView.findViewById(R.id.teacherLessonOptionsButton);
             teacherLessonButton = itemView.findViewById(R.id.teacherLessonView);
             subs = itemView.findViewById(R.id.subs);
+            subsText = itemView.findViewById(R.id.subsText);
             view = itemView.findViewById(R.id.singleRowLesson);
 
         }

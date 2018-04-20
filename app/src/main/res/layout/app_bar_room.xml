@@ -7,7 +7,7 @@
     tools:context="com.example.alnik.examquiz.Teacher.TeacherActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbarTeacher"
+        android:id="@+id/appbarRoom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppBarOverlay">
@@ -20,32 +20,33 @@
             app:popupTheme="@style/PopupOverlay" />
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/teacherTab"
+            android:id="@+id/roomTab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark">
+            android:background="@color/colorPrimaryDark"
+            app:tabIndicatorColor="@color/colorAccent">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/lessonsTab"
+                android:id="@+id/questionsTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lessons" />
+                android:text="Questions" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/roomsTab"
+                android:id="@+id/questionmarksTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rooms" />
+                android:text="Questioners" />
 
         </android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/teacherViewPager"
+        android:id="@+id/roomViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/appbarTeacher" />
+        android:layout_below="@+id/appbarRoom" />
 
 </RelativeLayout>
