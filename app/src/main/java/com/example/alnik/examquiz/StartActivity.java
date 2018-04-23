@@ -1,5 +1,6 @@
 package com.example.alnik.examquiz;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 public class StartActivity extends AppCompatActivity {
 
     private ProgressDialog mRegDialog;
+    FirebaseUser currentUser;
 
 
     @Override
@@ -27,61 +29,71 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         mRegDialog = new ProgressDialog(this);
         mRegDialog.setMessage("Loading...");
         mRegDialog.setCanceledOnTouchOutside(false);
         mRegDialog.show();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (currentUser != null){
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference userRef = database.getReference("Users").child(currentUser.getUid());
+        if (currentUser != null) {
 
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+            if (currentUser.isAnonymous()) {
 
-                    mRegDialog.dismiss();
+                Intent accountIntent = new Intent(StartActivity.this, LoginActivity.class );
+                accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(accountIntent);
+                finish();
 
-                    //User user = dataSnapshot.getValue(User.class);
-                    Global.currentUser = dataSnapshot.getValue(User.class);
+            } else {
 
-                    Toast.makeText(StartActivity.this, "Hello " +Global.currentUser.getName(), Toast.LENGTH_LONG).show();
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
 
-                    if(Global.currentUser.getType().equals("Student")){
-                        Intent accountIntent = new Intent(StartActivity.this, StudentActivity.class );
-                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(accountIntent);
-                        finish();
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    } else if(Global.currentUser.getType().equals("Teacher")){
-                        Intent accountIntent = new Intent(StartActivity.this, TeacherActivity.class );
-                        accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(accountIntent);
-                        finish();
+                        mRegDialog.dismiss();
+                        Global.currentUser = dataSnapshot.getValue(User.class);
+                        Toast.makeText(StartActivity.this, "Hello " + Global.currentUser.getName(), Toast.LENGTH_LONG).show();
 
+                        if (Global.currentUser.getType().equals("Student")) {
+                            Intent accountIntent = new Intent(StartActivity.this, StudentActivity.class);
+                            accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(accountIntent);
+                            finish();
+
+                        } else if (Global.currentUser.getType().equals("Teacher")) {
+                            Intent accountIntent = new Intent(StartActivity.this, TeacherActivity.class);
+                            accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(accountIntent);
+                            finish();
+
+                        } else {
+                            Intent accountIntent = new Intent(StartActivity.this, LoginActivity.class);
+                            accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(accountIntent);
+                            finish();
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    mRegDialog.dismiss();
-                    FirebaseAuth.getInstance().signOut();
-                }
-            });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        mRegDialog.dismiss();
+                        FirebaseAuth.getInstance().signOut();
+                    }
+                });
 
+            }
         } else{
-            Intent accountIntent = new Intent(StartActivity.this, LoginActivity.class );
+
+            mRegDialog.dismiss();
+            Intent accountIntent = new Intent(StartActivity.this, LoginActivity.class);
             accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(accountIntent);
             finish();
+
 
         }
     }

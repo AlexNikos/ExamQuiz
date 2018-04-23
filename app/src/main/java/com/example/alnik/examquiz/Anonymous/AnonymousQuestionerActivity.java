@@ -41,6 +41,8 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
 
     private FirebaseUser mCurrentUser;
     private DatabaseReference questionersRef;
+    private DatabaseReference questionerUsersParticipation;
+    private DatabaseReference questionerQuestionersParticipation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,8 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         questionersRef = FirebaseDatabase.getInstance().getReference("Anonymous").child("Questioners").child(Global.room.getId());
-
+        questionerUsersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("QuestionerParticipations").child("Users").child(mCurrentUser.getUid());
+        questionerQuestionersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("QuestionerParticipations").child("Questioners");
 
 
 
@@ -112,24 +115,26 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
 
 
                 String key= getRef(position).getKey();
-//---------------------------------action on click a Course----------------------------------------------------------
-//                viewHolder.view.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        testUsersParticipation.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                if(dataSnapshot.exists()){
-//
-//                                    testRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+//---------------------------------action on click a Questioner----------------------------------------------------------
+                viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        questionerUsersParticipation.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.exists()){
+
+                                    Toast.makeText(getApplicationContext(), "You have already participated!" , Toast.LENGTH_LONG).show();
+
+//                                    questionersRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
 //                                        @Override
 //                                        public void onDataChange(DataSnapshot dataSnapshot) {
 //
 //                                            Global.test = dataSnapshot.getValue(Test.class);
 //                                            Log.d("test", "testID is  " +Global.test.getId());
-//                                            Toast.makeText(getContext(), "Your results for " +Global.test.getTitle() , Toast.LENGTH_LONG).show();
-//                                            startActivity(new Intent(getContext(), StudentScoreActivity.class));
+//                                            Toast.makeText(getApplicationContext(), "Your results for " +Global.test.getTitle() , Toast.LENGTH_LONG).show();
+//                                            startActivity(new Intent(getApplicationContext(), StudentScoreActivity.class));
 //
 //                                        }
 //
@@ -138,48 +143,49 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
 //
 //                                        }
 //                                    });
-//                                } else {
-//
-//                                    testRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-//                                        @Override
-//                                        public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                            Global.test = dataSnapshot.getValue(Test.class);
-//                                            Log.d("test", "testID is  " +Global.test.getId());
-//
-//                                            long currentTime = System.currentTimeMillis();
-//                                            if(Global.test.getStartDate() > currentTime){
-//
-//                                                Toast.makeText(getContext(), "Not Available yet!", Toast.LENGTH_LONG).show();
-//
-//                                            } else if(Global.test.getEndDate() < currentTime){
-//
-//                                                Toast.makeText(getContext(), "Assignement has ended!", Toast.LENGTH_LONG).show();
-//
-//
-//                                            } else{
-//
-//                                                startActivity(new Intent(getContext(), RunningTestActivity.class));
-//
-//                                            }
-//                                        }
-//
-//                                        @Override
-//                                        public void onCancelled(DatabaseError databaseError) {
-//
-//                                        }
-//                                    });
-//
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
-//                    }
-//                });
+                                } else {
+
+                                    questionersRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            Global.test = dataSnapshot.getValue(Test.class);
+                                            Log.d("test", "testID is  " +Global.test.getId());
+
+                                            long currentTime = System.currentTimeMillis();
+                                            if(Global.test.getStartDate() > currentTime){
+
+                                                Toast.makeText(getApplicationContext(), "Not Available yet!", Toast.LENGTH_LONG).show();
+
+                                            } else if(Global.test.getEndDate() < currentTime){
+
+                                                Toast.makeText(getApplicationContext(), "Questioner has ended!", Toast.LENGTH_LONG).show();
+
+
+                                            } else{
+
+
+                                                startActivity(new Intent(getApplicationContext(), RunningQuestionerActivity.class));
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
 
                 long currentDate = System.currentTimeMillis();
                 if(model.getEndDate() > currentDate){
