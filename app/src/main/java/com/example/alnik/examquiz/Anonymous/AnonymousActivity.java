@@ -1,5 +1,6 @@
 package com.example.alnik.examquiz.Anonymous;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +46,7 @@ public class AnonymousActivity extends AppCompatActivity {
     private String room;
     private EditText txt;
     private RecyclerView roomsRecycleView;
-
+    private ProgressDialog mRegDialog;
     private FirebaseUser mCurrentUser;
     private DatabaseReference rooms;
     private DatabaseReference roomRoomParticiptions;
@@ -71,6 +73,10 @@ public class AnonymousActivity extends AppCompatActivity {
         allRooms = FirebaseDatabase.getInstance().getReference("Anonymous").child("Rooms");
         rooms = FirebaseDatabase.getInstance().getReference("Anonymous").child("RoomOwnership").child("Room");
         roomRoomParticiptions = FirebaseDatabase.getInstance().getReference("Anonymous").child("RoomParticipations").child("Rooms");
+
+        mRegDialog = new ProgressDialog(this);
+        mRegDialog.setMessage("Please wait.");
+        mRegDialog.setCanceledOnTouchOutside(false);
 
 
         txt = new EditText(AnonymousActivity.this);
@@ -157,6 +163,7 @@ public class AnonymousActivity extends AppCompatActivity {
 
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.sign_out) {
+            mRegDialog.show();
 
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -165,8 +172,11 @@ public class AnonymousActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+                                mRegDialog.dismiss();
                                 Log.d("test", "User account deleted.");
-                                startActivity(new Intent(AnonymousActivity.this, LoginActivity.class));
+                                Intent out = new Intent(AnonymousActivity.this, LoginActivity.class);
+                                out.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(out);
                                 finish();
                             }
                         }

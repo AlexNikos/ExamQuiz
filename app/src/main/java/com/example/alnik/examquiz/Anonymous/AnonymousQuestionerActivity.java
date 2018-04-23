@@ -1,5 +1,6 @@
 package com.example.alnik.examquiz.Anonymous;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -43,6 +44,8 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
     private DatabaseReference questionersRef;
     private DatabaseReference questionerUsersParticipation;
     private DatabaseReference questionerQuestionersParticipation;
+    private ProgressDialog mRegDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,10 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
         questionerQuestionersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("QuestionerParticipations").child("Questioners");
 
 
+        mRegDialog = new ProgressDialog(this);
+        mRegDialog.setMessage("Please wait.");
+        mRegDialog.setCanceledOnTouchOutside(false);
+
 
     }
 
@@ -70,6 +77,8 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
 
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.sign_out) {
+            mRegDialog.show();
+
 
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -79,7 +88,10 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d("test", "User account deleted.");
-                                startActivity(new Intent(AnonymousQuestionerActivity.this, LoginActivity.class));
+                                mRegDialog.dismiss();
+                                Intent out = new Intent(AnonymousQuestionerActivity.this, LoginActivity.class);
+                                out.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(out);
                                 finish();
                             }
                         }
