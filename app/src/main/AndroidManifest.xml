@@ -81,7 +81,7 @@
         <activity android:name=".Anonymous.NewQuestionerActivity" />
         <activity android:name=".Anonymous.QuestionerResultsActivity" />
         <activity android:name=".Anonymous.AnonymousQuestionerActivity" />
-        <activity android:name=".Anonymous.RunningQuestionerActivity"></activity>
+        <activity android:name=".Anonymous.RunningQuestionerActivity" />
     </application>
 
 </manifest>
