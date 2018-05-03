@@ -45,7 +45,7 @@ public class ResultsQuestionerParticipantsFragment extends Fragment {
     DatabaseReference userParticipationRef;
     View mView;
 
-    int number = 0;
+    int number;
 
 
     public ResultsQuestionerParticipantsFragment() {
@@ -58,6 +58,8 @@ public class ResultsQuestionerParticipantsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView =  inflater.inflate(R.layout.fragment_results_students, container, false);
+
+        number = 0;
 
         ResultsParticipantssRecycleView =mView.findViewById(R.id.ResultsStudentsRecycleView);
         ResultsParticipantssRecycleView.hasFixedSize();
@@ -96,9 +98,7 @@ public class ResultsQuestionerParticipantsFragment extends Fragment {
 
                 String participantID = getRef(position).getKey();
                 number++;
-
                 viewHolder.setName("participant " +number);
-
                 viewHolder.setTime(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(model.getTime()));
 
 
@@ -107,23 +107,9 @@ public class ResultsQuestionerParticipantsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        String studentID = getRef(position).getKey();
-                        FirebaseDatabase.getInstance().getReference("Users").child(studentID).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                Global.student = dataSnapshot.getValue(User.class);
-                                Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
-                                //startActivity(new Intent(getActivity(), CheckTestActivity.class));
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-
+                        Global.participantID = getRef(position).getKey();
+                        number = 0;
+                        startActivity(new Intent(getActivity(), CheckQuestionerActivity.class));
 
                     }
                 });

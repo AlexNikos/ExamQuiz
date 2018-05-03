@@ -18,5 +18,6 @@ public class Global {
     public static long timeSubscripted;
 
     public static Room room;
+    public static String participantID;
 
 }

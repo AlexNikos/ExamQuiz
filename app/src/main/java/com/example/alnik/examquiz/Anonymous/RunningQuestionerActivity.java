@@ -53,14 +53,11 @@ public class RunningQuestionerActivity extends AppCompatActivity {
     private DatabaseReference questionerUsersParticipation;
     private DatabaseReference answersQuestionersParticipation;
     private DatabaseReference answersUsersParticipation;
-    //private DatabaseReference marksTestsParticipation;
-    //private DatabaseReference marksUsersParticipation;
+
 
     int i = 0, j = 1;
-    //long grade = 0, maxGrade = 0;
     ArrayList<Object> questions;
     String[] ans;
-    //long[] marks;
 
     CountDownTimer myCountDownTimerObject;
 
@@ -93,19 +90,15 @@ public class RunningQuestionerActivity extends AppCompatActivity {
         questionerQuestionersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("QuestionerParticipations").child("Questioners").child(Global.test.getId()).child(currentUser.getUid());
         answersQuestionersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("Answers").child("Questioners").child(Global.test.getId()).child(currentUser.getUid());
         answersUsersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("Answers").child("Users").child(currentUser.getUid()).child(Global.test.getId());
-        //marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(currentUser.getUid());
-        //marksUsersParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Users").child(currentUser.getUid()).child(Global.test.getId());
-//        try{
-//            testTestsParticipation.keepSynced(true);
-//            testTestsParticipation.keepSynced(true);
-//            answersTestsParticipation.keepSynced(true);
-//            answersUsersParticipation.keepSynced(true);
-//            marksTestsParticipation.keepSynced(true);
-//            marksUsersParticipation.keepSynced(true);
-//
-//        }catch (Exception e){
-//            Log.d("test", "error " +e.toString());
-//        }
+        try{
+            questionerUsersParticipation.keepSynced(true);
+            questionerQuestionersParticipation.keepSynced(true);
+            answersQuestionersParticipation.keepSynced(true);
+            answersUsersParticipation.keepSynced(true);
+
+        }catch (Exception e){
+            Log.d("test", "error " +e.toString());
+        }
 
         questions = new ArrayList<>();
 
@@ -118,14 +111,12 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                 MultipleChoice question = new MultipleChoice((String)((HashMap)w).get("question"), (String)((HashMap)w).get("optionA"), (String)((HashMap)w).get("optionB"),
                         (String)((HashMap)w).get("optionC"), (String)((HashMap)w).get("optionD"), (String)((HashMap)w).get("answer"), (String)((HashMap)w).get("id"));
                 question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-                //maxGrade = maxGrade + question.getMaxGrade();
                 questions.add(question);
 
             }else if(y.equals("TrueFalse")){
 
                 TrueFalse question = new TrueFalse((String)((HashMap)w).get("question"), (boolean)((HashMap)w).get("answer"), (String)((HashMap)w).get("id"));
                 question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-                //maxGrade = maxGrade + question.getMaxGrade();
 
                 questions.add(question);
 
@@ -134,7 +125,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
 
                 ShortAnswer question = new ShortAnswer((String)((HashMap)w).get("question"), (String)((HashMap)w).get("id"));
                 question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-                //maxGrade = maxGrade + question.getMaxGrade();
 
                 questions.add(question);
 
@@ -142,11 +132,9 @@ public class RunningQuestionerActivity extends AppCompatActivity {
         }
         Log.d("test", questions.toString());
         ans = new String[questions.size()];
-        //marks = new long[questions.size()+1];
 
         for(int index = 0; index < ans.length; index++){
             ans[index] = "";
-            //marks[index] = 0;
         }
 
 
@@ -314,18 +302,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                     RadioOptionC.setChecked(false);
                     RadioOptionD.setChecked(false);
 
-//                    if(question.getAnswer().equals(ans[i])){
-//
-//                        marks[i] = question.getMaxGrade();
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    } else {
-//
-//                        marks[i] = 0;
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    }
-
                 }
             }
         });
@@ -340,17 +316,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                     RadioOptionC.setChecked(false);
                     RadioOptionD.setChecked(false);
 
-//                    if(question.getAnswer().equals(ans[i])){
-//
-//                        marks[i] = question.getMaxGrade();
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    } else {
-//
-//                        marks[i] = 0;
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    }
                 }
             }
         });
@@ -365,17 +330,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                     RadioOptionA.setChecked(false);
                     RadioOptionD.setChecked(false);
 
-//                    if(question.getAnswer().equals(ans[i])){
-//
-//                        marks[i] = question.getMaxGrade();
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    } else {
-//
-//                        marks[i] = 0;
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    }
+
                 }
             }
         });
@@ -390,17 +345,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                     RadioOptionC.setChecked(false);
                     RadioOptionA.setChecked(false);
 
-//                    if(question.getAnswer().equals(ans[i])){
-//
-//                        marks[i] = question.getMaxGrade();
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    } else {
-//
-//                        marks[i] = 0;
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    }
+
                 }
             }
         });
@@ -436,16 +381,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                     ans[i] = "true";
                     RadioOptionFalse.setChecked(false);
 
-//                    if( String.valueOf(question.getAnswer()).equals(ans[i])){
-//
-//                        marks[i] = question.getMaxGrade();
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//                    } else {
-//
-//                        marks[i] = 0;
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    }
+
                 }
             }
         });
@@ -458,17 +394,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "It is checked", Toast.LENGTH_LONG).show();
                     ans[i] = "false";
                     RadioOptionTrue.setChecked(false);
-
-//                    if( String.valueOf(question.getAnswer()).equals(ans[i])){
-//
-//                        marks[i] = question.getMaxGrade();
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//                    } else {
-//
-//                        marks[i] = 0;
-//                        Log.d("test", "onCheckedChanged: " +marks[i]);
-//
-//                    }
 
                 }
             }
@@ -542,7 +467,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
 
     void formattedTimeLeft(long millis) {
 
-        int days = (int) (MILLISECONDS.toDays(millis) % 24);
+        int days = (int) (MILLISECONDS.toDays(millis));
         int hrs = (int) (MILLISECONDS.toHours(millis) % 24);
         int min = (int) (MILLISECONDS.toMinutes(millis) % 60);
         int sec = (int) (MILLISECONDS.toSeconds(millis) % 60);
@@ -563,8 +488,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
 
     public void submitTest(){
 
-        //marks[marks.length-1] = maxGrade;
-
         Time time = new Time(System.currentTimeMillis());
         questionerQuestionersParticipation.setValue(time, new DatabaseReference.CompletionListener() {
             @Override
@@ -579,12 +502,8 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                             if(databaseError == null){
 
                                 List ansList = new ArrayList<String>(Arrays.asList(ans));
-                                //List marksList = new ArrayList<>();
-                                //for(long l : marks) marksList.add(l);
                                 answersQuestionersParticipation.setValue(ansList);
                                 answersUsersParticipation.setValue(ansList);
-                                //marksTestsParticipation.setValue(marksList);
-                                //marksUsersParticipation.setValue(marksList);
                                 Toast.makeText(getApplicationContext(), "Successfully submitted.", Toast.LENGTH_LONG).show();
                                 finish();
                             }
@@ -594,7 +513,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                 }
             }
         });
-
 
     }
 }

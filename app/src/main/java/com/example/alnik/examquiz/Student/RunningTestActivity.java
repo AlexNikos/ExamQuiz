@@ -1,8 +1,6 @@
 package com.example.alnik.examquiz.Student;
 
-import android.content.Intent;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -35,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -541,7 +538,7 @@ public class RunningTestActivity extends AppCompatActivity {
 
     void formattedTimeLeft(long millis) {
 
-        int days = (int) (MILLISECONDS.toDays(millis) % 24);
+        int days = (int) (MILLISECONDS.toDays(millis));
         int hrs = (int) (MILLISECONDS.toHours(millis) % 24);
         int min = (int) (MILLISECONDS.toMinutes(millis) % 60);
         int sec = (int) (MILLISECONDS.toSeconds(millis) % 60);

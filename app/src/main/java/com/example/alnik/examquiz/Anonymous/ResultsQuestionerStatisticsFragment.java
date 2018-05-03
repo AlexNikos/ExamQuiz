@@ -55,20 +55,10 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
     View mView;
     LinearLayout insert;
 
-
     DatabaseReference answersTestsParticipation;
-    //DatabaseReference marksTestsParticipation;
     DatabaseReference usersTestsParticipation;
-    //DatabaseReference courseSubscribers;
-
-
     ArrayList<Object> questions;
-    ArrayList<String> studentsIDparticipated;
-    //ArrayList<String> passStudents;
-    //long maxGrade = 0;
 
-    //long subscount;
-    long studentsParticipated;
 
     public ResultsQuestionerStatisticsFragment() {
         // Required empty public constructor
@@ -82,9 +72,7 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_results_statistics, container, false);
 
         answersTestsParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("Answers").child("Questioners").child(Global.test.getId());
-        //marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Questioners").child(Global.test.getId());
         usersTestsParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("QuestionerParticipations").child("Questioners").child(Global.test.getId());
-        //courseSubscribers = FirebaseDatabase.getInstance().getReference("Subscriptions").child("Courses").child(Global.course.getId());
 
         try{
             answersTestsParticipation.keepSynced(true);
@@ -97,7 +85,97 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         insert = mView.findViewById(R.id.insert);
 
         loadQuestions();
-        //calculateParticipation();
+
+        for(Object w : questions){
+            if(w.getClass() == MultipleChoice.class){
+
+                MultipleChoice question = (MultipleChoice)w;
+
+                int index = questions.indexOf(w);
+
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                FirebaseDatabase.getInstance().getReference("Anonymous").child("Answers").child("Questioners").child(Global.test.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        long opA = 0, opB = 0, opC= 0, opD = 0, opNone = 0;
+                        for(DataSnapshot ds:dataSnapshot.getChildren()){
+                            ArrayList<String> ans = ds.getValue(t);
+
+                            if(ans.get(index).equals(question.getOptionA())){
+                                opA++;
+                            }else if(ans.get(index).equals(question.getOptionB())){
+                                opB++;
+                            }else if(ans.get(index).equals(question.getOptionB())){
+                                opB++;
+                            }else if(ans.get(index).equals(question.getOptionC())){
+                                opC++;
+                            }else if(ans.get(index).equals(question.getOptionD())){
+                                opD++;
+                            } else{
+                                opNone++;
+                            }
+
+                        }
+
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                        layoutParams.setMargins(0, 5, 0, 10);
+
+                        insert.addView(drawBarMultiple(opA, opB, opC, opD, opNone,
+                                question.getQuestion(), question.getOptionA(), question.getOptionB(), question.getOptionC(), question.getOptionD()), layoutParams);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            } else if(w.getClass() == TrueFalse.class){
+
+                TrueFalse question = (TrueFalse) w;
+
+                int index = questions.indexOf(w);
+
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                FirebaseDatabase.getInstance().getReference("Anonymous").child("Answers").child("Questioners").child(Global.test.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        long opTRUE = 0, opFALSE = 0, opNone = 0;
+                        for(DataSnapshot ds:dataSnapshot.getChildren()){
+                            ArrayList<String> ans = ds.getValue(t);
+
+                            if(ans.get(index).equals("true")){
+                                opTRUE++;
+                            }else if(ans.get(index).equals("false")){
+                                opFALSE++;
+                            } else{
+                                opNone++;
+                            }
+
+                        }
+
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                        layoutParams.setMargins(0, 5, 0, 10);
+
+                        insert.addView(drawBarTruefalse(opTRUE, opFALSE, opNone, question.getQuestion()), layoutParams);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        }
 
         return mView;
     }
@@ -114,15 +192,12 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
 
                 MultipleChoice question = new MultipleChoice((String)((HashMap)w).get("question"), (String)((HashMap)w).get("optionA"), (String)((HashMap)w).get("optionB"),
                         (String)((HashMap)w).get("optionC"), (String)((HashMap)w).get("optionD"), (String)((HashMap)w).get("answer"), (String)((HashMap)w).get("id"));
-                //question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-               //maxGrade = maxGrade + question.getMaxGrade();
+
                 questions.add(question);
 
             }else if(y.equals("TrueFalse")){
 
                 TrueFalse question = new TrueFalse((String)((HashMap)w).get("question"), (boolean)((HashMap)w).get("answer"), (String)((HashMap)w).get("id"));
-                //question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-                //maxGrade = maxGrade + question.getMaxGrade();
 
                 questions.add(question);
 
@@ -130,8 +205,6 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
             }else if(y.equals("ShortAnswer")){
 
                 ShortAnswer question = new ShortAnswer((String)((HashMap)w).get("question"), (String)((HashMap)w).get("id"));
-                //question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-                //maxGrade = maxGrade + question.getMaxGrade();
 
                 questions.add(question);
 
@@ -140,175 +213,33 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
 
     }
 
-//    private void calculateParticipation() {
-//
-//        courseSubscribers.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                subscount = dataSnapshot.getChildrenCount();
-//
-//                usersTestsParticipation.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                        studentsParticipated = dataSnapshot.getChildrenCount();
-//
-//                        insert.addView(drawChart("Student Partitipation", studentsParticipated, subscount - studentsParticipated, "Participated", "Not Participated"), 0);
-//                        Log.d("test", "participated " + studentsParticipated +" from " +subscount);
-//                        calculatePass();
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
-//
-//    private void calculatePass() {
-//
-//        passStudents = new ArrayList<>();
-//        studentsIDparticipated = new ArrayList<>();
-//        marksTestsParticipation.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("test", "onDataChange: " + dataSnapshot.toString());
-//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-//
-//                    studentsIDparticipated.add((String) ds.getKey());
-//                    Log.d("test", "onCreateView: " +studentsIDparticipated.toString());
-//                    pass((String) ds.getKey());
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//    }
-//
-//    public void pass(String student){
-//
-//        GenericTypeIndicator<ArrayList<Long>> s = new GenericTypeIndicator<ArrayList<Long>>() {};
-//        marksTestsParticipation.child(student).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                ArrayList<Long> marks = new ArrayList<>();
-//                marks = dataSnapshot.getValue(s);
-//                long sum = 0;
-//                for(int i = 0; i < marks.size()-1; i++){
-//                    sum = sum + marks.get(i);
-//                }
-//
-//                if( sum >= (marks.get(marks.size()-1))/2 ) {
-//                    passStudents.add(student);
-//                    Log.d("test", "passStudents: " + passStudents.toString());
-//                }
-//
-//                if(insert.getChildCount() > 1){
-//                    insert.removeViewAt(1);
-//                    insert.addView(drawBar(passStudents.size(), studentsParticipated - passStudents.size(), subscount-studentsParticipated), 1);
-//                    //insert.addView(drawChart("Student Success", passStudents.size(), studentsParticipated - passStudents.size(), "Passed", "Failed"), 1);
-//                } else {
-//                    insert.addView(drawBar(passStudents.size(), studentsParticipated - passStudents.size(), subscount-studentsParticipated), 1);
-//                    //insert.addView(drawChart("Student Success", passStudents.size(), studentsParticipated - passStudents.size(), "Passed", "Failed"), 1);
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
-    private View drawChart(String description, float firstValue, float secondValue, String label1, String label2) {
 
+    private View drawBarMultiple(long opA, long opB, long opC, long opD, long opNone,
+                                String question ,String optionA, String optionB, String optionC, String optionD){
 
         LayoutInflater factory = LayoutInflater.from(getContext());
-        final View chartLayout = factory.inflate(R.layout.pie_chart, null);
-        final PieChart mChart = chartLayout.findViewById(R.id.pieChart);
-        mChart.setTag(description);
-
-        mChart.setHoleRadius(25f);
-        mChart.setTransparentCircleAlpha(0);
-        mChart.setRotationEnabled(false);
-        Description de = new Description();
-        de.setText(description);
-        de.setTextSize(12);
-        mChart.setDescription(de);
-        mChart.setUsePercentValues(true);
-
-        List<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(firstValue, label1));
-        entries.add(new PieEntry(secondValue, label2));
-
-        PieDataSet pieDataSet = new PieDataSet(entries, null);
-        pieDataSet.setSliceSpace(2);
-        pieDataSet.setValueTextSize(12);
-
-
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.GREEN);
-        colors.add(Color.RED);
-        pieDataSet.setColors(colors);
-
-        Legend legend = mChart.getLegend();
-        legend.setForm(Legend.LegendForm.CIRCLE);
-        legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
-
-        PieData pieData = new PieData(pieDataSet);
-        mChart.setData(pieData);
-        mChart.invalidate();
-
-        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
-
-        return chartLayout;
-
-    }
-
-    private View drawBar(long pass, long fail, long notParticipated){
-
-        LayoutInflater factory = LayoutInflater.from(getContext());
-        final View chartLayout = factory.inflate(R.layout.bar_chart, null);
+        final View chartLayout = factory.inflate(R.layout.anonymous_bar_chart, null);
+        final TextView questionView = chartLayout.findViewById(R.id.question);
         final BarChart barChart = chartLayout.findViewById(R.id.barChart);
 
+        questionView.setText(question);
 
         ArrayList<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1,pass));
-        barEntries.add(new BarEntry(2,fail));
-        barEntries.add(new BarEntry(3,notParticipated));
+        barEntries.add(new BarEntry(1, opA));
+        barEntries.add(new BarEntry(2, opB));
+        barEntries.add(new BarEntry(3, opC));
+        barEntries.add(new BarEntry(4, opD));
+        barEntries.add(new BarEntry(5, opNone));
+
 
         ArrayList<String> names = new ArrayList<>();
         names.add("");
-        names.add("Passed");
-        names.add("Failed");
-        names.add("Not Participated");
+        names.add(optionA);
+        names.add(optionB);
+        names.add(optionC);
+        names.add(optionD);
+        names.add("No Answer");
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter((names.toArray(new String[names.size()]))));
@@ -316,7 +247,7 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         xAxis.setGranularity(1f);
         xAxis.setGranularityEnabled(true);
 
-        int[] colors = new int[] {Color.GREEN, Color.RED, Color.LTGRAY};
+        int[] colors = new int[] {Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.LTGRAY};
 
         BarDataSet barDataSet = new BarDataSet(barEntries,null);
         barDataSet.setValueTextSize(14);
@@ -327,7 +258,7 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         barChart.setData(barData);
 
         Description de = new Description();
-        de.setText("Students Success");
+        de.setText("");
         de.setTextSize(12);
         barChart.setDescription(de);
         barChart.setFitBars(true);
@@ -337,5 +268,55 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         return chartLayout;
 
     }
+
+    private View drawBarTruefalse(long opTrue, long opFalse,  long opNone, String question ){
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View chartLayout = factory.inflate(R.layout.anonymous_bar_chart, null);
+        final TextView questionView = chartLayout.findViewById(R.id.question);
+        final BarChart barChart = chartLayout.findViewById(R.id.barChart);
+
+        questionView.setText(question);
+
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        barEntries.add(new BarEntry(1, opTrue));
+        barEntries.add(new BarEntry(2, opFalse));
+        barEntries.add(new BarEntry(3, opNone));
+
+
+        ArrayList<String> names = new ArrayList<>();
+        names.add("");
+        names.add("TRUE");
+        names.add("FALSE");
+        names.add("No Answer");
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter((names.toArray(new String[names.size()]))));
+        xAxis.setTextSize(10);
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+
+        int[] colors = new int[] {Color.GREEN, Color.BLUE, Color.LTGRAY};
+
+        BarDataSet barDataSet = new BarDataSet(barEntries,null);
+        barDataSet.setValueTextSize(14);
+        barDataSet.setBarBorderWidth(1);
+        barDataSet.setColors(colors);
+        BarData barData = new BarData(barDataSet);
+
+        barChart.setData(barData);
+
+        Description de = new Description();
+        de.setText("");
+        de.setTextSize(12);
+        barChart.setDescription(de);
+        barChart.setFitBars(true);
+        barChart.invalidate();
+
+
+        return chartLayout;
+
+    }
+
 }
 
