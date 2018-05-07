@@ -15,7 +15,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:popupTheme="@style/PopupOverlay">
 
@@ -29,9 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appbar"
-        android:background="@color/cardview_light_background"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/tab_indicator"
         android:text="TextView"
-        android:textAlignment="textStart"
+        android:textAlignment="center"
         android:textSize="25sp" />
 
     <RelativeLayout

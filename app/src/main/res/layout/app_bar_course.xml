@@ -24,13 +24,14 @@
             android:id="@+id/courseTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_background"
+            android:background="@drawable/tab_background"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorAccent"
+            app:tabIndicatorColor="@android:color/black"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/colorAccent"
-            app:tabTextAppearance="@style/CustomTabText"
-            app:tabTextColor="@color/common_google_signin_btn_text_dark_focused">
+            app:tabSelectedTextColor="@android:color/black"
+            app:tabTextAppearance="@style/CustomTabText">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/DatabaseTab"

@@ -176,7 +176,7 @@ public class TestsStudentFragment extends Fragment {
                 });
 
                 long currentDate = System.currentTimeMillis();
-                if(model.getEndDate() > currentDate){
+                if(model.getEndDate() > currentDate && model.getStartDate() <= currentDate){
 
                     viewHolder.activeButton.setText("Active");
                     viewHolder.activeButton.setClickable(false);

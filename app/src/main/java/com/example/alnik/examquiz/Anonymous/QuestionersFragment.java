@@ -118,7 +118,7 @@ public class QuestionersFragment extends Fragment {
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
                         testRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -137,14 +137,14 @@ public class QuestionersFragment extends Fragment {
                 });
 
                 long currentDate = System.currentTimeMillis();
-                if(model.getEndDate() > currentDate){
+                if(model.getEndDate() > currentDate && model.getStartDate() <= currentDate){
 
-                    viewHolder.activeButton.setText("Running");
+                    viewHolder.activeButton.setText("Active");
                     viewHolder.activeButton.setClickable(false);
                     viewHolder.activeButton.setBackgroundColor(Color.GREEN);
                 } else {
 
-                    viewHolder.activeButton.setText("Ended");
+                    viewHolder.activeButton.setText("Inactive");
                     viewHolder.activeButton.setClickable(false);
                     viewHolder.activeButton.setBackgroundColor(Color.RED);
 

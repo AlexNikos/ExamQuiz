@@ -296,7 +296,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), optionA.getText().toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), optionA.getText().toString(), Toast.LENGTH_LONG).show();
                     ans[i] = question.getOptionA();
                     RadioOptionB.setChecked(false);
                     RadioOptionC.setChecked(false);
@@ -310,7 +310,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), optionB.getText().toString(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), optionB.getText().toString(), Toast.LENGTH_LONG).show();
                     ans[i] = question.getOptionB();
                     RadioOptionA.setChecked(false);
                     RadioOptionC.setChecked(false);
@@ -324,7 +324,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), optionC.getText().toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), optionC.getText().toString(), Toast.LENGTH_LONG).show();
                     ans[i] = question.getOptionC();
                     RadioOptionB.setChecked(false);
                     RadioOptionA.setChecked(false);
@@ -339,7 +339,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), optionD.getText().toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), optionD.getText().toString(), Toast.LENGTH_LONG).show();
                     ans[i] = question.getOptionD();
                     RadioOptionB.setChecked(false);
                     RadioOptionC.setChecked(false);
@@ -377,7 +377,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), "It is checked", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "It is checked", Toast.LENGTH_LONG).show();
                     ans[i] = "true";
                     RadioOptionFalse.setChecked(false);
 
@@ -391,7 +391,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), "It is checked", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "It is checked", Toast.LENGTH_LONG).show();
                     ans[i] = "false";
                     RadioOptionTrue.setChecked(false);
 

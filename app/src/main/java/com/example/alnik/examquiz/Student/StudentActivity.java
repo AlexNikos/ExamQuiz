@@ -85,15 +85,15 @@ public class StudentActivity extends AppCompatActivity
         mCoursesRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
 
-        FloatingActionButton findNewLesson = (FloatingActionButton) findViewById(R.id.find_new_lesson);
-        findNewLesson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                startActivity(new Intent(getApplicationContext(), SearchCourseActivity.class));
-
-            }
-        });
+//        FloatingActionButton findNewLesson = (FloatingActionButton) findViewById(R.id.find_new_lesson);
+//        findNewLesson.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                startActivity(new Intent(getApplicationContext(), SearchCourseActivity.class));
+//
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

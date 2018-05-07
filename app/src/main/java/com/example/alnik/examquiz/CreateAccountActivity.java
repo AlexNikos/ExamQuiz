@@ -97,7 +97,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                         type = "Student";
                         break;
                 }
-                Toast.makeText(CreateAccountActivity.this, type, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -125,7 +124,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                 if (temp.contains("@") && temp.contains(".") && !temp.isEmpty()){
                     email = emailInput.getText().toString();
                     passwordInput.requestFocus();
-                    Toast.makeText(CreateAccountActivity.this, email, Toast.LENGTH_SHORT).show();
 
                 } else {
                     emailInput.requestFocus();

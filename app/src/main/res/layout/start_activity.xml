@@ -13,6 +13,6 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:hapticFeedbackEnabled="false"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:srcCompat="@drawable/drdr" />
 </RelativeLayout>

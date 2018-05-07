@@ -270,7 +270,7 @@ public class TeacherRoomFragment extends Fragment {
                         });
 
                         PopupMenu popup = new PopupMenu(view.getContext(), view);
-                        popup.inflate(R.menu.popup_menu);
+                        popup.inflate(R.menu.popup_delete);
                         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {

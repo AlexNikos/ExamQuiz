@@ -4,7 +4,8 @@
     android:id="@+id/singleTestView"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_margin="5dp"
+    android:layout_margin="2dp"
+    app:cardBackgroundColor="@color/single_row"
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
@@ -53,11 +54,12 @@
             android:id="@+id/endLinear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_alignLeft="@id/startLinear"
             android:layout_below="@id/startLinear"
             android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:background="@color/single_row"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView"

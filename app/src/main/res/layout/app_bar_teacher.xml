@@ -10,6 +10,7 @@
         android:id="@+id/appbarTeacher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:theme="@style/AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -23,7 +24,11 @@
             android:id="@+id/teacherTab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark">
+            android:background="@drawable/tab_background"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            app:tabIndicatorColor="@android:color/black"
+            app:tabSelectedTextColor="@android:color/black">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/lessonsTab"

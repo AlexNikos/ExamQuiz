@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alnik.examquiz.Global;
+import com.example.alnik.examquiz.MyDemicalFormater;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.models.MultipleChoice;
 import com.example.alnik.examquiz.models.ShortAnswer;
@@ -24,6 +25,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -42,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -226,15 +229,14 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         questionView.setText(question);
 
         ArrayList<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1, opA));
-        barEntries.add(new BarEntry(2, opB));
-        barEntries.add(new BarEntry(3, opC));
-        barEntries.add(new BarEntry(4, opD));
-        barEntries.add(new BarEntry(5, opNone));
+        barEntries.add(new BarEntry(0, opA));
+        barEntries.add(new BarEntry(1, opB));
+        barEntries.add(new BarEntry(2, opC));
+        barEntries.add(new BarEntry(3, opD));
+        barEntries.add(new BarEntry(4, opNone));
 
 
         ArrayList<String> names = new ArrayList<>();
-        names.add("");
         names.add(optionA);
         names.add(optionB);
         names.add(optionC);
@@ -253,12 +255,17 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         barDataSet.setValueTextSize(14);
         barDataSet.setBarBorderWidth(1);
         barDataSet.setColors(colors);
+        barChart.getAxisLeft().setValueFormatter(new MyDemicalFormater());
+        barChart.getAxisRight().setValueFormatter(new MyDemicalFormater());
+        barDataSet.setValueFormatter(new MyDemicalFormater());
+
         BarData barData = new BarData(barDataSet);
 
         barChart.setData(barData);
 
         Description de = new Description();
-        de.setText("");
+        String total = String.valueOf((opA + opB + opC + opD + opNone));
+        de.setText("Total Participants " +total);
         de.setTextSize(12);
         barChart.setDescription(de);
         barChart.setFitBars(true);
@@ -279,13 +286,12 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         questionView.setText(question);
 
         ArrayList<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1, opTrue));
-        barEntries.add(new BarEntry(2, opFalse));
-        barEntries.add(new BarEntry(3, opNone));
+        barEntries.add(new BarEntry(0, opTrue));
+        barEntries.add(new BarEntry(1, opFalse));
+        barEntries.add(new BarEntry(2, opNone));
 
 
         ArrayList<String> names = new ArrayList<>();
-        names.add("");
         names.add("TRUE");
         names.add("FALSE");
         names.add("No Answer");
@@ -302,12 +308,18 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         barDataSet.setValueTextSize(14);
         barDataSet.setBarBorderWidth(1);
         barDataSet.setColors(colors);
+
+        barChart.getAxisLeft().setValueFormatter(new MyDemicalFormater());
+        barChart.getAxisRight().setValueFormatter(new MyDemicalFormater());
+
+        barDataSet.setValueFormatter(new MyDemicalFormater());
         BarData barData = new BarData(barDataSet);
 
         barChart.setData(barData);
 
         Description de = new Description();
-        de.setText("");
+        String total = String.valueOf((opFalse + opTrue + opNone));
+        de.setText("Total Participants " +total);
         de.setTextSize(12);
         barChart.setDescription(de);
         barChart.setFitBars(true);
@@ -318,5 +330,8 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
 
     }
 
+
 }
+
+
 

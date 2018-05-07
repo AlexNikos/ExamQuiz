@@ -173,7 +173,6 @@ public class AnnouncementsCourseFragment extends Fragment {
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(),"Button pressed", Toast.LENGTH_LONG).show();
 
                         LayoutInflater factory = LayoutInflater.from(getContext());
                         final View notification = factory.inflate(R.layout.notification_create, null);

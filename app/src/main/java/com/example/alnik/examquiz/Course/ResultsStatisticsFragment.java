@@ -2,7 +2,6 @@ package com.example.alnik.examquiz.Course;
 
 
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,17 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.MyDemicalFormater;
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.models.MultipleChoice;
 import com.example.alnik.examquiz.models.ShortAnswer;
 import com.example.alnik.examquiz.models.TrueFalse;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -32,8 +29,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +42,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -223,10 +219,15 @@ public class ResultsStatisticsFragment extends Fragment {
 
                 if(insert.getChildCount() > 1){
                     insert.removeViewAt(1);
-                    insert.addView(drawBar(passStudents.size(), studentsParticipated - passStudents.size(), subscount-studentsParticipated), 1);
+
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 10, 0, 20);
+                    insert.addView(drawBar(passStudents.size(), studentsParticipated - passStudents.size(), subscount-studentsParticipated), 1, layoutParams);
                     //insert.addView(drawChart("Student Success", passStudents.size(), studentsParticipated - passStudents.size(), "Passed", "Failed"), 1);
                 } else {
-                    insert.addView(drawBar(passStudents.size(), studentsParticipated - passStudents.size(), subscount-studentsParticipated), 1);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 10, 0, 20);
+                    insert.addView(drawBar(passStudents.size(), studentsParticipated - passStudents.size(), subscount-studentsParticipated), 1, layoutParams);
                     //insert.addView(drawChart("Student Success", passStudents.size(), studentsParticipated - passStudents.size(), "Passed", "Failed"), 1);
 
                 }
@@ -264,6 +265,8 @@ public class ResultsStatisticsFragment extends Fragment {
         PieDataSet pieDataSet = new PieDataSet(entries, null);
         pieDataSet.setSliceSpace(2);
         pieDataSet.setValueTextSize(12);
+
+        pieDataSet.setValueFormatter(new PercentFormatter());
 
 
         ArrayList<Integer> colors = new ArrayList<>();
@@ -312,12 +315,11 @@ public class ResultsStatisticsFragment extends Fragment {
 
 
         ArrayList<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1,pass));
-        barEntries.add(new BarEntry(2,fail));
-        barEntries.add(new BarEntry(3,notParticipated));
+        barEntries.add(new BarEntry(0,pass));
+        barEntries.add(new BarEntry(1,fail));
+        barEntries.add(new BarEntry(2,notParticipated));
 
         ArrayList<String> names = new ArrayList<>();
-        names.add("");
         names.add("Passed");
         names.add("Failed");
         names.add("Not Participated");
@@ -334,6 +336,9 @@ public class ResultsStatisticsFragment extends Fragment {
         barDataSet.setValueTextSize(14);
         barDataSet.setBarBorderWidth(1);
         barDataSet.setColors(colors);
+        barChart.getAxisLeft().setValueFormatter(new MyDemicalFormater());
+        barChart.getAxisRight().setValueFormatter(new MyDemicalFormater());
+        barDataSet.setValueFormatter(new MyDemicalFormater());
         BarData barData = new BarData(barDataSet);
 
         barChart.setData(barData);
