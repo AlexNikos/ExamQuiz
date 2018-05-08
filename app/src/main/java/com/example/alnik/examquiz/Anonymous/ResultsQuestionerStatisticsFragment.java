@@ -246,8 +246,8 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter((names.toArray(new String[names.size()]))));
         xAxis.setTextSize(10);
-        xAxis.setGranularity(1f);
-        xAxis.setGranularityEnabled(true);
+        //xAxis.setGranularity(1f);
+        //xAxis.setGranularityEnabled(true);
 
         int[] colors = new int[] {Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.LTGRAY};
 
@@ -255,11 +255,21 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         barDataSet.setValueTextSize(14);
         barDataSet.setBarBorderWidth(1);
         barDataSet.setColors(colors);
+
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getXAxis().setDrawGridLines(false);
+
         barChart.getAxisLeft().setValueFormatter(new MyDemicalFormater());
         barChart.getAxisRight().setValueFormatter(new MyDemicalFormater());
         barDataSet.setValueFormatter(new MyDemicalFormater());
+        barChart.getAxisRight().setAxisMinimum(0);
+        barChart.getAxisLeft().setAxisMinimum(0);
+
 
         BarData barData = new BarData(barDataSet);
+        barData.setHighlightEnabled(false);
+
 
         barChart.setData(barData);
 
@@ -269,6 +279,9 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         de.setTextSize(12);
         barChart.setDescription(de);
         barChart.setFitBars(true);
+        barChart.setDoubleTapToZoomEnabled(false);
+        barChart.setPinchZoom(false);
+        barChart.setTouchEnabled(false);
         barChart.invalidate();
 
 
@@ -309,11 +322,19 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         barDataSet.setBarBorderWidth(1);
         barDataSet.setColors(colors);
 
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getXAxis().setDrawGridLines(false);
+
         barChart.getAxisLeft().setValueFormatter(new MyDemicalFormater());
         barChart.getAxisRight().setValueFormatter(new MyDemicalFormater());
-
         barDataSet.setValueFormatter(new MyDemicalFormater());
+        barChart.getAxisRight().setAxisMinimum(0);
+        barChart.getAxisLeft().setAxisMinimum(0);
+
         BarData barData = new BarData(barDataSet);
+        barData.setHighlightEnabled(false);
+
 
         barChart.setData(barData);
 
@@ -323,6 +344,9 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         de.setTextSize(12);
         barChart.setDescription(de);
         barChart.setFitBars(true);
+        barChart.setDoubleTapToZoomEnabled(false);
+        barChart.setPinchZoom(false);
+        barChart.setTouchEnabled(false);
         barChart.invalidate();
 
 

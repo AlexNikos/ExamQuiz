@@ -3,13 +3,18 @@ package com.example.alnik.examquiz;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.example.alnik.examquiz.Anonymous.AnonymousActivity;
 import com.example.alnik.examquiz.Student.StudentActivity;
 import com.example.alnik.examquiz.Teacher.TeacherActivity;
 import com.example.alnik.examquiz.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,10 +46,24 @@ public class StartActivity extends AppCompatActivity {
 
             if (currentUser.isAnonymous()) {
 
-                Intent accountIntent = new Intent(StartActivity.this, LoginActivity.class );
-                accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(accountIntent);
-                finish();
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                user.delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    mRegDialog.dismiss();
+                                    Log.d("test", "User account deleted.");
+                                    Intent accountIntent = new Intent(StartActivity.this, LoginActivity.class );
+                                    accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(accountIntent);
+                                    finish();
+                                }
+                            }
+                        });
+
+
 
             } else {
 

@@ -82,6 +82,13 @@ public class TeacherRoomFragment extends Fragment {
         userRoomOwnership = FirebaseDatabase.getInstance().getReference("Anonymous").child("RoomOwnership").child("User");
         roomRoomOwnership  = FirebaseDatabase.getInstance().getReference("Anonymous").child("RoomOwnership").child("Room");
 
+        try{
+            userRoomOwnership.keepSynced(true);
+            roomRoomOwnership.keepSynced(true);
+        } catch (Exception e){
+            Log.d("test", e.toString());
+        }
+
         CreateNewRoom = (FloatingActionButton) mMainView.findViewById(R.id.create_new_room);
 
 //-----------------------------This is for multiLine editText on AlertDialBox--------------------------------------------------
@@ -179,11 +186,6 @@ public class TeacherRoomFragment extends Fragment {
         return mMainView;
     }
 
-    private void roomNameExistes() {
-
-
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -236,7 +238,6 @@ public class TeacherRoomFragment extends Fragment {
                                 Log.d("test", dataSnapshot.toString());
                                 Global.room = dataSnapshot.getValue(Room.class);
 
-                                Toast.makeText(getContext(), "Room to enter", Toast.LENGTH_LONG).show();
                                 Intent startCourseActivity = new Intent(getActivity(), RoomActivity.class);
                                 startActivity(startCourseActivity);
 

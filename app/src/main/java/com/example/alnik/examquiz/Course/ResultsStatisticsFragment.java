@@ -336,10 +336,18 @@ public class ResultsStatisticsFragment extends Fragment {
         barDataSet.setValueTextSize(14);
         barDataSet.setBarBorderWidth(1);
         barDataSet.setColors(colors);
+
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getXAxis().setDrawGridLines(false);
         barChart.getAxisLeft().setValueFormatter(new MyDemicalFormater());
         barChart.getAxisRight().setValueFormatter(new MyDemicalFormater());
         barDataSet.setValueFormatter(new MyDemicalFormater());
+        barChart.getAxisRight().setAxisMinimum(0);
+        barChart.getAxisLeft().setAxisMinimum(0);
+
         BarData barData = new BarData(barDataSet);
+        barData.setHighlightEnabled(false);
 
         barChart.setData(barData);
 
@@ -348,6 +356,9 @@ public class ResultsStatisticsFragment extends Fragment {
         de.setTextSize(12);
         barChart.setDescription(de);
         barChart.setFitBars(true);
+        barChart.setDoubleTapToZoomEnabled(false);
+        barChart.setPinchZoom(false);
+        barChart.setTouchEnabled(false);
         barChart.invalidate();
 
 

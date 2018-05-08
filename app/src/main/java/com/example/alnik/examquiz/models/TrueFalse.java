@@ -16,6 +16,14 @@ public class TrueFalse {
     public TrueFalse() {
     }
 
+    public TrueFalse(String question, String id) {
+        this.question = question;
+        this.answer = false;
+        this.id = id;
+        type = "TrueFalse";
+        maxGrade = 0;
+    }
+
     public TrueFalse(String question, Boolean answer, String id) {
         this.question = question;
         this.answer = answer;
