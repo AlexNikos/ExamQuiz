@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     tools:context="com.example.alnik.examquiz.CreateAccountActivity">
 
     <LinearLayout
@@ -66,16 +67,13 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/createButton"
@@ -83,7 +81,10 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="50"
-            android:text="@string/create" />
+            android:background="@android:color/transparent"
+            android:text="@string/create"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/cancelButton"
@@ -91,7 +92,10 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="50"
-            android:text="@string/cancel" />
+            android:background="@android:color/transparent"
+            android:text="@string/cancel"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -112,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textSize="24dp" />
+            android:textSize="20sp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -121,7 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="4dp"
         android:hint="Surname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
@@ -133,7 +137,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textSize="24dp" />
+            android:textSize="20sp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -142,7 +146,7 @@
         android:layout_height="68dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:hint="Email (Required)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
@@ -154,7 +158,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textSize="24dp" />
+            android:textSize="20sp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -163,7 +167,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="4dp"
         android:hint="Password (Required)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
@@ -175,7 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textSize="24dp" />
+            android:textSize="20sp" />
     </android.support.design.widget.TextInputLayout>
 
 

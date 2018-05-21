@@ -292,7 +292,7 @@ public class CheckTestActivity extends AppCompatActivity {
 
     public View multiple(MultipleChoice question, String choice, long grade){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View multipleChoice = factory.inflate(R.layout.checking_multiplechoice, null);
         final TextView questionMultipleEnter = multipleChoice.findViewById(R.id.questionRunning);
         final TextView optionA = multipleChoice.findViewById(R.id.optionA);
@@ -301,6 +301,11 @@ public class CheckTestActivity extends AppCompatActivity {
         final TextView optionD = multipleChoice.findViewById(R.id.optionD);
         final TextView maxMark = multipleChoice.findViewById(R.id.maxMark);
         final TextView mark = multipleChoice.findViewById(R.id.mark);
+        final LinearLayout linearA = multipleChoice.findViewById(R.id.A);
+        final LinearLayout linearB = multipleChoice.findViewById(R.id.B);
+        final LinearLayout linearC = multipleChoice.findViewById(R.id.C);
+        final LinearLayout linearD = multipleChoice.findViewById(R.id.D);
+
 
         questionMultipleEnter.setText(question.getQuestion());
         optionA.setText(question.getOptionA());
@@ -315,37 +320,37 @@ public class CheckTestActivity extends AppCompatActivity {
 
             if (question.getAnswer().equals(question.getOptionA())) {
 
-                optionA.setBackgroundColor(Color.BLUE);
+                optionA.setBackgroundColor(Color.RED);
 
             } else if (question.getAnswer().equals(question.getOptionB())) {
 
-                optionB.setBackgroundColor(Color.BLUE);
+                optionB.setBackgroundColor(Color.RED);
 
             } else if (question.getAnswer().equals(question.getOptionC())) {
 
-                optionC.setBackgroundColor(Color.BLUE);
+                optionC.setBackgroundColor(Color.RED);
 
             } else if (question.getAnswer().equals(question.getOptionD())) {
 
-                optionD.setBackgroundColor(Color.BLUE);
+                optionD.setBackgroundColor(Color.RED);
             }
 
         }else {
             if (choice.equals(question.getOptionA())) {
 
-                optionA.setBackgroundColor(Color.RED);
+                linearA.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             } else if (choice.equals(question.getOptionB())) {
 
-                optionB.setBackgroundColor(Color.RED);
+                linearB.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             } else if (choice.equals(question.getOptionC())) {
 
-                optionC.setBackgroundColor(Color.RED);
+                linearC.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             } else if (choice.equals(question.getOptionD())) {
 
-                optionD.setBackgroundColor(Color.RED);
+                linearD.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
             }
 
 
@@ -372,13 +377,15 @@ public class CheckTestActivity extends AppCompatActivity {
 
     public View trueFalse(TrueFalse question, String choice, long grade) {
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View trueFalseQuestion = factory.inflate(R.layout.checking_truefalse, null);
         final TextView questionTrueFalseEnter = trueFalseQuestion.findViewById(R.id.questionRunning);
         final TextView maxMark = trueFalseQuestion.findViewById(R.id.maxMark);
         final TextView trueView = trueFalseQuestion.findViewById(R.id.trueView);
         final TextView falseView = trueFalseQuestion.findViewById(R.id.falseView);
         final TextView mark = trueFalseQuestion.findViewById(R.id.mark);
+        final LinearLayout linearA = trueFalseQuestion.findViewById(R.id.A);
+        final LinearLayout linearB = trueFalseQuestion.findViewById(R.id.B);
         questionTrueFalseEnter.setText(question.getQuestion());
         mark.setText(String.valueOf(grade));
         maxMark.setText(String.valueOf(question.getMaxGrade()));
@@ -387,11 +394,11 @@ public class CheckTestActivity extends AppCompatActivity {
 
             if (String.valueOf(question.getAnswer()).equals("true")) {
 
-                trueView.setBackgroundColor(Color.BLUE);
+                trueView.setBackgroundColor(Color.RED);
 
             } else {
 
-                falseView.setBackgroundColor(Color.BLUE);
+                falseView.setBackgroundColor(Color.RED);
 
             }
 
@@ -399,10 +406,10 @@ public class CheckTestActivity extends AppCompatActivity {
 
             if (choice.equals("true")) {
 
-                trueView.setBackgroundColor(Color.RED);
+                linearA.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
             } else if (choice.equals("false")) {
 
-                falseView.setBackgroundColor(Color.RED);
+                linearB.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             }
 
@@ -423,7 +430,7 @@ public class CheckTestActivity extends AppCompatActivity {
 
     public  View shortAnswer(ShortAnswer question, String answer, long grade){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View shortAnswerQuestion = factory.inflate(R.layout.checking_shortanswer, null);
         final TextView questionShortAnswerEnter = shortAnswerQuestion.findViewById(R.id.questionRunning);
         final TextView answerShortAnswer = shortAnswerQuestion.findViewById(R.id.answerRunning);
@@ -561,7 +568,7 @@ public class CheckTestActivity extends AppCompatActivity {
 
     public View overalScore(){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View score = factory.inflate(R.layout.checking_score, null);
         final TextView name = score.findViewById(R.id.nameS);
         final TextView email = score.findViewById(R.id.emailS);

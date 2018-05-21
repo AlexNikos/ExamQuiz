@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -202,12 +204,12 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
                 long currentDate = System.currentTimeMillis();
                 if(model.getEndDate() > currentDate){
 
-                    viewHolder.activeButton.setText("Active");
+                   // viewHolder.activeButton.setText("Active");
                     viewHolder.activeButton.setClickable(false);
                     viewHolder.activeButton.setBackgroundColor(Color.GREEN);
                 } else {
 
-                    viewHolder.activeButton.setText("Inactive");
+                    //viewHolder.activeButton.setText("Inactive");
                     viewHolder.activeButton.setClickable(false);
                     viewHolder.activeButton.setBackgroundColor(Color.RED);
 
@@ -230,6 +232,8 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
         Button activeButton;
         TextView startTimeView;
         TextView endTimeView;
+        CheckBox participation;
+        ImageButton optionsButton;
         View view;
 
         public TestStudentViewHolder(View itemView) {
@@ -239,6 +243,10 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
             activeButton = itemView.findViewById(R.id.activeTestButton);
             startTimeView = itemView.findViewById(R.id.startTime);
             endTimeView = itemView.findViewById(R.id.endTime);
+            participation = itemView.findViewById(R.id.participation);
+            participation.setVisibility(View.GONE);
+            optionsButton = itemView.findViewById(R.id.optionsButton);
+            optionsButton.setVisibility(View.GONE);
             view = itemView.findViewById(R.id.singleTestView);
 
 

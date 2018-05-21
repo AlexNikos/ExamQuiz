@@ -16,9 +16,10 @@
             android:id="@+id/singleTestTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="14dp"
             android:text="Title"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -54,10 +55,9 @@
             android:id="@+id/endLinear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/startLinear"
-            android:layout_below="@id/startLinear"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_alignStart="@+id/singleTestTitle"
+            android:layout_below="@+id/startLinear"
+            android:layout_marginTop="-2dp"
             android:background="@color/single_row"
             android:orientation="horizontal">
 
@@ -80,14 +80,29 @@
 
         <Button
             android:id="@+id/activeTestButton"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/active_background" />
+
+        <CheckBox
+            android:id="@+id/participation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/singleTestTitle"
-            android:layout_marginRight="5dp"
-            android:background="@android:color/holo_red_light"
-            android:text="Inactive"
-            android:textSize="12sp" />
+            android:layout_centerVertical="true"
+            android:checked="false"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/optionsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

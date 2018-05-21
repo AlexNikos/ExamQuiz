@@ -19,14 +19,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.alnik.examquiz.Global;
+import com.example.alnik.examquiz.LoginActivity;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.StartActivity;
 import com.example.alnik.examquiz.Teacher.TeacherPagerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class CourseStudentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String courseName, courseId;
+    private FirebaseAuth mAuth;
 
     private ViewPager mViewPager;
     private StudentPagerAdapter mStudentPagerAdapter;
@@ -105,17 +108,28 @@ public class CourseStudentActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.edit_profile) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.delete_profile) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.my_marks) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.unsuscribe_from_course) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.about_course) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.log_out) {
+
+            FirebaseAuth.getInstance().signOut();
+            if (mAuth == null){
+                Global.currentUser = null;
+                Global.test = null;
+                Global.student = null;
+                Global.course = null;
+                Global.timeSubscripted = 0;
+                startActivity(new Intent(CourseStudentActivity.this, LoginActivity.class));
+                finish();
+            }
 
         }
 

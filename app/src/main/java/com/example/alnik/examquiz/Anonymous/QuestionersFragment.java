@@ -1,19 +1,27 @@
 package com.example.alnik.examquiz.Anonymous;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.alnik.examquiz.CustomDateTimePicker;
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.models.Test;
@@ -27,6 +35,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -38,6 +48,9 @@ public class QuestionersFragment extends Fragment {
     private RecyclerView testRecycleView;
     private DatabaseReference testRef;
     private FirebaseUser currentUser;
+    private CustomDateTimePicker dateTimePicker;
+    private long startDate;
+    private long endDate;
     private FirebaseRecyclerAdapter<Test, TestViewHolder> testRecyclerAdapter;
     private View mView;
 
@@ -139,121 +152,152 @@ public class QuestionersFragment extends Fragment {
                 long currentDate = System.currentTimeMillis();
                 if(model.getEndDate() > currentDate && model.getStartDate() <= currentDate){
 
-                    viewHolder.activeButton.setText("Active");
+                    //viewHolder.activeButton.setText("Active");
                     viewHolder.activeButton.setClickable(false);
-                    viewHolder.activeButton.setBackgroundColor(Color.GREEN);
+                    viewHolder.activeButton.setBackground(getContext().getResources().getDrawable(R.drawable.active_background));
                 } else {
 
-                    viewHolder.activeButton.setText("Inactive");
+                    //viewHolder.activeButton.setText("Inactive");
                     viewHolder.activeButton.setClickable(false);
-                    viewHolder.activeButton.setBackgroundColor(Color.RED);
+                    viewHolder.activeButton.setBackground(getContext().getResources().getDrawable(R.drawable.inactive_background));
 
 
                 }
 //-----------------------------------popup menu for 3 dots------------------------------------------------------------
-//                viewHolder.options.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        //creating a popup menu
-//                        PopupMenu popup = new PopupMenu(view.getContext(), view);
-//                        popup.inflate(R.menu.popup_menu);
-//                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                            @Override
-//                            public boolean onMenuItemClick(MenuItem item) {
-//                                switch (item.getItemId()) {
-//                                    case R.id.delete:
-//
-//                                        new android.support.v7.app.AlertDialog.Builder(getContext())
-//                                                .setIcon(android.R.drawable.ic_dialog_alert)
-//                                                .setTitle("Are you sure?")
-//                                                .setMessage("Do you want to delete this Announcement?")
-//                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                                                            @Override
-//                                                            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                                                notificationRef.child(key).removeValue();
-//                                                            }
-//                                                        }
-//                                                )
-//                                                .setNegativeButton("No", null)
-//                                                .show();
-//
-//                                        break;
-//                                    case R.id.edit:
-//
-//                                        LayoutInflater factory = LayoutInflater.from(getContext());
-//                                        final View notification = factory.inflate(R.layout.notification_create, null);
-//                                        final EditText notificationTitle = notification.findViewById(R.id.notificationTitle);
-//                                        final EditText notificationBody = notification.findViewById(R.id.notificationBody);
-//
-//                                        notificationRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-//                                            @Override
-//                                            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                                final Test mTest = dataSnapshot.getValue(Test.class);
-//
-//                                                notificationTitle.setText(mTest.getTitle());
-//                                                notificationBody.setText(mN.getBody());
-//
-//
-//                                                new android.support.v7.app.AlertDialog.Builder(getContext())
-//                                                        .setIcon(android.R.drawable.ic_input_add)
-//                                                        .setTitle("Edit Announcement")
-//                                                        .setView(notification)
-//                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                                                    @Override
-//                                                                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                                                        String title = notificationTitle.getText().toString();
-//                                                                        String body = notificationBody.getText().toString();
-//                                                                        mNotification.setTitle(title);
-//                                                                        mNotification.setBody(body);
-//
-//                                                                        notificationRef.child(key).setValue(mNotification, new DatabaseReference.CompletionListener() {
-//                                                                            @Override
-//                                                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-//
-//                                                                                if(databaseError == null){
-//                                                                                    Toast.makeText(getContext(), "Announcement Edited", Toast.LENGTH_LONG).show();
-//
-//                                                                                } else {
-//                                                                                    Toast.makeText(getContext(), "An error occurred, try again!", Toast.LENGTH_LONG).show();
-//
-//                                                                                }
-//
-//                                                                            }
-//                                                                        });
-//
-//                                                                        ((ViewGroup) notification.getParent()).removeView(notification);
-//                                                                    }
-//                                                                }
-//                                                        )
-//                                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                                            @Override
-//                                                            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                                                ((ViewGroup) notification.getParent()).removeView(notification);
-//
-//                                                            }
-//                                                        })
-//                                                        .show();
-//                                            }
-//
-//                                            @Override
-//                                            public void onCancelled(DatabaseError databaseError) {
-//
-//                                            }
-//                                        });
-//                                        break;
-//                                }
-//                                return false;
-//                            }
-//                        });
-//                        popup.show();
-//                    }
-//                });
-            }
+                viewHolder.optionsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        //creating a popup menu
+                        PopupMenu popup = new PopupMenu(view.getContext(), view);
+                        popup.inflate(R.menu.popup_menu_assisgment);
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
+                                    case R.id.delete:
+
+                                        new android.support.v7.app.AlertDialog.Builder(getContext())
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .setTitle("Are you sure?")
+                                                .setMessage("Do you want to delete this Questioner?")
+                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                testRef.child(key).removeValue();
+                                                            }
+                                                        }
+                                                )
+                                                .setNegativeButton("No", null)
+                                                .show();
+
+                                        break;
+                                    case R.id.editeStartTime:
+
+                                        testRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                Global.test = dataSnapshot.getValue(Test.class);
+                                                Log.d("test", "testID is  " +Global.test.getId());
+
+                                                dateTimePicker = new CustomDateTimePicker(getActivity(),
+                                                        new CustomDateTimePicker.ICustomDateTimeListener() {
+
+                                                            @Override
+                                                            public void onSet(Dialog dialog, Calendar calendarSelected,
+                                                                              Date dateSelected, int year, String monthFullName,
+                                                                              String monthShortName, int monthNumber, int date,
+                                                                              String weekDayFullName, String weekDayShortName,
+                                                                              int hour24, int hour12, int min, int sec,
+                                                                              String AM_PM) {
+
+                                                                startDate = dateSelected.getTime();
+                                                                testRef.child(key).child("startDate").setValue(startDate);
+                                                                Log.d("test", String.valueOf(startDate));
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancel() {
+
+                                                            }
+                                                        });
+                                                dateTimePicker.set24HourFormat(true);
+                                                dateTimePicker.setDate(new Date(Global.test.getStartDate()));
+                                                dateTimePicker.showDialog();
+
+
+
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+
+
+                                        break;
+                                    case R.id.editEndTime:
+
+                                        testRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                Global.test = dataSnapshot.getValue(Test.class);
+                                                Log.d("test", "testID is  " +Global.test.getId());
+
+                                                dateTimePicker = new CustomDateTimePicker(getActivity(),
+                                                        new CustomDateTimePicker.ICustomDateTimeListener() {
+
+                                                            @Override
+                                                            public void onSet(Dialog dialog, Calendar calendarSelected,
+                                                                              Date dateSelected, int year, String monthFullName,
+                                                                              String monthShortName, int monthNumber, int date,
+                                                                              String weekDayFullName, String weekDayShortName,
+                                                                              int hour24, int hour12, int min, int sec,
+                                                                              String AM_PM) {
+
+                                                                endDate = dateSelected.getTime();
+                                                                testRef.child(key).child("endDate").setValue(endDate);
+                                                                Log.d("test", String.valueOf(endDate));
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancel() {
+
+                                                            }
+                                                        });
+                                                dateTimePicker.set24HourFormat(true);
+                                                dateTimePicker.setDate(new Date(Global.test.getEndDate()));
+                                                dateTimePicker.showDialog();
+
+
+
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+
+
+                                        break;
+                                }
+                                return false;
+                            }
+                        });
+                        popup.show();
+                    }
+                });            }
         };
 
         testRecycleView.setAdapter(testRecyclerAdapter);
@@ -266,6 +310,8 @@ public class QuestionersFragment extends Fragment {
         Button activeButton;
         TextView startTimeView;
         TextView endTimeView;
+        CheckBox participation;
+        ImageButton optionsButton;
         View view;
 
         public TestViewHolder(View itemView) {
@@ -275,6 +321,9 @@ public class QuestionersFragment extends Fragment {
             activeButton = itemView.findViewById(R.id.activeTestButton);
             startTimeView = itemView.findViewById(R.id.startTime);
             endTimeView = itemView.findViewById(R.id.endTime);
+            participation = itemView.findViewById(R.id.participation);
+            participation.setVisibility(View.GONE);
+            optionsButton = itemView.findViewById(R.id.optionsButton);
             view = itemView.findViewById(R.id.singleTestView);
 
 

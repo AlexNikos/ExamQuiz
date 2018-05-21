@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/uuu"
     tools:context=".Anonymous.QuestionersFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -19,13 +20,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        app:backgroundTint="@color/colorPrimaryDark"
         android:clickable="true"
         android:elevation="6dp"
         android:focusable="true"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
-        app:fab_colorNormal="@color/colorPrimaryDark"
-        app:fab_colorPressed="@color/colorPrimary"
+        app:fab_colorNormal="@color/colorPrimary"
+        app:fab_colorPressed="@color/colorPrimaryDark"
         app:fab_colorRipple="#99FFFFFF"
         app:fab_shadowColor="#66000000"
         app:fab_shadowRadius="4dp"

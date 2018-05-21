@@ -3,6 +3,7 @@ package com.example.alnik.examquiz;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private Button creatAccButton;
     private Button anonymousButton;
+    private CheckBox remember;
+    private SharedPreferences toRemember;
 
     private ProgressDialog mRegDialog;
 
@@ -67,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         creatAccButton = findViewById(R.id.createAccButton);
         anonymousButton = findViewById(R.id.anonymousButton);
+        remember = findViewById(R.id.remember);
 
         mRegDialog = new ProgressDialog(this);
 
@@ -94,8 +100,6 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
 
         passwordField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -162,6 +166,29 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+        toRemember = this.getSharedPreferences("com.example.alnik.examquiz", Context.MODE_PRIVATE);
+
+        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(remember.isChecked()){
+                    //Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_LONG).show();
+                    toRemember.edit().putBoolean("remember", true).apply();
+                    Log.d("test", "onCheckedChanged: "+ toRemember.getBoolean("remember", false));
+
+                } else if(!remember.isChecked()){
+
+                    //Toast.makeText(LoginActivity.this, "NO Checked", Toast.LENGTH_LONG).show();
+                    toRemember.edit().putBoolean("remember", false).apply();
+                    Log.d("test", "onCheckedChanged: "+ toRemember.getBoolean("remember", false));
+
+
+                }
+
+            }
+        });
     }
 
     public void login(String email, String password){
@@ -170,6 +197,20 @@ public class LoginActivity extends AppCompatActivity {
         mRegDialog.setMessage("Please wait!");
         mRegDialog.setCanceledOnTouchOutside(false);
         mRegDialog.show();
+
+        if(remember.isChecked()){
+            //Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_LONG).show();
+            toRemember.edit().putBoolean("remember", true).apply();
+            Log.d("test", "onCheckedChanged: "+ toRemember.getBoolean("remember", false));
+
+        } else if(!remember.isChecked()){
+
+            //Toast.makeText(LoginActivity.this, "NO Checked", Toast.LENGTH_LONG).show();
+            toRemember.edit().putBoolean("remember", false).apply();
+            Log.d("test", "onCheckedChanged: "+ toRemember.getBoolean("remember", false));
+
+
+        }
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

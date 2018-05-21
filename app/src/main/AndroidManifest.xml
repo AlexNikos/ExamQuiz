@@ -12,7 +12,7 @@
         android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
@@ -66,7 +66,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Student.RunningTestActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".Teacher.ResultsActivity"
             android:label=""

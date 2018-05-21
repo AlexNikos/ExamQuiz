@@ -41,12 +41,13 @@
                 android:id="@+id/optionA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="90"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
-                android:maxLines="1"
-                app:minTextSize="10sp"/>
+                app:minTextSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,12 +66,13 @@
                 android:id="@+id/optionB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="90"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
-                android:maxLines="1"
-                app:minTextSize="10sp"/>
+                app:minTextSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,12 +91,13 @@
                 android:id="@+id/optionC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="90"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
-                android:maxLines="1"
-                app:minTextSize="10sp"/>
+                app:minTextSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,12 +119,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/D"
                 android:layout_alignTop="@+id/D"
+                android:layout_margin="5dp"
                 android:layout_weight="90"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
-                android:maxLines="1"
-                app:minTextSize="10sp"/>
+                app:minTextSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -152,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="20"
                 android:text="5"
-                android:textAlignment="center"
+                android:textAlignment="textEnd"
                 android:textSize="20sp" />
 
             <TextView
@@ -169,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="20"
                 android:text="10"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:textSize="20sp" />
 
         </LinearLayout>

@@ -7,19 +7,21 @@
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
     android:theme="@style/CardView"
-    app:cardBackgroundColor="@color/single_row"
+    app:cardBackgroundColor="@color/cardview_light_background"
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
 
         <TextView
             android:id="@+id/teacherLessonView"
             android:layout_width="344dp"
-            android:layout_height="60dp"
-            android:background="@color/single_row"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
             android:gravity="center"
+            android:paddingStart="20dp"
             android:singleLine="true"
             android:text="TextView"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
@@ -27,17 +29,15 @@
 
         <ImageButton
             android:id="@+id/teacherLessonOptionsButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:layout_toRightOf="@+id/teacherLessonView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:adjustViewBounds="false"
-            android:background="@color/single_row"
+            android:background="@android:color/transparent"
             android:cropToPadding="false"
-            android:paddingBottom="40dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_action_more_options"
+            android:src="@drawable/ic_more_vert_black_24dp"
             android:textAppearance="?android:textAppearanceLarge" />
 
         <TextView
@@ -46,8 +46,9 @@
             android:layout_height="20dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/teacherLessonView"
-            android:background="@color/single_row"
+            android:background="@android:color/transparent"
             android:gravity="center"
+            android:paddingStart="20dp"
             android:text="Subscribers:  "
             android:textSize="15sp" />
 
@@ -58,7 +59,7 @@
             android:layout_below="@+id/teacherLessonView"
             android:layout_toEndOf="@+id/subsText"
             android:layout_toStartOf="@+id/teacherLessonOptionsButton"
-            android:background="@color/single_row"
+            android:background="@android:color/transparent"
             android:gravity="left|center"
             android:text="TextView"
             android:textSize="15sp" />

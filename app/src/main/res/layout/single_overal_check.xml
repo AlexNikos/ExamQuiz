@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
- <LinearLayout
+
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/questionLinear"
         android:layout_width="match_parent"
@@ -35,5 +36,16 @@
          android:text="TextView"
          android:textAlignment="center"
          android:textSize="20sp" />
+
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/questionLinear"
+        android:layout_marginTop="-10dp"
+        android:layout_weight="50"
+        android:background="?android:attr/listDivider" />
 </RelativeLayout>

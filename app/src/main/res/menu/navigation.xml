@@ -5,14 +5,14 @@
 
     <item
         android:id="@+id/navigation_statistics"
-        android:icon="@drawable/ic_sort_black_24dp"
+        android:icon="@drawable/ic_trending_up_black_24dp"
         android:title="Statistics"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/navigation_students"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="Participants"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

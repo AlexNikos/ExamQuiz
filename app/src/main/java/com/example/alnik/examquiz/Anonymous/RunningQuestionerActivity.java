@@ -1,9 +1,11 @@
 package com.example.alnik.examquiz.Anonymous;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.R;
+import com.example.alnik.examquiz.Student.RunningTestActivity;
 import com.example.alnik.examquiz.models.MultipleChoice;
 import com.example.alnik.examquiz.models.ShortAnswer;
 import com.example.alnik.examquiz.models.Time;
@@ -237,8 +240,19 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                     }
 
                 } else if(NextBtn.getText().equals("Submit")){
-
-                    submitTest();
+                    AlertDialog end =  new AlertDialog.Builder(RunningQuestionerActivity.this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("Are you sure?")
+                            .setMessage("Do you want to submit your answers?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            submitTest();
+                                        }
+                                    }
+                            )
+                            .setNegativeButton("No", null)
+                            .show();
 
                 }
 
@@ -258,7 +272,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
 
     public View multiple(MultipleChoice question, String choice){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View multipleChoice = factory.inflate(R.layout.running_multichoice, null);
         final TextView questionMultipleEnter = multipleChoice.findViewById(R.id.questionRunning);
         final TextView optionA = multipleChoice.findViewById(R.id.optionA);
@@ -355,7 +369,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
 
     public View trueFalse(TrueFalse question, String choice){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View trueFalseQuestion = factory.inflate(R.layout.running_truefalse, null);
         final TextView questionTrueFalseEnter = trueFalseQuestion.findViewById(R.id.questionRunning);
         final RadioButton RadioOptionTrue = trueFalseQuestion.findViewById(R.id.radioButtonA);
@@ -405,7 +419,7 @@ public class RunningQuestionerActivity extends AppCompatActivity {
 
     public  View shortAnswer(String question, String answer){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View shortAnswerQuestion = factory.inflate(R.layout.running_shortanswer, null);
         final TextView questionShortAnswerEnter = shortAnswerQuestion.findViewById(R.id.questionRunning);
         final EditText answerShortAnswer = shortAnswerQuestion.findViewById(R.id.answerRunning);

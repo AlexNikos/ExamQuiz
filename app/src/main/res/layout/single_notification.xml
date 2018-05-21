@@ -15,9 +15,10 @@
             android:id="@+id/sinleNotificationTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="12dp"
             android:text="Title"
             android:textSize="25sp" />
 
@@ -25,9 +26,8 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/sinleNotificationTitle"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_alignStart="@+id/sinleNotificationTitle"
+            android:layout_below="@+id/sinleNotificationTitle"
             android:text="Time:  "
             android:textSize="15sp" />
 
@@ -35,33 +35,31 @@
             android:id="@+id/timeNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sinleNotificationTitle"
-            android:layout_marginTop="13dp"
-            android:layout_toRightOf="@id/textView2"
+            android:layout_alignBottom="@+id/textView2"
+            android:layout_toEndOf="@+id/textView2"
             android:text="ttttttttttttttt"
             android:textSize="12sp" />
 
         <ImageButton
             android:id="@+id/optionsNotification"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/cardview_light_background"
-            android:paddingLeft="-20dp"
-            android:scaleType="fitEnd"
-            app:srcCompat="@drawable/dots" />
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
         <TextView
             android:id="@+id/newAnnouncement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/optionsNotification"
-            android:layout_alignEnd="@+id/optionsNotification"
-            android:layout_marginEnd="10dp"
-            android:background="@android:color/holo_red_light"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/inactive_background"
             android:text="NEW"
+            android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             android:visibility="gone" />

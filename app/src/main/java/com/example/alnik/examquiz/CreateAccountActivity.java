@@ -100,23 +100,23 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
 
-        nameInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                name = nameInput.getText().toString();
-                surnameInput.requestFocus();
-            }
-        });
-
-        surnameInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                surname = surnameInput.getText().toString();
-                emailInput.requestFocus();
-            }
-        });
-
-
+//        nameInput.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                name = nameInput.getText().toString();
+//                surnameInput.requestFocus();
+//            }
+//        });
+//
+//        surnameInput.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                surname = surnameInput.getText().toString();
+//                emailInput.requestFocus();
+//            }
+//        });
+//
+//
         emailInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

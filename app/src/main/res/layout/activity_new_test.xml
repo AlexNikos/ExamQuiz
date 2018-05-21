@@ -34,7 +34,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="50"
-            android:background="@android:drawable/toast_frame"
+            android:background="@drawable/expand_button"
             android:text="Start Date" />
 
         <Button
@@ -44,7 +44,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="50"
-            android:background="@android:drawable/toast_frame"
+            android:background="@drawable/expand_button"
             android:text="End Date" />
     </LinearLayout>
 
@@ -63,6 +63,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="33.33"
+            android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
             android:text="Multiple"
             android:textSize="14sp" />
 
@@ -73,6 +74,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="33.33"
+            android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
             android:text="true false"
             android:textSize="14sp" />
 
@@ -83,6 +85,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="33.33"
+            android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
             android:text="Short Answer"
             android:textSize="14sp" />
     </LinearLayout>

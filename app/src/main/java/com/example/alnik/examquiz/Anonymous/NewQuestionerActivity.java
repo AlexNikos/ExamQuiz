@@ -168,69 +168,92 @@ public class NewQuestionerActivity extends AppCompatActivity {
         expandable_layout_ShortAnswer = findViewById(R.id.expandableLayoutShortAnswer);
 
         Button expandMultiplebutton = findViewById(R.id.expandMultiplebutton);
+        Button expandTrueFalseButton = findViewById(R.id.expandTrueFalseButton);
+        Button expandShortAnswerButton = findViewById(R.id.expandShortAnswerButton);
+
         expandMultiplebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if(expandable_layout_TrueFalse.isExpanded()){
                     expandable_layout_TrueFalse.collapse();
+                    expandTrueFalseButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
                 }
 
                 if(expandable_layout_ShortAnswer.isExpanded()){
                     expandable_layout_ShortAnswer.collapse();
+                    expandShortAnswerButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
                 }
 
                 if (expandable_layout_MultiChoise.isExpanded()) {
                     expandable_layout_MultiChoise.collapse();
+                    expandMultiplebutton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
 
                 } else if (!expandable_layout_MultiChoise.isExpanded()) {
                     expandable_layout_MultiChoise.expand();
+                    expandMultiplebutton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp) , null);
+
 
                 }
             }
         });
 
-        Button expandTrueFalseButton = findViewById(R.id.expandTrueFalseButton);
         expandTrueFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if(expandable_layout_MultiChoise.isExpanded()){
                     expandable_layout_MultiChoise.collapse();
+                    expandMultiplebutton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
                 }
 
                 if(expandable_layout_ShortAnswer.isExpanded()){
                     expandable_layout_ShortAnswer.collapse();
+                    expandShortAnswerButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
                 }
 
                 if (expandable_layout_TrueFalse.isExpanded()) {
                     expandable_layout_TrueFalse.collapse();
+                    expandTrueFalseButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
 
                 } else if (!expandable_layout_TrueFalse.isExpanded()) {
                     expandable_layout_TrueFalse.expand();
+                    expandTrueFalseButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp) , null);
 
                 }
             }
         });
 
-        Button expandShortAnswerButton = findViewById(R.id.expandShortAnswerButton);
         expandShortAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if(expandable_layout_MultiChoise.isExpanded()){
                     expandable_layout_MultiChoise.collapse();
+                    expandMultiplebutton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
                 }
 
                 if(expandable_layout_TrueFalse.isExpanded()){
                     expandable_layout_TrueFalse.collapse();
+                    expandTrueFalseButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
                 }
 
                 if (expandable_layout_ShortAnswer.isExpanded()) {
                     expandable_layout_ShortAnswer.collapse();
+                    expandShortAnswerButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
 
                 } else if (!expandable_layout_ShortAnswer.isExpanded()) {
                     expandable_layout_ShortAnswer.expand();
+                    expandShortAnswerButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp) , null);
+
 
                 }
             }

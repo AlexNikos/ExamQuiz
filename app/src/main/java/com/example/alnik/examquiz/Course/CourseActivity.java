@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.view.menu.ActionMenuItemView;
@@ -41,6 +42,11 @@ public class CourseActivity extends AppCompatActivity
     private CoursePagerAdapter mCoursePagerAdapter;
     private TabLayout mTabLayout;
     private Toolbar toolbar;
+//    private TabItem databaseTab;
+//    private TabItem testsTab;
+//    private TabItem notificationsTab;
+//    private TabItem subsTab;
+
 
     private DatabaseReference myRefUser;
     private FirebaseUser currentUser;
@@ -62,6 +68,11 @@ public class CourseActivity extends AppCompatActivity
         setContentView(R.layout.activity_course);
         toolbar = (Toolbar) findViewById(R.id.courseToolbar);
         setSupportActionBar(toolbar);
+
+//        databaseTab = findViewById(R.id.DatabaseTab);
+////        testsTab = findViewById(R.id.TestsTab);
+////        notificationsTab = findViewById(R.id.NotificationsTab);
+////        subsTab = findViewById(R.id.SubsTab);
 
         //Intent intent = getIntent();
         //courseName = intent.getExtras().getString("courseName");
@@ -173,8 +184,8 @@ public class CourseActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_viewCourse);
         navigationView.setNavigationItemSelectedListener(this);
 
-        nameView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.course_nav_name);
-        emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.course_nav_email);
+        nameView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_fullname);
+        emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_email);
 
         myRefUser.child("fullname").addValueEventListener(new ValueEventListener() {
             @Override
@@ -300,7 +311,7 @@ public class CourseActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_log_out) {
+        } else if (id == R.id.log_out) {
 
             FirebaseAuth.getInstance().signOut();
             if (mAuth == null){

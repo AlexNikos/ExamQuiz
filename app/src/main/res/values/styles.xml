@@ -15,6 +15,7 @@
     <style name="CustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="android:singleLine">true</item>
+        <item name="android:textColor">@android:color/black</item>item>
     </style>
 
     <style name="Theme.SwitchDateTime.DateLabelYear">

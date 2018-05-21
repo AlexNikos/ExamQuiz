@@ -41,6 +41,7 @@
                 android:id="@+id/trueView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="90"
                 android:text="True"
                 android:textAlignment="textStart"
@@ -64,6 +65,7 @@
                 android:id="@+id/falseView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="90"
                 android:text="False"
                 android:textAlignment="textStart"
@@ -98,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="20"
                 android:text="5"
-                android:textAlignment="center"
+                android:textAlignment="textEnd"
                 android:textSize="20sp" />
 
             <TextView
@@ -115,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="20"
                 android:text="10"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:textSize="20sp" />
 
         </LinearLayout>

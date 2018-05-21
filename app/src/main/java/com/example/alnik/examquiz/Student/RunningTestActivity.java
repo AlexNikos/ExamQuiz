@@ -1,6 +1,8 @@
 package com.example.alnik.examquiz.Student;
 
+import android.content.DialogInterface;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -246,7 +248,21 @@ public class RunningTestActivity extends AppCompatActivity {
 
                 } else if(NextBtn.getText().equals("Submit")){
 
-                    submitTest();
+                    AlertDialog end =  new AlertDialog.Builder(RunningTestActivity.this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("Are you sure?")
+                            .setMessage("Do you want to submit your answers?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            submitTest();
+                                        }
+                                    }
+                            )
+                            .setNegativeButton("No", null)
+                            .show();
+
+
 
                 }
 
@@ -266,7 +282,7 @@ public class RunningTestActivity extends AppCompatActivity {
 
     public View multiple(MultipleChoice question, String choice){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View multipleChoice = factory.inflate(R.layout.running_multichoice, null);
         final TextView questionMultipleEnter = multipleChoice.findViewById(R.id.questionRunning);
         final TextView optionA = multipleChoice.findViewById(R.id.optionA);
@@ -406,7 +422,7 @@ public class RunningTestActivity extends AppCompatActivity {
 
     public View trueFalse(TrueFalse question, String choice){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View trueFalseQuestion = factory.inflate(R.layout.running_truefalse, null);
         final TextView questionTrueFalseEnter = trueFalseQuestion.findViewById(R.id.questionRunning);
         final RadioButton RadioOptionTrue = trueFalseQuestion.findViewById(R.id.radioButtonA);
@@ -476,7 +492,7 @@ public class RunningTestActivity extends AppCompatActivity {
 
     public  View shortAnswer(String question, String answer){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View shortAnswerQuestion = factory.inflate(R.layout.running_shortanswer, null);
         final TextView questionShortAnswerEnter = shortAnswerQuestion.findViewById(R.id.questionRunning);
         final EditText answerShortAnswer = shortAnswerQuestion.findViewById(R.id.answerRunning);
@@ -581,7 +597,7 @@ public class RunningTestActivity extends AppCompatActivity {
                                 answersUsersParticipation.setValue(ansList);
                                 marksTestsParticipation.setValue(marksList);
                                 marksUsersParticipation.setValue(marksList);
-                                Toast.makeText(getApplicationContext(), "Test successfully submitted.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Your answers successfully submitted.", Toast.LENGTH_LONG).show();
                                 finish();
                             }
 

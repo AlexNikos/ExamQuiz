@@ -10,24 +10,24 @@
         android:id="@+id/courseAppbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bar_background"
         android:theme="@style/AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/courseToolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@android:color/transparent"
             app:popupTheme="@style/PopupOverlay" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/courseTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/tab_background"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            app:tabGravity="fill"
+            android:background="@android:color/transparent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             app:tabIndicatorColor="@android:color/black"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@android:color/black"

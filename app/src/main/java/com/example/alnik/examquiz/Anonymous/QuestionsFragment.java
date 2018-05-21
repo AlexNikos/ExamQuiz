@@ -75,7 +75,7 @@ public class QuestionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mDatabaseView = inflater.inflate(R.layout.fragment_questions, container, false);
+        mDatabaseView = inflater.inflate(R.layout.fragment_database_course, container, false);
 
 
         mutipleChoiceButton = mDatabaseView.findViewById(R.id.expMultiButton);
@@ -105,11 +105,15 @@ public class QuestionsFragment extends Fragment {
                 if (expandable_layout_MultiChoise.isExpanded()) {
                     expandable_layout_MultiChoise.collapse();
                     fabMenu.showMenu(true);
+                    mutipleChoiceButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
 
 
                 } else if (!expandable_layout_MultiChoise.isExpanded()) {
                     fabMenu.hideMenu(true);
                     expandable_layout_MultiChoise.expand();
+                    mutipleChoiceButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp) , null);
+
 
                 }
             }
@@ -130,11 +134,14 @@ public class QuestionsFragment extends Fragment {
                 if (expandable_layout_TrueFalse.isExpanded()) {
                     expandable_layout_TrueFalse.collapse();
                     fabMenu.showMenu(true);
+                    trueFalseButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
+
 
 
                 } else if (!expandable_layout_TrueFalse.isExpanded()) {
                     fabMenu.hideMenu(true);
                     expandable_layout_TrueFalse.expand();
+                    trueFalseButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp) , null);
 
                 }
             }
@@ -155,11 +162,13 @@ public class QuestionsFragment extends Fragment {
                 if (expandable_layout_ShortAnswer.isExpanded()) {
                     expandable_layout_ShortAnswer.collapse();
                     fabMenu.showMenu(true);
+                    shortAnswerbutton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
 
 
                 } else if (!expandable_layout_ShortAnswer.isExpanded()) {
                     fabMenu.hideMenu(true);
                     expandable_layout_ShortAnswer.expand();
+                    shortAnswerbutton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp) , null);
 
                 }
             }

@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,8 +106,25 @@ public class TestsStudentFragment extends Fragment {
                 viewHolder.setStartTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getStartDate()));
                 viewHolder.setEndTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getEndDate()));
 
-
                 String key= getRef(position).getKey();
+                testUsersParticipation.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+
+                            viewHolder.participation.setChecked(true);
+                        } else {
+
+                            viewHolder.participation.setChecked(false);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -178,14 +197,14 @@ public class TestsStudentFragment extends Fragment {
                 long currentDate = System.currentTimeMillis();
                 if(model.getEndDate() > currentDate && model.getStartDate() <= currentDate){
 
-                    viewHolder.activeButton.setText("Active");
+                    //viewHolder.activeButton.setText("Active");
                     viewHolder.activeButton.setClickable(false);
-                    viewHolder.activeButton.setBackgroundColor(Color.GREEN);
+                    viewHolder.activeButton.setBackground(getContext().getResources().getDrawable(R.drawable.active_background));
                 } else {
 
-                    viewHolder.activeButton.setText("Inactive");
+                    //viewHolder.activeButton.setText("Inactive");
                     viewHolder.activeButton.setClickable(false);
-                    viewHolder.activeButton.setBackgroundColor(Color.RED);
+                    viewHolder.activeButton.setBackground(getContext().getResources().getDrawable(R.drawable.inactive_background));
 
                 }
 
@@ -206,6 +225,8 @@ public class TestsStudentFragment extends Fragment {
         Button activeButton;
         TextView startTimeView;
         TextView endTimeView;
+        CheckBox participation;
+        ImageButton optionsButton;
         View view;
 
         public testStudentViewHolder(View itemView) {
@@ -215,6 +236,10 @@ public class TestsStudentFragment extends Fragment {
             activeButton = itemView.findViewById(R.id.activeTestButton);
             startTimeView = itemView.findViewById(R.id.startTime);
             endTimeView = itemView.findViewById(R.id.endTime);
+            participation = itemView.findViewById(R.id.participation);
+            participation.setClickable(false);
+            optionsButton = itemView.findViewById(R.id.optionsButton);
+            optionsButton.setVisibility(View.GONE);
             view = itemView.findViewById(R.id.singleTestView);
 
 

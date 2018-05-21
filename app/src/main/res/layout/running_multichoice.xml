@@ -6,11 +6,13 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginTop="50dp"
+    android:background="@color/cardview_light_background"
     app:cardCornerRadius="20dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
 
         <me.grantland.widget.AutofitTextView
@@ -50,11 +52,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="90"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
-                android:maxLines="1"
-                app:minTextSize="10sp"/>
+                app:minTextSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -108,11 +110,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="90"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
-                android:maxLines="1"
-                app:minTextSize="10sp"/>
+                app:minTextSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -141,11 +143,11 @@
                 android:layout_alignEnd="@+id/D"
                 android:layout_alignTop="@+id/D"
                 android:layout_weight="90"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
-                android:maxLines="1"
-                app:minTextSize="10sp"/>
+                app:minTextSize="10sp" />
         </LinearLayout>
 
     </RelativeLayout>

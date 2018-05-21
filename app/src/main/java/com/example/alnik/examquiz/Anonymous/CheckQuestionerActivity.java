@@ -274,7 +274,7 @@ public class CheckQuestionerActivity extends AppCompatActivity {
 
     public View multiple(MultipleChoice question, String choice){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View multipleChoice = factory.inflate(R.layout.checking_multiplechoice, null);
         final TextView questionMultipleEnter = multipleChoice.findViewById(R.id.questionRunning);
         final TextView optionA = multipleChoice.findViewById(R.id.optionA);
@@ -283,6 +283,10 @@ public class CheckQuestionerActivity extends AppCompatActivity {
         final TextView optionD = multipleChoice.findViewById(R.id.optionD);
         final LinearLayout scoreLinear = multipleChoice.findViewById(R.id.scoreLinear);
         scoreLinear.setVisibility(View.GONE);
+        final LinearLayout linearA = multipleChoice.findViewById(R.id.A);
+        final LinearLayout linearB = multipleChoice.findViewById(R.id.B);
+        final LinearLayout linearC = multipleChoice.findViewById(R.id.C);
+        final LinearLayout linearD = multipleChoice.findViewById(R.id.D);
 
 
         questionMultipleEnter.setText(question.getQuestion());
@@ -293,110 +297,112 @@ public class CheckQuestionerActivity extends AppCompatActivity {
 
 
 
-        if(choice.equals("")){
-
-            if (question.getAnswer().equals(question.getOptionA())) {
-
-                optionA.setBackgroundColor(Color.BLUE);
-
-            } else if (question.getAnswer().equals(question.getOptionB())) {
-
-                optionB.setBackgroundColor(Color.BLUE);
-
-            } else if (question.getAnswer().equals(question.getOptionC())) {
-
-                optionC.setBackgroundColor(Color.BLUE);
-
-            } else if (question.getAnswer().equals(question.getOptionD())) {
-
-                optionD.setBackgroundColor(Color.BLUE);
-            }
-
-        }else {
+//        if(choice.equals("")){
+//
+//            if (question.getAnswer().equals(question.getOptionA())) {
+//
+//                optionA.setBackgroundColor(Color.BLUE);
+//
+//            } else if (question.getAnswer().equals(question.getOptionB())) {
+//
+//                optionB.setBackgroundColor(Color.BLUE);
+//
+//            } else if (question.getAnswer().equals(question.getOptionC())) {
+//
+//                optionC.setBackgroundColor(Color.BLUE);
+//
+//            } else if (question.getAnswer().equals(question.getOptionD())) {
+//
+//                optionD.setBackgroundColor(Color.BLUE);
+//            }
+//
+//        }else {
             if (choice.equals(question.getOptionA())) {
 
-                optionA.setBackgroundColor(Color.RED);
+                linearA.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             } else if (choice.equals(question.getOptionB())) {
 
-                optionB.setBackgroundColor(Color.RED);
+                linearB.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             } else if (choice.equals(question.getOptionC())) {
 
-                optionC.setBackgroundColor(Color.RED);
+                linearC.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             } else if (choice.equals(question.getOptionD())) {
 
-                optionD.setBackgroundColor(Color.RED);
+                linearD.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
             }
 
 
-            if (question.getAnswer().equals(question.getOptionA())) {
-
-                optionA.setBackgroundColor(Color.GREEN);
-
-            } else if (question.getAnswer().equals(question.getOptionB())) {
-
-                optionB.setBackgroundColor(Color.GREEN);
-
-            } else if (question.getAnswer().equals(question.getOptionC())) {
-
-                optionC.setBackgroundColor(Color.GREEN);
-
-            } else if (question.getAnswer().equals(question.getOptionD())) {
-
-                optionD.setBackgroundColor(Color.GREEN);
-            }
-        }
+//            if (question.getAnswer().equals(question.getOptionA())) {
+//
+//                optionA.setBackgroundColor(Color.GREEN);
+//
+//            } else if (question.getAnswer().equals(question.getOptionB())) {
+//
+//                optionB.setBackgroundColor(Color.GREEN);
+//
+//            } else if (question.getAnswer().equals(question.getOptionC())) {
+//
+//                optionC.setBackgroundColor(Color.GREEN);
+//
+//            } else if (question.getAnswer().equals(question.getOptionD())) {
+//
+//                optionD.setBackgroundColor(Color.GREEN);
+//            }
+       // }
 
         return multipleChoice;
     }
 
     public View trueFalse(TrueFalse question, String choice) {
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View trueFalseQuestion = factory.inflate(R.layout.checking_truefalse, null);
         final TextView questionTrueFalseEnter = trueFalseQuestion.findViewById(R.id.questionRunning);
         final TextView trueView = trueFalseQuestion.findViewById(R.id.trueView);
         final TextView falseView = trueFalseQuestion.findViewById(R.id.falseView);
         final LinearLayout scoreLinear = trueFalseQuestion.findViewById(R.id.scoreLinear);
         scoreLinear.setVisibility(View.GONE);
+        final LinearLayout linearA = trueFalseQuestion.findViewById(R.id.A);
+        final LinearLayout linearB = trueFalseQuestion.findViewById(R.id.B);
 
         questionTrueFalseEnter.setText(question.getQuestion());
 
-        if (choice.equals("")) {
-
-            if (String.valueOf(question.getAnswer()).equals("true")) {
-
-                trueView.setBackgroundColor(Color.BLUE);
-
-            } else {
-
-                falseView.setBackgroundColor(Color.BLUE);
-
-            }
-
-        } else {
+//        if (choice.equals("")) {
+//
+//            if (String.valueOf(question.getAnswer()).equals("true")) {
+//
+//                trueView.setBackgroundColor(Color.BLUE);
+//
+//            } else {
+//
+//                falseView.setBackgroundColor(Color.BLUE);
+//
+//            }
+//
+//        } else {
 
             if (choice.equals("true")) {
 
-                trueView.setBackgroundColor(Color.RED);
+                linearA.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
             } else if (choice.equals("false")) {
 
-                falseView.setBackgroundColor(Color.RED);
+                linearB.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             }
 
-            if (String.valueOf(question.getAnswer()).equals("true")) {
-
-                trueView.setBackgroundColor(Color.GREEN);
-
-            } else {
-
-                falseView.setBackgroundColor(Color.GREEN);
-
-            }
-        }
+//            if (String.valueOf(question.getAnswer()).equals("true")) {
+//
+//                trueView.setBackgroundColor(Color.GREEN);
+//
+//            } else {
+//
+//                falseView.setBackgroundColor(Color.GREEN);
+//
+//            }
+       // }
 
         return  trueFalseQuestion;
 
@@ -404,7 +410,7 @@ public class CheckQuestionerActivity extends AppCompatActivity {
 
     public  View shortAnswer(ShortAnswer question, String answer){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View shortAnswerQuestion = factory.inflate(R.layout.checking_shortanswer, null);
         final TextView questionShortAnswerEnter = shortAnswerQuestion.findViewById(R.id.questionRunning);
         final TextView answerShortAnswer = shortAnswerQuestion.findViewById(R.id.answerRunning);

@@ -123,15 +123,15 @@ public class TeacherActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.edit_profile) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.delete_profile) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.student_marks) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.about_course) {
 
-        }  else if (id == R.id.nav_log_out) {
+        }  else if (id == R.id.log_out) {
 
             FirebaseAuth.getInstance().signOut();
             if (mAuth == null){

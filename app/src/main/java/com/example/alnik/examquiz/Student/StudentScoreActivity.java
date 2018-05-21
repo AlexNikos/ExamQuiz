@@ -156,7 +156,7 @@ public class StudentScoreActivity extends AppCompatActivity {
 
     public View overalScore(){
 
-        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        LayoutInflater factory = LayoutInflater.from(getBaseContext());
         final View score = factory.inflate(R.layout.checking_score, null);
         final TextView name = score.findViewById(R.id.nameS);
         final TextView email = score.findViewById(R.id.emailS);
@@ -183,7 +183,7 @@ public class StudentScoreActivity extends AppCompatActivity {
         int k = 1;
         for(int j = 0; j < marks.size()-1; j++){
 
-            LayoutInflater factory2 = LayoutInflater.from(getApplicationContext());
+            LayoutInflater factory2 = LayoutInflater.from(getBaseContext());
             final View score2 = factory.inflate(R.layout.single_overal_check, null);
             final TextView question = score2.findViewById(R.id.question);
             final TextView markTextView = score2.findViewById(R.id.mark);
