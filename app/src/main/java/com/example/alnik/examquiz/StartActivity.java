@@ -35,14 +35,12 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
 
-
         mRegDialog = new ProgressDialog(this);
         mRegDialog.setMessage("Loading...");
         mRegDialog.setCanceledOnTouchOutside(false);
         mRegDialog.show();
 
         mSharedPreferences = this.getSharedPreferences("com.example.alnik.examquiz", Context.MODE_PRIVATE);
-
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser != null) {
@@ -66,16 +64,12 @@ public class StartActivity extends AppCompatActivity {
                             }
                         });
 
-
-
             } else {
                 Log.d("test", "onCheckedChanged2: "+ mSharedPreferences.getBoolean("remember", false));
-
 
                 if(mSharedPreferences.getBoolean("remember", false) == true){
 
                     DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -118,9 +112,6 @@ public class StartActivity extends AppCompatActivity {
                     finish();
 
                 }
-
-
-
             }
         } else{
 
@@ -129,7 +120,6 @@ public class StartActivity extends AppCompatActivity {
             accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(accountIntent);
             finish();
-
 
         }
     }

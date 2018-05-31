@@ -41,12 +41,11 @@ public class ResultsQuestionerParticipantsFragment extends Fragment {
 
     private RecyclerView ResultsParticipantssRecycleView;
 
-    FirebaseUser mCurrentUser;
-    DatabaseReference userParticipationRef;
-    View mView;
+    private FirebaseUser mCurrentUser;
+    private DatabaseReference userParticipationRef;
+    private View mView;
 
     int number;
-
 
     public ResultsQuestionerParticipantsFragment() {
         // Required empty public constructor
@@ -140,7 +139,6 @@ public class ResultsQuestionerParticipantsFragment extends Fragment {
 
             grade.setVisibility(View.GONE);
             gradeView.setVisibility(View.GONE);
-
 
         }
 

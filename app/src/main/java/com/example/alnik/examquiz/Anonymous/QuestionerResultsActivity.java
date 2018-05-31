@@ -43,11 +43,8 @@ public class QuestionerResultsActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.title);
         title.setText(Global.test.getTitle());
 
-
-
         mFrameLayout = findViewById(R.id.main_frame);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
 
         mResultsQuestionerStatisticsFragment = new ResultsQuestionerStatisticsFragment();
         mResultsQuestionerParticipantsFragment = new ResultsQuestionerParticipantsFragment();
@@ -77,6 +74,4 @@ public class QuestionerResultsActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
     }
-
-
 }

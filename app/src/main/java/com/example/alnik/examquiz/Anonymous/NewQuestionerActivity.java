@@ -346,18 +346,12 @@ public class NewQuestionerActivity extends AppCompatActivity {
                 viewHolder.setOptionD(model.getOptionD());
                 final DatabaseReference questionRef = getRef(position);
 
-
-                //final DatabaseReference courseRef= getRef(position);
-                //final String postKey = courseRef.getKey();
-
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                         Toast.makeText(getApplicationContext(), "first button clicked", Toast.LENGTH_LONG).show();
-
-
                     }
                 });
 //----------------------------------------------- Check Listener----------------------------------------------------
@@ -397,15 +391,6 @@ public class NewQuestionerActivity extends AppCompatActivity {
 
                                     final String id = (String) dataSnapshot.child("id").getValue();
                                     final String question = (String) dataSnapshot.child("question").getValue();
-
-                                    //-----for removing element and avoid excection-----
-//                                    Iterator<MultipleChoice> iter = multipleChoiceArray.iterator();
-//                                    while (iter.hasNext()) {
-//                                        MultipleChoice str = iter.next();
-//
-//                                        if (str.getId().equals(id))
-//                                            iter.remove();
-//                                    }
 
                                     for(Object w : mQuestionArray){
                                         if(w.getClass() == MultipleChoice.class){
@@ -488,14 +473,6 @@ public class NewQuestionerActivity extends AppCompatActivity {
 
                                     final TrueFalse question = dataSnapshot.getValue(TrueFalse.class);
                                     Log.d("test", question.getId());
-//                                    trueFalseArray.add(question);
-//                                    Log.d("test", "TrueFalse ArrayList is:");
-//                                    for (TrueFalse w : trueFalseArray) {
-//
-//                                        Log.d("test", w.getQuestion());
-//                                        Log.d("test", w.getId());
-//
-//                                    }
                                     mQuestionArray.add(question);
                                     Log.d("test", "Multi ArrayList is:");
                                     for (/*MultipleChoice w : multipleChoiceArray*/Object w : mQuestionArray) {
@@ -540,15 +517,6 @@ public class NewQuestionerActivity extends AppCompatActivity {
 
                                     final String id = (String) dataSnapshot.child("id").getValue();
                                     final String question = (String) dataSnapshot.child("question").getValue();
-
-                                    //-----for removing element and avoid excection-----
-                                    //Iterator<TrueFalse> iter = trueFalseArray.iterator();
-                                    //while (iter.hasNext()) {
-                                    //    TrueFalse str = iter.next();
-
-                                    //    if (str.getId().equals(id))
-                                    //        iter.remove();
-                                    //}
 
                                     for(Object w : mQuestionArray){
                                         if(w.getClass() == MultipleChoice.class){
@@ -631,14 +599,7 @@ public class NewQuestionerActivity extends AppCompatActivity {
 
                                     final ShortAnswer question = dataSnapshot.getValue(ShortAnswer.class);
                                     Log.d("test", question.getId());
-//                                    trueFalseArray.add(question);
-//                                    Log.d("test", "TrueFalse ArrayList is:");
-//                                    for (TrueFalse w : trueFalseArray) {
-//
-//                                        Log.d("test", w.getQuestion());
-//                                        Log.d("test", w.getId());
-//
-//                                    }
+
                                     mQuestionArray.add(question);
                                     Log.d("test", "Multi ArrayList is:");
                                     for (/*MultipleChoice w : multipleChoiceArray*/Object w : mQuestionArray) {
@@ -683,15 +644,6 @@ public class NewQuestionerActivity extends AppCompatActivity {
 
                                     final String id = (String) dataSnapshot.child("id").getValue();
                                     final String question = (String) dataSnapshot.child("question").getValue();
-
-                                    //-----for removing element and avoid excection-----
-                                    //Iterator<TrueFalse> iter = trueFalseArray.iterator();
-                                    //while (iter.hasNext()) {
-                                    //    TrueFalse str = iter.next();
-
-                                    //    if (str.getId().equals(id))
-                                    //        iter.remove();
-                                    //}
 
                                     for(Object w : mQuestionArray){
                                         if(w.getClass() == MultipleChoice.class){
@@ -873,7 +825,6 @@ public class NewQuestionerActivity extends AppCompatActivity {
         LinearLayout scoreLiner = addView.findViewById(R.id.ScoreLiner);
         scoreLiner.setVisibility(View.GONE);
 
-
         return addView;
 
     }
@@ -889,7 +840,6 @@ public class NewQuestionerActivity extends AppCompatActivity {
         scoreLiner.setVisibility(View.GONE);
 
         return addView;
-
 
     }
 

@@ -66,7 +66,6 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
         questionerUsersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("QuestionerParticipations").child("Users").child(mCurrentUser.getUid());
         questionerQuestionersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("QuestionerParticipations").child("Questioners");
 
-
         mRegDialog = new ProgressDialog(this);
         mRegDialog.setMessage("Please wait.");
         mRegDialog.setCanceledOnTouchOutside(false);
@@ -127,7 +126,6 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
                 viewHolder.setStartTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getStartDate()));
                 viewHolder.setEndTime(new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(model.getEndDate()));
 
-
                 String key= getRef(position).getKey();
 //---------------------------------action on click a Questioner----------------------------------------------------------
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
@@ -141,22 +139,6 @@ public class AnonymousQuestionerActivity extends AppCompatActivity {
 
                                     Toast.makeText(getApplicationContext(), "You have already participated!" , Toast.LENGTH_LONG).show();
 
-//                                    questionersRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-//                                        @Override
-//                                        public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                            Global.test = dataSnapshot.getValue(Test.class);
-//                                            Log.d("test", "testID is  " +Global.test.getId());
-//                                            Toast.makeText(getApplicationContext(), "Your results for " +Global.test.getTitle() , Toast.LENGTH_LONG).show();
-//                                            startActivity(new Intent(getApplicationContext(), StudentScoreActivity.class));
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onCancelled(DatabaseError databaseError) {
-//
-//                                        }
-//                                    });
                                 } else {
 
                                     questionersRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {

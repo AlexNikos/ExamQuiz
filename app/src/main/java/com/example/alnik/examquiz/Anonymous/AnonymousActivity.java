@@ -127,8 +127,6 @@ public class AnonymousActivity extends AppCompatActivity {
 
                                                         }
                                                     });
-
-
                                                 }
                                             }
 

@@ -45,11 +45,11 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class RunningQuestionerActivity extends AppCompatActivity {
 
-    Button PreviousBtn ,NextBtn;
-    TextView currentQuestionNumber;
-    TextView totalQuestionsNumber;
-    TextView timer;
-    RelativeLayout questionsInsert;
+    private Button PreviousBtn ,NextBtn;
+    private TextView currentQuestionNumber;
+    private  TextView totalQuestionsNumber;
+    private TextView timer;
+    private RelativeLayout questionsInsert;
 
     private FirebaseUser currentUser;
     private DatabaseReference questionerQuestionersParticipation;
@@ -86,7 +86,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
         });
 
         timer = findViewById(R.id.timer);
-
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         questionerUsersParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("QuestionerParticipations").child("Users").child(currentUser.getUid()).child(Global.test.getId());
@@ -178,13 +177,11 @@ public class RunningQuestionerActivity extends AppCompatActivity {
 
         typeQuestion(i);
 
-
         PreviousBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Log.d("test","i before is " +String.valueOf(i));
-
 
                 if(PreviousBtn.isEnabled()){
 
@@ -338,12 +335,10 @@ public class RunningQuestionerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    //Toast.makeText(getApplicationContext(), optionC.getText().toString(), Toast.LENGTH_LONG).show();
                     ans[i] = question.getOptionC();
                     RadioOptionB.setChecked(false);
                     RadioOptionA.setChecked(false);
                     RadioOptionD.setChecked(false);
-
 
                 }
             }
@@ -353,12 +348,10 @@ public class RunningQuestionerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    //Toast.makeText(getApplicationContext(), optionD.getText().toString(), Toast.LENGTH_LONG).show();
                     ans[i] = question.getOptionD();
                     RadioOptionB.setChecked(false);
                     RadioOptionC.setChecked(false);
                     RadioOptionA.setChecked(false);
-
 
                 }
             }
@@ -394,7 +387,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "It is checked", Toast.LENGTH_LONG).show();
                     ans[i] = "true";
                     RadioOptionFalse.setChecked(false);
-
 
                 }
             }
@@ -497,8 +489,6 @@ public class RunningQuestionerActivity extends AppCompatActivity {
         }
 
     }
-
-
 
     public void submitTest(){
 

@@ -38,18 +38,15 @@ import java.util.HashMap;
 
 public class CheckQuestionerActivity extends AppCompatActivity {
 
-    Button PreviousBtn ,NextBtn;
-    TextView currentQuestionNumber;
-    TextView totalQuestionsNumber;
-    TextView middle;
-    RelativeLayout questionsInsert;
-    LinearLayout indexLinear;
+    private Button PreviousBtn ,NextBtn;
+    private TextView currentQuestionNumber;
+    private TextView totalQuestionsNumber;
+    private TextView middle;
+    private RelativeLayout questionsInsert;
+    private LinearLayout indexLinear;
 
     private FirebaseUser currentUser;
     private DatabaseReference answersTestsParticipation;
-    //private DatabaseReference marksTestsParticipation;
-
-
 
     int i = 0, j = 1;
     //long maxGrade = 0;
@@ -78,12 +75,9 @@ public class CheckQuestionerActivity extends AppCompatActivity {
         });
 
         answersTestsParticipation = FirebaseDatabase.getInstance().getReference("Anonymous").child("Answers").child("Questioners").child(Global.test.getId()).child(Global.participantID);
-        //marksTestsParticipation = FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.student.getId());
-
 
         try{
             answersTestsParticipation.keepSynced(true);
-            //marksTestsParticipation.keepSynced(true);
 
         }catch (Exception e){
             Log.d("test", "error: "+ e.toString());
@@ -119,15 +113,12 @@ public class CheckQuestionerActivity extends AppCompatActivity {
                         MultipleChoice question = new MultipleChoice((String)((HashMap)w).get("question"), (String)((HashMap)w).get("optionA"), (String)((HashMap)w).get("optionB"),
                                 (String)((HashMap)w).get("optionC"), (String)((HashMap)w).get("optionD"), (String)((HashMap)w).get("answer"), (String)((HashMap)w).get("id"));
                         question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-                        //maxGrade = maxGrade + question.getMaxGrade();
                         questions.add(question);
 
                     }else if(y.equals("TrueFalse")){
 
                         TrueFalse question = new TrueFalse((String)((HashMap)w).get("question"), (boolean)((HashMap)w).get("answer"), (String)((HashMap)w).get("id"));
                         question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-                        //maxGrade = maxGrade + question.getMaxGrade();
-
                         questions.add(question);
 
 
@@ -135,8 +126,6 @@ public class CheckQuestionerActivity extends AppCompatActivity {
 
                         ShortAnswer question = new ShortAnswer((String)((HashMap)w).get("question"), (String)((HashMap)w).get("id"));
                         question.setMaxGrade(   (long) ((HashMap)w).get("maxGrade")  );
-                        //maxGrade = maxGrade + question.getMaxGrade();
-
                         questions.add(question);
 
                     }
@@ -243,23 +232,11 @@ public class CheckQuestionerActivity extends AppCompatActivity {
 
                             if(j == questions.size()){
 
-                                //NextBtn.setText("Overal Score");
                                 NextBtn.setEnabled(false);
                                 NextBtn.setVisibility(View.INVISIBLE);
                             }
 
                         }
-//                        else if(NextBtn.getText().equals("Overal Score")){
-//
-//                            questionsInsert.removeAllViews();
-//                            View mView = overalScore();
-//                            questionsInsert.addView(mView);
-//                            NextBtn.setEnabled(false);
-//                            NextBtn.setVisibility(View.INVISIBLE);
-//                            indexLinear.setVisibility(View.INVISIBLE);
-//
-//                        }
-
                     }
                 });
 
@@ -296,27 +273,6 @@ public class CheckQuestionerActivity extends AppCompatActivity {
         optionD.setText(question.getOptionD());
 
 
-
-//        if(choice.equals("")){
-//
-//            if (question.getAnswer().equals(question.getOptionA())) {
-//
-//                optionA.setBackgroundColor(Color.BLUE);
-//
-//            } else if (question.getAnswer().equals(question.getOptionB())) {
-//
-//                optionB.setBackgroundColor(Color.BLUE);
-//
-//            } else if (question.getAnswer().equals(question.getOptionC())) {
-//
-//                optionC.setBackgroundColor(Color.BLUE);
-//
-//            } else if (question.getAnswer().equals(question.getOptionD())) {
-//
-//                optionD.setBackgroundColor(Color.BLUE);
-//            }
-//
-//        }else {
             if (choice.equals(question.getOptionA())) {
 
                 linearA.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
@@ -333,25 +289,6 @@ public class CheckQuestionerActivity extends AppCompatActivity {
 
                 linearD.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
             }
-
-
-//            if (question.getAnswer().equals(question.getOptionA())) {
-//
-//                optionA.setBackgroundColor(Color.GREEN);
-//
-//            } else if (question.getAnswer().equals(question.getOptionB())) {
-//
-//                optionB.setBackgroundColor(Color.GREEN);
-//
-//            } else if (question.getAnswer().equals(question.getOptionC())) {
-//
-//                optionC.setBackgroundColor(Color.GREEN);
-//
-//            } else if (question.getAnswer().equals(question.getOptionD())) {
-//
-//                optionD.setBackgroundColor(Color.GREEN);
-//            }
-       // }
 
         return multipleChoice;
     }
@@ -370,20 +307,6 @@ public class CheckQuestionerActivity extends AppCompatActivity {
 
         questionTrueFalseEnter.setText(question.getQuestion());
 
-//        if (choice.equals("")) {
-//
-//            if (String.valueOf(question.getAnswer()).equals("true")) {
-//
-//                trueView.setBackgroundColor(Color.BLUE);
-//
-//            } else {
-//
-//                falseView.setBackgroundColor(Color.BLUE);
-//
-//            }
-//
-//        } else {
-
             if (choice.equals("true")) {
 
                 linearA.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
@@ -392,17 +315,6 @@ public class CheckQuestionerActivity extends AppCompatActivity {
                 linearB.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.choice_background));
 
             }
-
-//            if (String.valueOf(question.getAnswer()).equals("true")) {
-//
-//                trueView.setBackgroundColor(Color.GREEN);
-//
-//            } else {
-//
-//                falseView.setBackgroundColor(Color.GREEN);
-//
-//            }
-       // }
 
         return  trueFalseQuestion;
 
@@ -454,95 +366,4 @@ public class CheckQuestionerActivity extends AppCompatActivity {
         }
 
     }
-
-
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//
-//        FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.student.getId()).setValue(marks, new DatabaseReference.CompletionListener() {
-//            @Override
-//            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-//                if(databaseError == null){
-//
-//                    FirebaseDatabase.getInstance().getReference("Marks").child("Users").child(Global.student.getId()).child(Global.test.getId()).setValue(marks, new DatabaseReference.CompletionListener() {
-//                        @Override
-//                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-//                            if(databaseError == null){
-//                                finish();
-//                            }
-//                        }
-//                    });
-//
-//                }
-//            }
-//        });
-//    }
-
-//    public View overalScore(){
-//
-//        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
-//        final View score = factory.inflate(R.layout.checking_score, null);
-//        final TextView name = score.findViewById(R.id.nameS);
-//        final TextView email = score.findViewById(R.id.emailS);
-//        final TextView time = score.findViewById(R.id.timeS);
-//        final TextView mark = score.findViewById(R.id.mark);
-//        final TextView maxMark = score.findViewById(R.id.maxMark);
-//        final LinearLayout insertPoint = score.findViewById(R.id.insertPoint);
-//
-//        name.setText(Global.student.getFullname());
-//        email.setText(Global.student.getEmail());
-//        time.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(timePartitipation));
-//
-//        long markt = 0;
-//        long maxMarkt = marks.get(marks.size()-1);
-//        for(long q: marks){
-//
-//            markt = markt + q;
-//        }
-//        markt = markt - maxMarkt;
-//
-//        mark.setText(String.valueOf(markt));
-//        maxMark.setText(String.valueOf(maxMarkt));
-//
-//        int k = 1;
-//        for(int j = 0; j < marks.size()-1; j++){
-//
-//            LayoutInflater factory2 = LayoutInflater.from(getApplicationContext());
-//            final View score2 = factory.inflate(R.layout.single_overal_check, null);
-//            final TextView question = score2.findViewById(R.id.question);
-//            final TextView markTextView = score2.findViewById(R.id.mark);
-//
-////            question.setText("Question " +k +" :");
-////            markTextView.setText(marks.get(j) +"/" +maxMarkt);
-//
-//            if(questions.get(j).getClass() == MultipleChoice.class){
-//
-//                question.setText("Question " +k +" :");
-//                markTextView.setText(marks.get(j) +"/" +((MultipleChoice)questions.get(j)).getMaxGrade());
-//                k++;
-//
-//            } else if(questions.get(j).getClass() == TrueFalse.class){
-//
-//                question.setText("Question " +k +" :");
-//                markTextView.setText(marks.get(j) +"/" +((TrueFalse)questions.get(j)).getMaxGrade());
-//                k++;
-//
-//            } else if(questions.get(j).getClass() == ShortAnswer.class){
-//
-//                question.setText("Question " +k +" :" );
-//                markTextView.setText(marks.get(j) +"/" +((ShortAnswer)questions.get(j)).getMaxGrade());
-//                k++;
-//
-//            }
-//
-//            insertPoint.addView(score2);
-//
-//        }
-//
-//        return score;
-//    }
-
-
 }

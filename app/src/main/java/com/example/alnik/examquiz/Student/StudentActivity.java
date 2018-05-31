@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.LoginActivity;
@@ -45,6 +48,7 @@ public class StudentActivity extends AppCompatActivity
     private FirebaseUser currentUser;
     private DatabaseReference mUsersRef;
     private DatabaseReference mUsersCoursesRef;
+    private DatabaseReference mCoursesCourseRef;
     private DatabaseReference mCoursesRef;
 
 
@@ -61,6 +65,7 @@ public class StudentActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_student);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,13 +73,15 @@ public class StudentActivity extends AppCompatActivity
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mUsersRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-        mUsersCoursesRef = FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(currentUser.getUid());
+        mCoursesCourseRef = FirebaseDatabase.getInstance().getReference("Subscriptions").child("Courses");
         mCoursesRef = FirebaseDatabase.getInstance().getReference("Courses");
+        mUsersCoursesRef = FirebaseDatabase.getInstance().getReference("Subscriptions").child("Users").child(currentUser.getUid());
 
         try{
             mUsersRef.keepSynced(true);
             mUsersCoursesRef.keepSynced(true);
             mCoursesRef.keepSynced(true);
+            mCoursesCourseRef.keepSynced(true);
 
         }catch (Exception e){
             Log.d("test", "error: "+ e.toString());
@@ -83,17 +90,6 @@ public class StudentActivity extends AppCompatActivity
         mCoursesRecycleView = findViewById(R.id.mCoursesRecycleView);
         mCoursesRecycleView.hasFixedSize();
         mCoursesRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-
-//        FloatingActionButton findNewLesson = (FloatingActionButton) findViewById(R.id.find_new_lesson);
-//        findNewLesson.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                startActivity(new Intent(getApplicationContext(), SearchCourseActivity.class));
-//
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -159,28 +155,14 @@ public class StudentActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.sign_out) {
-//            FirebaseAuth.getInstance().signOut();
-//            if (mAuth == null){
-//                startActivity(new Intent(StudentActivity.this, LoginActivity.class));
-//                finish();
-//            }
-//            return true;
-//        }
-
         if(id == R.id.searchCourse){
 
             Intent i = new Intent(getApplicationContext(), SearchCourseActivity.class);
             startActivity(i);
 
             return true;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -234,20 +216,16 @@ public class StudentActivity extends AppCompatActivity
             protected void populateViewHolder(final StudentCoursesViewHolder courseViewHolder, Time subs, int i) {
 
                 courseViewHolder.setDate(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(subs.getTime()));
-
                 String course_id = getRef(i).getKey();
                 Log.d("test", course_id);
-                //final String[] courseName = new String[1];
 
                 mCoursesRef.child(course_id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         Log.d("test", dataSnapshot.toString());
-                        //courseName[0] = dataSnapshot.child("name").getValue().toString();
                         Course course = dataSnapshot.getValue(Course.class);
                         Global.course = course;
-
                         courseViewHolder.setName(course.getName());
 
                     }
@@ -275,9 +253,9 @@ public class StudentActivity extends AppCompatActivity
                                         .child("time").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
+
                                         Global.timeSubscripted = (long)dataSnapshot.getValue();
                                         Log.d("test", "onDataChange: " +Global.timeSubscripted);
-
                                         startActivity(new Intent(StudentActivity.this, CourseStudentActivity.class));
 
                                     }
@@ -287,9 +265,6 @@ public class StudentActivity extends AppCompatActivity
 
                                     }
                                 });
-
-
-
                             }
 
                             @Override
@@ -304,6 +279,86 @@ public class StudentActivity extends AppCompatActivity
                 courseViewHolder.singleStudentCourseOptions.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+
+                                String course_id = getRef(i).getKey();
+                                PopupMenu popup = new PopupMenu(view.getContext(), view);
+                                popup.inflate(R.menu.popup_student_course);
+                                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        switch (item.getItemId()) {
+                                            case R.id.unsubscribe:
+
+                                                new AlertDialog.Builder(StudentActivity.this)
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .setTitle("Are you sure?")
+                                                        .setMessage("Do you want to unsubscribe from this Course?")
+                                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                        mUsersCoursesRef.child(course_id).removeValue();
+                                                                        mCoursesCourseRef.child(course_id).child(currentUser.getUid()).removeValue();
+                                                                        Toast.makeText(getApplicationContext(), "You have been unsubscribed from this course.", Toast.LENGTH_LONG).show();
+
+
+                                                                    }
+                                                                }
+                                                        )
+                                                        .setNegativeButton("No", null)
+                                                        .show();
+
+                                                break;
+                                            case R.id.info:
+
+                                                mCoursesRef.child(course_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                        Log.d("testcourse", dataSnapshot.toString());
+                                                        Course course = dataSnapshot.getValue(Course.class);
+                                                        Log.d("testcourse", course.getName() +" " +course.getSite() +" " +course.getInfo());
+
+                                                        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+                                                        final View infoAlertBox = factory.inflate(R.layout.create_course, null);
+                                                        final EditText courseName = infoAlertBox.findViewById(R.id.courseName);
+                                                        final EditText courseInfo = infoAlertBox.findViewById(R.id.courseInfo);
+                                                        final EditText courseSite = infoAlertBox.findViewById(R.id.courseSite);
+
+                                                        courseName.setText(course.getName());
+                                                        courseName.setEnabled(false);
+                                                        courseInfo.setText(course.getInfo());
+                                                        courseSite.setText(course.getSite());
+
+                                                        new AlertDialog.Builder(StudentActivity.this)
+                                                                .setView(infoAlertBox)
+                                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                                .setTitle("Course Informations")
+                                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                                        ((ViewGroup) infoAlertBox.getParent()).removeView(infoAlertBox);
+
+                                                                    }
+                                                                })
+                                                                .show();
+
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+
+                                                    }
+
+                                                });
+
+                                                break;
+                                        }
+                                        return false;
+                                    }
+                                });
+                                popup.show();
 
 
 

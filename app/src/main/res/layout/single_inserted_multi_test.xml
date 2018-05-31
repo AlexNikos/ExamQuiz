@@ -22,8 +22,8 @@
             android:layout_marginRight="30dp"
             android:maxLines="4"
             android:text="TextView"
+            android:textColor="@android:color/black"
             android:textSize="20dp"
-            android:textStyle="bold"
             app:minTextSize="10sp" />
 
         <me.grantland.widget.AutofitTextView
@@ -33,7 +33,7 @@
             android:layout_alignStart="@+id/question"
             android:layout_below="@+id/question"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:maxLines="2"
             android:text="TextView"
             android:textSize="15dp"
@@ -46,7 +46,7 @@
             android:layout_alignStart="@+id/optionA"
             android:layout_below="@+id/optionA"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="10dp"
             android:maxLines="2"
             android:text="TextView"
             android:textSize="15dp"
@@ -59,7 +59,7 @@
             android:layout_alignStart="@+id/optionB"
             android:layout_below="@+id/optionB"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="10dp"
             android:maxLines="2"
             android:text="TextView"
             android:textSize="15dp"
@@ -72,7 +72,7 @@
             android:layout_alignStart="@+id/optionC"
             android:layout_below="@+id/optionC"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="10dp"
             android:autoSizeMinTextSize="10dp"
             android:maxLines="2"
             android:text="TextView" />

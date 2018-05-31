@@ -4,17 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:grid="http://schemas.android.com/tools"
     android:id="@+id/single_multiple"
-    android:layout_width="190dp"
+    android:layout_width="wrap_content"
     android:layout_height="160dp"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginStart="10dp"
+    android:layout_margin="2dp"
+    android:background="@color/cardview_light_background"
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
 
         <me.grantland.widget.AutofitTextView
@@ -28,8 +27,8 @@
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:text="TextView of Question"
+            android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:textStyle="bold"
             app:minTextSize="10sp" />
 
         <LinearLayout

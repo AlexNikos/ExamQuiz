@@ -54,18 +54,14 @@ public class QuestionersFragment extends Fragment {
     private FirebaseRecyclerAdapter<Test, TestViewHolder> testRecyclerAdapter;
     private View mView;
 
-
     public QuestionersFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_questioners, container, false);
-
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         testRef = FirebaseDatabase.getInstance().getReference("Anonymous").child("Questioners").child(Global.room.getId());
 
@@ -228,9 +224,6 @@ public class QuestionersFragment extends Fragment {
                                                 dateTimePicker.setDate(new Date(Global.test.getStartDate()));
                                                 dateTimePicker.showDialog();
 
-
-
-
                                             }
 
                                             @Override
@@ -238,8 +231,6 @@ public class QuestionersFragment extends Fragment {
 
                                             }
                                         });
-
-
 
                                         break;
                                     case R.id.editEndTime:
@@ -277,9 +268,6 @@ public class QuestionersFragment extends Fragment {
                                                 dateTimePicker.setDate(new Date(Global.test.getEndDate()));
                                                 dateTimePicker.showDialog();
 
-
-
-
                                             }
 
                                             @Override
@@ -287,9 +275,6 @@ public class QuestionersFragment extends Fragment {
 
                                             }
                                         });
-
-
-
                                         break;
                                 }
                                 return false;
@@ -297,7 +282,8 @@ public class QuestionersFragment extends Fragment {
                         });
                         popup.show();
                     }
-                });            }
+                });
+            }
         };
 
         testRecycleView.setAdapter(testRecyclerAdapter);

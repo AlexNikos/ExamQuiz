@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/single_searchCourse"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="88dp"
     android:layout_margin="2dp"
     app:cardCornerRadius="10dp">
 
@@ -16,10 +16,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView41"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="16dp"
             android:text="TextView"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textColor="@android:color/black"
+            android:textSize="21sp" />
 
         <TextView
             android:id="@+id/textView41"
@@ -27,8 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/searchName"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
             android:text="Owner " />
 
         <TextView
@@ -47,7 +48,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
             android:text="Status"
             android:textStyle="bold" />
     </RelativeLayout>

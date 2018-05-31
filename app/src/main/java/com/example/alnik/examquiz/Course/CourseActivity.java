@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -19,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,25 +64,22 @@ public class CourseActivity extends AppCompatActivity
     private TextView emailView;
     private String fullName;
 
+    Animation uptodown,downtoup;
+    AppBarLayout courseAppbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_course);
         toolbar = (Toolbar) findViewById(R.id.courseToolbar);
         setSupportActionBar(toolbar);
-
-//        databaseTab = findViewById(R.id.DatabaseTab);
-////        testsTab = findViewById(R.id.TestsTab);
-////        notificationsTab = findViewById(R.id.NotificationsTab);
-////        subsTab = findViewById(R.id.SubsTab);
-
-        //Intent intent = getIntent();
-        //courseName = intent.getExtras().getString("courseName");
-        //courseID = intent.getExtras().getString("courseID");
-        //courseName = Global.course.getName();
-        //courseID = Global.course.getId();
         getSupportActionBar().setTitle(Global.course.getName());
+
+        uptodown = AnimationUtils.loadAnimation(this,R.anim.uptodown);
+        downtoup = AnimationUtils.loadAnimation(this,R.anim.downtoup);
+        courseAppbar = findViewById(R.id.courseAppbar);
 
         multipleRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("MultipleChoice");
         trueFalseRef = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId()).child("TrueFalse");
@@ -100,6 +100,9 @@ public class CourseActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(R.id.CourseViewPager);
         mCoursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mCoursePagerAdapter);
+
+        courseAppbar.setAnimation(uptodown);
+        mViewPager.setAnimation(downtoup);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

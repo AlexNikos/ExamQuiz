@@ -378,7 +378,6 @@ public class NewTestActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         if (b == true) {
-                            Toast.makeText(getApplicationContext(), "cheched", Toast.LENGTH_LONG).show();
 
                             questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -402,7 +401,6 @@ public class NewTestActivity extends AppCompatActivity {
                             });
 
                         } else if (b == false) {
-                            Toast.makeText(getApplicationContext(), "NOT checked", Toast.LENGTH_LONG).show();
 
                             questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -493,7 +491,6 @@ public class NewTestActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         if (b == true) {
-                            Toast.makeText(getApplicationContext(), "cheched", Toast.LENGTH_LONG).show();
 
                             questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -501,17 +498,10 @@ public class NewTestActivity extends AppCompatActivity {
 
                                     final TrueFalse question = dataSnapshot.getValue(TrueFalse.class);
                                     Log.d("test", question.getId());
-//                                    trueFalseArray.add(question);
-//                                    Log.d("test", "TrueFalse ArrayList is:");
-//                                    for (TrueFalse w : trueFalseArray) {
-//
-//                                        Log.d("test", w.getQuestion());
-//                                        Log.d("test", w.getId());
-//
-//                                    }
+
                                     mQuestionArray.add(question);
                                     Log.d("test", "Multi ArrayList is:");
-                                    for (/*MultipleChoice w : multipleChoiceArray*/Object w : mQuestionArray) {
+                                    for (Object w : mQuestionArray) {
 
                                         if(w.getClass() == MultipleChoice.class){
                                             Log.d("test", ((MultipleChoice)w).getQuestion());
@@ -530,9 +520,6 @@ public class NewTestActivity extends AppCompatActivity {
                                             Log.d("test", ((ShortAnswer)w).getType());
 
                                         }
-
-
-
                                     }
 
                                     View trueFalseView =  insertTrueFalse(question);
@@ -548,7 +535,6 @@ public class NewTestActivity extends AppCompatActivity {
                             });
 
                         } else if (b == false) {
-                            Toast.makeText(getApplicationContext(), "NOT checked", Toast.LENGTH_LONG).show();
 
                             questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -556,15 +542,6 @@ public class NewTestActivity extends AppCompatActivity {
 
                                     final String id = (String) dataSnapshot.child("id").getValue();
                                     final String question = (String) dataSnapshot.child("question").getValue();
-
-                                    //-----for removing element and avoid excection-----
-                                    //Iterator<TrueFalse> iter = trueFalseArray.iterator();
-                                    //while (iter.hasNext()) {
-                                    //    TrueFalse str = iter.next();
-
-                                    //    if (str.getId().equals(id))
-                                    //        iter.remove();
-                                    //}
 
                                     for(Object w : mQuestionArray){
                                         if(w.getClass() == MultipleChoice.class){

@@ -7,35 +7,37 @@
     tools:context="com.example.alnik.examquiz.Student.SearchCourseActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppBarOverlay"
-        android:id="@+id/appBarLayout">
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppBarOverlay">
 
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:layout_gravity="left"
+            android:background="@android:color/transparent"
             app:popupTheme="@style/PopupOverlay">
 
             <android.support.v7.widget.SearchView
                 android:id="@+id/searchView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:background="@color/colorPrimaryDark"
+                android:background="@android:color/transparent"
                 android:foregroundGravity="right"
                 android:gravity="right"
                 android:iconifiedByDefault="false"
                 android:queryHint="Search Course"
                 app:iconifiedByDefault="false"
-                app:queryHint="Search Course"
-                app:searchIcon="@null" />
+                app:searchIcon="@null"
+                app:queryBackground="@drawable/input_background"
+                app:queryHint="Search Course" />
 
         </android.support.v7.widget.Toolbar>
-
 
 
     </android.support.design.widget.AppBarLayout>

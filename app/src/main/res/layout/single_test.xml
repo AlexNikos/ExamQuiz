@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/singleTestView"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="88dp"
     android:layout_margin="2dp"
     app:cardBackgroundColor="@color/single_row"
     app:cardCornerRadius="10dp">
@@ -18,11 +18,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="46dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:text="Title"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textColor="@android:color/black"
+            android:textSize="21sp" />
 
         <LinearLayout
             android:id="@+id/startLinear"
@@ -30,8 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/singleTestTitle"
             android:layout_below="@id/singleTestTitle"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
             android:orientation="horizontal">
 
             <TextView
@@ -80,7 +78,7 @@
 
         <Button
             android:id="@+id/activeTestButton"
-            android:layout_width="20dp"
+            android:layout_width="10dp"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"

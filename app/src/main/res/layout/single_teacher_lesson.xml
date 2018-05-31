@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/singleRowLesson"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="77dp"
     android:layout_margin="2dp"
     android:theme="@style/CardView"
     app:cardBackgroundColor="@color/cardview_light_background"
@@ -17,15 +17,19 @@
 
         <TextView
             android:id="@+id/teacherLessonView"
-            android:layout_width="344dp"
-            android:layout_height="50dp"
+            android:layout_width="361dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:paddingStart="20dp"
             android:singleLine="true"
             android:text="TextView"
+            android:textAlignment="textStart"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="20sp" />
+            android:textSize="21sp" />
 
         <ImageButton
             android:id="@+id/teacherLessonOptionsButton"
@@ -43,22 +47,20 @@
         <TextView
             android:id="@+id/subsText"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_alignParentStart="true"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/teacherLessonView"
             android:layout_below="@+id/teacherLessonView"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:paddingStart="20dp"
             android:text="Subscribers:  "
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/subs"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_below="@+id/teacherLessonView"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/subsText"
             android:layout_toEndOf="@+id/subsText"
-            android:layout_toStartOf="@+id/teacherLessonOptionsButton"
             android:background="@android:color/transparent"
             android:gravity="left|center"
             android:text="TextView"

@@ -2,6 +2,7 @@ package com.example.alnik.examquiz.Teacher;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -32,11 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 public class TeacherActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
     private ViewPager mViewPager;
     private TeacherPagerAdapter mTeacherPagerAdapter;
     private TabLayout mTabLayout;
-
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -48,17 +49,15 @@ public class TeacherActivity extends AppCompatActivity
     private TextView emailView;
     private String fullName;
 
-
     private EditText CourseNameInput;
     private String CourseName;
 
     private RecyclerView CoursesList;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_teacher);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,7 +73,6 @@ public class TeacherActivity extends AppCompatActivity
         myRefUser = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
         mCourses = FirebaseDatabase.getInstance().getReference("Courses").child(currentUser.getUid());
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,7 +84,6 @@ public class TeacherActivity extends AppCompatActivity
 
         nameView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_fullname);
         emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_email);
-
 
         myRefUser.child("fullname").addValueEventListener(new ValueEventListener() {
             @Override
@@ -116,7 +113,6 @@ public class TeacherActivity extends AppCompatActivity
         }
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -144,15 +140,12 @@ public class TeacherActivity extends AppCompatActivity
                 finish();
             }
 
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
 }
 

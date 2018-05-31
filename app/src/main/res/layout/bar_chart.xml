@@ -9,12 +9,12 @@
     <RelativeLayout
         android:id="@+id/re"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="wrap_content">
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="250dp"
             android:layout_margin="15dp">
 
         </com.github.mikephil.charting.charts.BarChart>

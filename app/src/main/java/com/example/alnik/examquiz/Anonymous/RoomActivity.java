@@ -36,7 +36,6 @@ public class RoomActivity extends AppCompatActivity
     private RoomPagerAdapter mRoomPagerAdapter;
     private TabLayout mTabLayout;
 
-
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private FirebaseDatabase questions;
@@ -130,7 +129,6 @@ public class RoomActivity extends AppCompatActivity
                 startActivity(new Intent(RoomActivity.this, LoginActivity.class));
                 finish();
             }
-
 
         }
 

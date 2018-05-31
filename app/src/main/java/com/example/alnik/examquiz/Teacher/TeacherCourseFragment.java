@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -234,7 +236,6 @@ public class TeacherCourseFragment extends Fragment {
                 viewHolder.teacherLessonButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                       //Toast.makeText(getContext(), "first button clicked", Toast.LENGTH_LONG).show();
                         mCourses.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -243,8 +244,6 @@ public class TeacherCourseFragment extends Fragment {
                                 Global.course = dataSnapshot.getValue(Course.class);
 
                                 Intent startCourseActivity = new Intent(getActivity(), CourseActivity.class);
-                                //startCourseActivity.putExtra("courseName", postKey);
-                                //startCourseActivity.putExtra("courseID", Global.course.getId());
                                 startActivity(startCourseActivity);
 
                             }
@@ -266,8 +265,6 @@ public class TeacherCourseFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 Log.d("test", dataSnapshot.toString());
-
-
                                 Global.course = dataSnapshot.getValue(Course.class);
 
                             }
@@ -303,7 +300,6 @@ public class TeacherCourseFragment extends Fragment {
                                                                     courseAnnouncements = FirebaseDatabase.getInstance().getReference("Announcements").child(Global.course.getId());
                                                                     courseTests = FirebaseDatabase.getInstance().getReference("Test").child(Global.course.getId());
                                                                     courseQuestions = FirebaseDatabase.getInstance().getReference("Questions").child(Global.course.getId());
-
                                                                     userCourseOwnership.child(currentUser.getUid()).child(Global.course.getId()).removeValue();
                                                                     courseCourseOwnership.child(Global.course.getName()).child(Global.course.getOwnersID()).removeValue();
                                                                     courseAnnouncements.removeValue();
@@ -338,8 +334,6 @@ public class TeacherCourseFragment extends Fragment {
                                                     final Course course = dataSnapshot.getValue(Course.class);
                                                     Log.d("testcourse", course.getName() +" " +course.getSite() +" " +course.getInfo());
 
-
-
                                                 courseName.setText(course.getName());
                                                 courseName.setEnabled(false);
                                                 courseInfo.setText(course.getInfo());
@@ -363,8 +357,6 @@ public class TeacherCourseFragment extends Fragment {
                                                                             @Override
                                                                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                                                                 if(databaseError == null){
-                                                                                    //userCourseOwnership.child(currentUser.getUid()).child(Global.course.getId()).setValue(Global.course);
-                                                                                    //courseCourseOwnership.child(Global.course.getName()).child(Global.course.getOwnersID()).setValue(Global.course);
                                                                                     Toast.makeText(getContext(), "Course Updated", Toast.LENGTH_LONG).show();
 
                                                                                 }
@@ -413,7 +405,6 @@ public class TeacherCourseFragment extends Fragment {
                                 return false;
                             }
                         });
-                        //displaying the popup
                         popup.show();
 
                     }
@@ -433,15 +424,12 @@ public class TeacherCourseFragment extends Fragment {
         ImageButton teacherlessonOptionsButton;
         TextView subs;
 
-        View view;
-
         public lessonViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             teacherlessonOptionsButton = itemView.findViewById(R.id.teacherLessonOptionsButton);
             teacherLessonButton = itemView.findViewById(R.id.teacherLessonView);
             subs = itemView.findViewById(R.id.subs);
-            view = itemView.findViewById(R.id.singleRowLesson);
 
         }
 

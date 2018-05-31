@@ -62,9 +62,7 @@ public class QuestionsFragment extends Fragment {
     private DatabaseReference shortAnswerRef;
     private FirebaseUser currentUser;
 
-
     private View mDatabaseView;
-
 
     public QuestionsFragment() {
         // Required empty public constructor
@@ -89,31 +87,20 @@ public class QuestionsFragment extends Fragment {
         expandable_layout_ShortAnswer = mDatabaseView.findViewById(R.id.shortAnswerExpand);
         expandable_layout_ShortAnswer.collapse();
 
-
         mutipleChoiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                if(expandable_layout_TrueFalse.isExpanded()){
-//                    expandable_layout_TrueFalse.collapse();
-//                }
-//
-//                if(expandable_layout_ShortAnswer.isExpanded()){
-//                    expandable_layout_ShortAnswer.collapse();
-//                }
 
                 if (expandable_layout_MultiChoise.isExpanded()) {
                     expandable_layout_MultiChoise.collapse();
                     fabMenu.showMenu(true);
                     mutipleChoiceButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
 
-
-
                 } else if (!expandable_layout_MultiChoise.isExpanded()) {
                     fabMenu.hideMenu(true);
                     expandable_layout_MultiChoise.expand();
                     mutipleChoiceButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp) , null);
-
 
                 }
             }
@@ -123,20 +110,10 @@ public class QuestionsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-//                if(expandable_layout_MultiChoise.isExpanded()){
-//                    expandable_layout_MultiChoise.collapse();
-//                }
-//
-//                if(expandable_layout_ShortAnswer.isExpanded()){
-//                    expandable_layout_ShortAnswer.collapse();
-//                }
-
                 if (expandable_layout_TrueFalse.isExpanded()) {
                     expandable_layout_TrueFalse.collapse();
                     fabMenu.showMenu(true);
                     trueFalseButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp) , null);
-
-
 
                 } else if (!expandable_layout_TrueFalse.isExpanded()) {
                     fabMenu.hideMenu(true);
@@ -150,14 +127,6 @@ public class QuestionsFragment extends Fragment {
         shortAnswerbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                if(expandable_layout_MultiChoise.isExpanded()){
-//                    expandable_layout_MultiChoise.collapse();
-//                }
-//
-//                if(expandable_layout_TrueFalse.isExpanded()){
-//                    expandable_layout_TrueFalse.collapse();
-//                }
 
                 if (expandable_layout_ShortAnswer.isExpanded()) {
                     expandable_layout_ShortAnswer.collapse();
@@ -240,11 +209,6 @@ public class QuestionsFragment extends Fragment {
         final EditText optionD = createMultipleChoice.findViewById(R.id.optionD);
         final RadioGroup radioOption = createMultipleChoice.findViewById(R.id.radioOption);
         radioOption.setVisibility(View.GONE);
-//        final RadioButton RadioOptionA = createMultipleChoice.findViewById(R.id.radioOptionA);
-//        final RadioButton RadioOptionB = createMultipleChoice.findViewById(R.id.radioOptionB);
-//        final RadioButton RadioOptionC = createMultipleChoice.findViewById(R.id.radioOptionC);
-//        final RadioButton RadioOptionD = createMultipleChoice.findViewById(R.id.radioOptionD);
-
 
         mFabMultiple.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,16 +229,6 @@ public class QuestionsFragment extends Fragment {
                                         String optionBinpute = optionB.getText().toString();
                                         String optionCinpute = optionC.getText().toString();
                                         String optionDinpute = optionD.getText().toString();
-//                                        String answer = "";
-//                                        if(RadioOptionA.isChecked()){
-//                                            answer = optionAinpute;
-//                                        }else if(RadioOptionB.isChecked()){
-//                                            answer = optionBinpute;
-//                                        }else if(RadioOptionC.isChecked()){
-//                                            answer = optionCinpute;
-//                                        }else if(RadioOptionD.isChecked()){
-//                                            answer = optionDinpute;
-//                                        }
 
                                         if(questionInput.isEmpty() || optionAinpute.isEmpty() || optionBinpute.isEmpty() || optionCinpute.isEmpty() || optionDinpute.isEmpty() /*|| answer.isEmpty()
                                                 || (!RadioOptionA.isChecked() && !RadioOptionB.isChecked() && !RadioOptionC.isChecked() && !RadioOptionD.isChecked())*/){
@@ -292,10 +246,6 @@ public class QuestionsFragment extends Fragment {
                                                     optionB.setText("");
                                                     optionC.setText("");
                                                     optionD.setText("");
-//                                                    RadioOptionA.setChecked(false);
-//                                                    RadioOptionB.setChecked(false);
-//                                                    RadioOptionC.setChecked(false);
-//                                                    RadioOptionD.setChecked(false);
 
                                                 }
                                             });
@@ -315,10 +265,6 @@ public class QuestionsFragment extends Fragment {
                                 optionB.setText("");
                                 optionC.setText("");
                                 optionD.setText("");
-//                                RadioOptionA.setChecked(false);
-//                                RadioOptionB.setChecked(false);
-//                                RadioOptionC.setChecked(false);
-//                                RadioOptionD.setChecked(false);
 
                                 ((ViewGroup) createMultipleChoice.getParent()).removeView(createMultipleChoice);
 
@@ -335,8 +281,6 @@ public class QuestionsFragment extends Fragment {
         final EditText questionTrueFalseEnter = createTrueFalseQuestion.findViewById(R.id.questionTrueFalseEnter);
         final RadioGroup radioOption2 = createTrueFalseQuestion.findViewById(R.id.radioOption);
         radioOption2.setVisibility(View.GONE);
-//        final RadioButton RadioOptionTrue = createTrueFalseQuestion.findViewById(R.id.radioOptionTrue);
-//        final RadioButton RadioOptionFalse = createTrueFalseQuestion.findViewById(R.id.radioOptionFalse);
 
         mFabTrueFalse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,12 +298,6 @@ public class QuestionsFragment extends Fragment {
 
                                         String questionId = trueFalseRef.push().getKey().toString();
                                         String questionInput = questionTrueFalseEnter.getText().toString();
-//                                        boolean answer = false;
-//                                        if(RadioOptionTrue.isChecked()){
-//                                            answer = true;
-//                                        }else if(RadioOptionFalse.isChecked()){
-//                                            answer = false;
-//                                        }
 
                                         if(questionInput.isEmpty() /*|| (!RadioOptionTrue.isChecked() && !RadioOptionFalse.isChecked())*/){
                                             Toast.makeText(getContext(), "No Empty Fields Allowed!", Toast.LENGTH_LONG).show();
@@ -372,14 +310,10 @@ public class QuestionsFragment extends Fragment {
                                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                                     Toast.makeText(getContext(), "Question Added to Your Database.", Toast.LENGTH_LONG).show();
                                                     questionTrueFalseEnter.setText("");
-//                                                    RadioOptionTrue.setChecked(false);
-//                                                    RadioOptionFalse.setChecked(false);
 
                                                 }
                                             });
                                         }
-
-
 
                                         ((ViewGroup) createTrueFalseQuestion.getParent()).removeView(createTrueFalseQuestion);
                                     }
@@ -390,8 +324,6 @@ public class QuestionsFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                 questionTrueFalseEnter.setText("");
-//                                RadioOptionTrue.setChecked(false);
-//                                RadioOptionFalse.setChecked(false);
                                 ((ViewGroup) createTrueFalseQuestion.getParent()).removeView(createTrueFalseQuestion);
 
                             }
@@ -498,10 +430,6 @@ public class QuestionsFragment extends Fragment {
                         final EditText optionD = showMultipleChoice.findViewById(R.id.optionD);
                         final RadioGroup radioOption = showMultipleChoice.findViewById(R.id.radioOption);
                         radioOption.setVisibility(View.GONE);
-//                        final RadioButton RadioOptionA = showMultipleChoice.findViewById(R.id.radioOptionA);
-//                        final RadioButton RadioOptionB = showMultipleChoice.findViewById(R.id.radioOptionB);
-//                        final RadioButton RadioOptionC = showMultipleChoice.findViewById(R.id.radioOptionC);
-//                        final RadioButton RadioOptionD = showMultipleChoice.findViewById(R.id.radioOptionD);
 
                         getRef(position).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -513,30 +441,11 @@ public class QuestionsFragment extends Fragment {
                                 optionC.setText(question.getOptionC());
                                 optionD.setText(question.getOptionD());
 
-//                                if(question.getAnswer().equals(question.getOptionA())){
-//                                    RadioOptionA.setChecked(true);
-//
-//                                } else if(question.getAnswer().equals(question.getOptionB())){
-//                                    RadioOptionB.setChecked(true);
-//
-//                                } else if(question.getAnswer().equals(question.getOptionC())) {
-//                                    RadioOptionC.setChecked(true);
-//
-//                                } else if(question.getAnswer().equals(question.getOptionD())) {
-//                                    RadioOptionD.setChecked(true);
-//
-//                                }
-
                                 questionMultipleEnter.setFocusableInTouchMode(false);
                                 optionA.setFocusableInTouchMode(false);
                                 optionB.setFocusableInTouchMode(false);
                                 optionC.setFocusableInTouchMode(false);
                                 optionD.setFocusableInTouchMode(false);
-//                                RadioOptionA.setClickable(false);
-//                                RadioOptionB.setClickable(false);
-//                                RadioOptionC.setClickable(false);
-//                                RadioOptionD.setClickable(false);
-
 
                                 AlertDialog alert = new AlertDialog.Builder(getContext())
                                         .setView(showMultipleChoice)
@@ -559,10 +468,6 @@ public class QuestionsFragment extends Fragment {
                                                         optionB.setFocusableInTouchMode(true);
                                                         optionC.setFocusableInTouchMode(true);
                                                         optionD.setFocusableInTouchMode(true);
-//                                                        RadioOptionA.setClickable(true);
-//                                                        RadioOptionB.setClickable(true);
-//                                                        RadioOptionC.setClickable(true);
-//                                                        RadioOptionD.setClickable(true);
 
                                                         AlertDialog alert = new AlertDialog.Builder(getContext())
                                                                 .setView(showMultipleChoice)
@@ -583,25 +488,7 @@ public class QuestionsFragment extends Fragment {
                                                                                 String b = optionB.getText().toString();
                                                                                 String c = optionC.getText().toString();
                                                                                 String d = optionD.getText().toString();
-//                                                                                String answer;
-//
-//                                                                                if(RadioOptionA.isChecked()){
-//                                                                                    answer = a;
-//                                                                                    question.setAnswer(answer);
-//
-//                                                                                } else if(RadioOptionB.isChecked()){
-//                                                                                    answer = b;
-//                                                                                    question.setAnswer(answer);
-//
-//                                                                                } else if(RadioOptionC.isChecked()){
-//                                                                                    answer = c;
-//                                                                                    question.setAnswer(answer);
-//
-//                                                                                } else if(RadioOptionD.isChecked()){
-//                                                                                    answer = d;
-//                                                                                    question.setAnswer(answer);
-//
-//                                                                                }
+
                                                                                 question.setQuestion(q);
                                                                                 question.setOptionA(a);
                                                                                 question.setOptionB(b);
@@ -681,9 +568,6 @@ public class QuestionsFragment extends Fragment {
             protected void populateViewHolder(final TrueFalseViewHolder viewHolder, TrueFalse model, int position) {
                 viewHolder.setQuestion(model.getQuestion());
 
-                //final DatabaseReference courseRef= getRef(position);
-                //final String postKey = courseRef.getKey();
-
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -696,8 +580,6 @@ public class QuestionsFragment extends Fragment {
                         final EditText questionTrueFalseEnter = showTrueFalseChoice.findViewById(R.id.questionTrueFalseEnter);
                         final RadioGroup radioOption = showTrueFalseChoice.findViewById(R.id.radioOption);
                         radioOption.setVisibility(View.GONE);
-//                        final RadioButton RadioOptionTrue = showTrueFalseChoice.findViewById(R.id.radioOptionTrue);
-//                        final RadioButton RadioOptionFalse = showTrueFalseChoice.findViewById(R.id.radioOptionFalse);
 
                         getRef(position).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -705,19 +587,7 @@ public class QuestionsFragment extends Fragment {
                                 TrueFalse question = (TrueFalse) dataSnapshot.getValue(TrueFalse.class);
                                 questionTrueFalseEnter.setText(question.getQuestion());
 
-//                                if(question.getAnswer().equals(true)){
-//                                    RadioOptionTrue.setChecked(true);
-//
-//                                } else if(question.getAnswer().equals(false)){
-//                                    RadioOptionFalse.setChecked(true);
-//
-//                                }
-
                                 questionTrueFalseEnter.setFocusableInTouchMode(false);
-//                                RadioOptionTrue.setClickable(false);
-//                                RadioOptionFalse.setClickable(false);
-
-
 
                                 AlertDialog alert = new AlertDialog.Builder(getContext())
                                         .setView(showTrueFalseChoice)
@@ -736,8 +606,6 @@ public class QuestionsFragment extends Fragment {
 
                                                         ((ViewGroup) showTrueFalseChoice.getParent()).removeView(showTrueFalseChoice);
                                                         questionTrueFalseEnter.setFocusableInTouchMode(true);
-//                                                        RadioOptionTrue.setClickable(true);
-//                                                        RadioOptionFalse.setClickable(true);
 
                                                         AlertDialog alert = new AlertDialog.Builder(getContext())
                                                                 .setView(showTrueFalseChoice)
@@ -755,15 +623,6 @@ public class QuestionsFragment extends Fragment {
                                                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                                                 String q = questionTrueFalseEnter.getText().toString();
 
-//                                                                                if(RadioOptionTrue.isChecked()){
-//
-//                                                                                    question.setAnswer(true);
-//
-//                                                                                } else if(RadioOptionFalse.isChecked()){
-//
-//                                                                                    question.setAnswer(false);
-//
-//                                                                                }
                                                                                 question.setQuestion(q);
 
 
@@ -838,9 +697,6 @@ public class QuestionsFragment extends Fragment {
             @Override
             protected void populateViewHolder(final ShortAnswerViewHolder viewHolder, ShortAnswer model, int position) {
                 viewHolder.setQuestion(model.getQuestion());
-
-                //final DatabaseReference courseRef= getRef(position);
-                //final String postKey = courseRef.getKey();
 
 //---------------------------------action on click a Course----------------------------------------------------------
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {

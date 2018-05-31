@@ -46,9 +46,7 @@ public class AnnouncementsCourseFragment extends Fragment {
 
     private DatabaseReference notificationRef;
     private DatabaseReference announcementReadRef;
-
     private FirebaseUser currentUser;
-
 
     public AnnouncementsCourseFragment() {
         // Required empty public constructor
@@ -191,7 +189,6 @@ public class AnnouncementsCourseFragment extends Fragment {
                                 notificationBody.setText(mAnnouncement.getBody());
                                 notificationBody.setFocusable(false);
                                 notificationBody.setClickable(false);
-
 
                                 AlertDialog alert = new AlertDialog.Builder(getContext(), android.R.style.ThemeOverlay_Material_Dialog)
                                         .setTitle(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(mAnnouncement.getTime()))

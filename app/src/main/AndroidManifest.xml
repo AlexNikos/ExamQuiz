@@ -28,7 +28,7 @@
             android:name=".Student.StudentActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Teacher.TeacherActivity"
             android:label=""

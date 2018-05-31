@@ -246,8 +246,6 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter((names.toArray(new String[names.size()]))));
         xAxis.setTextSize(10);
-        //xAxis.setGranularity(1f);
-        //xAxis.setGranularityEnabled(true);
 
         int[] colors = new int[] {Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.LTGRAY};
 
@@ -270,7 +268,6 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         BarData barData = new BarData(barDataSet);
         barData.setHighlightEnabled(false);
 
-
         barChart.setData(barData);
 
         Description de = new Description();
@@ -283,7 +280,6 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         barChart.setPinchZoom(false);
         barChart.setTouchEnabled(false);
         barChart.invalidate();
-
 
         return chartLayout;
 
@@ -335,7 +331,6 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         BarData barData = new BarData(barDataSet);
         barData.setHighlightEnabled(false);
 
-
         barChart.setData(barData);
 
         Description de = new Description();
@@ -348,7 +343,6 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
         barChart.setPinchZoom(false);
         barChart.setTouchEnabled(false);
         barChart.invalidate();
-
 
         return chartLayout;
 

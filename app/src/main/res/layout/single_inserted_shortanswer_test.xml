@@ -22,8 +22,8 @@
             android:layout_marginRight="30dp"
             android:maxLines="4"
             android:text="TextView"
+            android:textColor="@android:color/black"
             android:textSize="20dp"
-            android:textStyle="bold"
             app:minTextSize="10dp" />
 
         <LinearLayout
