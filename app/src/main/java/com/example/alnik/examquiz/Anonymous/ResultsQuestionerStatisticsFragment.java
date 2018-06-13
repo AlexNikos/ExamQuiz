@@ -272,7 +272,8 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
 
         Description de = new Description();
         String total = String.valueOf((opA + opB + opC + opD + opNone));
-        de.setText("Total Participants " +total);
+        //de.setText("Total Participants " +total);
+        de.setText("");
         de.setTextSize(12);
         barChart.setDescription(de);
         barChart.setFitBars(true);
@@ -335,7 +336,8 @@ public class ResultsQuestionerStatisticsFragment extends Fragment {
 
         Description de = new Description();
         String total = String.valueOf((opFalse + opTrue + opNone));
-        de.setText("Total Participants " +total);
+        //de.setText("Total Participants " +total);
+        de.setText("");
         de.setTextSize(12);
         barChart.setDescription(de);
         barChart.setFitBars(true);

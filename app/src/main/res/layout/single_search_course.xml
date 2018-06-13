@@ -11,16 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/searchName"
-            android:layout_width="wrap_content"
+            android:layout_width="235dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView41"
             android:layout_marginTop="16dp"
+            android:singleLine="true"
             android:text="TextView"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@android:color/black"
-            android:textSize="21sp" />
+            android:textSize="21sp"
+            app:minTextSize="10sp" />
 
         <TextView
             android:id="@+id/textView41"

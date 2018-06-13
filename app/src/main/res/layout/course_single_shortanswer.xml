@@ -15,17 +15,17 @@
         <me.grantland.widget.AutofitTextView
             android:id="@+id/single_shortanswer_question"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="111dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="43dp"
+            android:layout_marginTop="23dp"
             android:gravity="center"
             android:maxLines="4"
             android:text="TextView"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:minTextSize="10sp" />
 
 

@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.alnik.examquiz.CreateAccountActivity;
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.LoginActivity;
 import com.example.alnik.examquiz.R;
@@ -136,7 +137,9 @@ public class TeacherActivity extends AppCompatActivity
                 Global.student = null;
                 Global.course = null;
                 Global.timeSubscripted = 0;
-                startActivity(new Intent(TeacherActivity.this, LoginActivity.class));
+                Intent accountIntent = new Intent(TeacherActivity.this, LoginActivity.class );
+                accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(accountIntent);
                 finish();
             }
 

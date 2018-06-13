@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.example.alnik.examquiz.Anonymous.AnonymousActivity;
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.LoginActivity;
 import com.example.alnik.examquiz.R;
@@ -139,7 +140,9 @@ public class CourseStudentActivity extends AppCompatActivity
                 Global.student = null;
                 Global.course = null;
                 Global.timeSubscripted = 0;
-                startActivity(new Intent(CourseStudentActivity.this, LoginActivity.class));
+                Intent out = new Intent(CourseStudentActivity.this, LoginActivity.class);
+                out.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(out);
                 finish();
             }
 

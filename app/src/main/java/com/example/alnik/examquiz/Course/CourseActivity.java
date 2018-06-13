@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.LoginActivity;
 import com.example.alnik.examquiz.R;
+import com.example.alnik.examquiz.Student.StudentActivity;
 import com.example.alnik.examquiz.Teacher.TeacherActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -323,7 +324,9 @@ public class CourseActivity extends AppCompatActivity
                 Global.student = null;
                 Global.course = null;
                 Global.timeSubscripted = 0;
-                startActivity(new Intent(CourseActivity.this, LoginActivity.class));
+                Intent accountIntent = new Intent(CourseActivity.this, LoginActivity.class );
+                accountIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(accountIntent);
                 finish();
             }
         }

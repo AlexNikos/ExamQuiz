@@ -39,8 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/singleTrueFalseQuestion"
-            android:layout_below="@+id/checkBox1"
-            android:layout_marginTop="15dp"
+            android:layout_below="@+id/singleTrueFalseQuestion"
             android:text="TRUE" />
 
         <TextView
@@ -49,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/optionA"
             android:layout_below="@+id/optionA"
-            android:layout_marginTop="10dp"
             android:text="FALSE" />
 
     </RelativeLayout>

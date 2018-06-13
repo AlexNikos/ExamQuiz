@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -335,6 +336,8 @@ public class CheckQuestionerActivity extends AppCompatActivity {
         if(ans.get(i) != null){
             answerShortAnswer.setText(ans.get(i));
         }
+
+        answerShortAnswer.setMovementMethod(new ScrollingMovementMethod());
 
 
         return  shortAnswerQuestion;

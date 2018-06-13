@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -72,6 +73,7 @@ public class CheckTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                saveMarks();
                 finish();
 
             }
@@ -444,6 +446,8 @@ public class CheckTestActivity extends AppCompatActivity {
             answerShortAnswer.setText(ans.get(i));
         }
 
+        answerShortAnswer.setMovementMethod(new ScrollingMovementMethod());
+
         mark.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -546,24 +550,7 @@ public class CheckTestActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.student.getId()).setValue(marks, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if(databaseError == null){
-
-                    FirebaseDatabase.getInstance().getReference("Marks").child("Users").child(Global.student.getId()).child(Global.test.getId()).setValue(marks, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            if(databaseError == null){
-                                finish();
-                            }
-                        }
-                    });
-
-                }
-            }
-        });
+        saveMarks();
     }
 
     public View overalScore(){
@@ -630,5 +617,25 @@ public class CheckTestActivity extends AppCompatActivity {
         return score;
     }
 
+    public void saveMarks(){
+
+        FirebaseDatabase.getInstance().getReference("Marks").child("Tests").child(Global.test.getId()).child(Global.student.getId()).setValue(marks, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if(databaseError == null){
+
+                    FirebaseDatabase.getInstance().getReference("Marks").child("Users").child(Global.student.getId()).child(Global.test.getId()).setValue(marks, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError == null){
+                                finish();
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+    }
 
 }

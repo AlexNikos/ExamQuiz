@@ -23,17 +23,17 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:gravity="center"
-            android:maxLines="3"
+            android:maxLines="2"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:text="TextView of Question"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:minTextSize="10sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="109dp"
             android:layout_below="@id/single_multiple_question"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
@@ -49,10 +49,8 @@
                 android:layout_weight=".50"
                 android:gravity="center"
                 android:maxLines="1"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
                 android:text="TextView"
-                android:textSize="15sp"
+                android:textSize="10sp"
                 app:minTextSize="6sp" />
 
             <me.grantland.widget.AutofitTextView
@@ -63,7 +61,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:text="TextView"
-                android:textSize="15sp"
+                android:textSize="10sp"
                 app:minTextSize="6sp" />
 
             <me.grantland.widget.AutofitTextView
@@ -74,7 +72,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:text="TextView"
-                android:textSize="15sp"
+                android:textSize="10sp"
                 app:minTextSize="6sp" />
 
             <me.grantland.widget.AutofitTextView
@@ -85,7 +83,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:text="TextView"
-                android:textSize="15sp"
+                android:textSize="10sp"
                 app:minTextSize="6sp" />
 
         </LinearLayout>

@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/singleSudentCourseName"
             android:layout_below="@+id/singleSudentCourseName"
-            android:text="Subcribed on  "
+            android:text="Subscribed on  "
             android:textSize="15sp" />
 
         <TextView
