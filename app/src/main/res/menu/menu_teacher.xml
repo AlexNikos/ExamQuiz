@@ -16,10 +16,10 @@
 
 
 
-            <item
-                android:id="@+id/student_marks"
-                android:icon="@drawable/ic_menu_black_24dp"
-                android:title="Student Marks" />
+            <!--<item-->
+                <!--android:id="@+id/student_marks"-->
+                <!--android:icon="@drawable/ic_menu_black_24dp"-->
+                <!--android:title="Student Marks" />-->
             <item
                 android:id="@+id/about_course"
                 android:icon="@drawable/information"

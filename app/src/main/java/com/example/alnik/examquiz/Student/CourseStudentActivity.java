@@ -1,13 +1,17 @@
 package com.example.alnik.examquiz.Student;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,14 +25,19 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alnik.examquiz.Anonymous.AnonymousActivity;
 import com.example.alnik.examquiz.Global;
 import com.example.alnik.examquiz.LoginActivity;
 import com.example.alnik.examquiz.R;
 import com.example.alnik.examquiz.StartActivity;
+import com.example.alnik.examquiz.Teacher.TeacherActivity;
 import com.example.alnik.examquiz.Teacher.TeacherPagerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class CourseStudentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -129,9 +138,9 @@ public class CourseStudentActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.delete_profile) {
 
-        } else if (id == R.id.my_marks) {
+            deleteAccount();
 
-        }  else if (id == R.id.log_out) {
+        } else if (id == R.id.log_out) {
 
             FirebaseAuth.getInstance().signOut();
             if (mAuth == null){
@@ -151,5 +160,48 @@ public class CourseStudentActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void deleteAccount() {
+
+        ProgressDialog mRegDialog;
+
+        mRegDialog = new ProgressDialog(this);
+        mRegDialog.setMessage("Please wait.");
+        mRegDialog.setCanceledOnTouchOutside(false);
+
+        new AlertDialog.Builder(CourseStudentActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Delete Your Account?")
+                .setMessage("This action is permative!" +
+                        "You can not recover your data if you continue")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        mRegDialog.show();
+
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        user.delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            mRegDialog.dismiss();
+                                            Log.d("test", "User account deleted.");
+                                            Toast.makeText(CourseStudentActivity.this, "Account successfully deleted.", Toast.LENGTH_LONG).show();
+                                            Intent out = new Intent(CourseStudentActivity.this, LoginActivity.class);
+                                            out.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(out);
+                                            finish();
+                                        }
+                                    }
+                                });
+
+                    }
+                })
+                .setNegativeButton("NO", null)
+                .show();
     }
 }
